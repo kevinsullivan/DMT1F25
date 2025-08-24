@@ -1,5 +1,5 @@
 # Source and target directories
-SRC_DIR := code/DMT1
+SRC_DIR := Student/DMT1
 BUILD_DIR := src/DMT1
 
 # Find all source files recursively

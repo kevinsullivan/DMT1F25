@@ -65,7 +65,7 @@
   - [Affine Spaces](./DMT1/Lectures/L09_algebra/C05_affineSpaces.lean.md)
   - [n-Dimensional Spaces](./DMT1/Lectures/L09_algebra/C06_finiteDimensional.lean.md)
 
-- [Library](./mathStructures)
+- [Library]()
   - [Scalar](./DMT1/Lectures/L10_algebra/scalar/scalar.lean.md)
   - [Tuple](./DMT1/Lectures/L10_algebra/tuple/tuple.lean.md)
   - [Vector](./DMT1/Lectures/L10_algebra/vector/vector.lean.md)

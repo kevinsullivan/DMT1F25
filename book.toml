@@ -3,15 +3,8 @@ title = "Reasoning and Computation"
 authors = ["Kevin Sullivan"]
 language = "en"
 multilingual = false
-description = "Discrete Mathematics and Theory for CS Students in Lean 4"
+description = "Discrete Mathematics and Theory I in Lean 4"
 src = "src"
-
-[tags]
-"1.0.0" = { "releaseNotes" = "Empty Book", "releaseDate" = "Foo" }
-"1.1.0" = { releaseNotes = "Chapters on Propositional Logic and Model Theory", release_date = "2025-01-15" }
-"1.1.1" = { releaseNotes = "Fixes import paths in hw3", release_date = "2025-01-23" }
-"0.2.0" = { releaseNotes = "Pretty good up to quantifiers. Note discontinuity in version # scheme.", release_date = "2025-02-04" }
-"0.3.0" = { releaseNotes = "Good draft through multi-dimensional affine spaces.", release_date = "2025-04-18" }
 
 [build]
 build-dir = "book"
@@ -22,7 +15,8 @@ additional-js = [
     "assets/mermaid.min.js",
     "assets/mermaid-init.js",
 ]
-# additional-css = ["css/custom.css"]
+
+additional-css = ["css/custom.css"]
 
 mathjax-support = true
 
@@ -40,3 +34,4 @@ command = "mdbook-mermaid"
 renderer = ["html"]
 
 [preprocessor.image-size]
+command = "mdbook-image-size"
