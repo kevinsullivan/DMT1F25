@@ -16,14 +16,12 @@ additional-js = [
     "assets/mermaid-init.js",
 ]
 
-additional-css = ["css/custom.css"]
-
 mathjax-support = true
 
 git-repository-url = "https://github.com/kevinsullivan/dmtl4"
 
-[output.html.playground.boring-prefixes]
-lean = "# "
+[output.html.playground]
+boring-prefixes = ["# "]
 
 [preprocessor.toc]
 command = "mdbook-toc"
