@@ -3,7 +3,7 @@ title = "Reasoning and Computation"
 authors = ["Kevin Sullivan"]
 language = "en"
 multilingual = false
-description = "Discrete Mathematics and Theory I in Lean 4"
+description = "Reasoning and Computation: Discrete Mathematics and Theory I in Lean 4"
 src = "src"
 
 [build]
