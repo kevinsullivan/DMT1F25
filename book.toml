@@ -11,9 +11,9 @@ build-dir = "book"
 
 [output.html]
 additional-js = [
-"assets/lean.min.js",
-"assets/mermaid.min.js",
-"assets/mermaid-init.js",
+    "assets/lean.min.js",
+    "assets/mermaid.min.js",
+    "assets/mermaid-init.js",
 ]
 mathjax-support = true
 git-repository-url = "https://github.com/kevinsullivan/dmtl4"
@@ -32,17 +32,22 @@ renderer = ["html"]
 [preprocessor.image-size]
 command = "mdbook-image-size"
 
-# [output.pandoc]
-# pdf-engine = "xelatex"
-
 [output.pandoc.profile.pdf]
 to = "latex"
 output-file = "ReasoningAndComputation.pdf"
 pdf-engine = "xelatex"
+variables = { "mainfont" = "STIX Two Text", "mathfont" = "STIX Two Math", "monofont" = "DejaVu Sans Mono" }
 
-[output.pandoc.variables]
-mainfont = "STIX2Text"
-mathfont = "STIX2Math"
-include-in-header = "\\usepackage{unicode-math}\\setmathfont{STIX Two Math}"
-sansfont = "Noto Sans"
-monofont = "DejaVu Sans Mono"
+# In your book.toml
+[output.pandoc]
+command = "pandoc"
+args = [
+    "--pdf-engine=xelatex",
+    "--template=default",
+    "-V",
+    "mainfont:STIX Two Text",
+    "-V",
+    "mathfont:STIX Two Math",
+    "-V",
+    "monofont:DejaVu Sans Mono",
+]
