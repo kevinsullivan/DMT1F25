@@ -16,45 +16,97 @@ ENV LANG=en_US.UTF-8 \
 SHELL ["/bin/bash", "-c"]
 USER root
 
-# ----- Base tools -----
+# ----- Base tools and dependencies of downstream installs (sorry) -----
 RUN apt-get update --fix-missing && \
     apt-get install --no-install-recommends --assume-yes \
     build-essential \
+    ca-certificates \
+    pkg-config \
+    ninja-build  \
+    pkg-config \
+    chromium-browser \
+    cmake \
     curl \
     git \
     git-lfs \
     gnupg2 \
+    latexmk \
     less \
+    libfreetype6-dev \
+    libgraphite2-dev \
+    libpng-dev \
+    lmodern \
+    zlib1g-dev \
     libconfig-dev \
     libffi-dev \
     libssl-dev \
     libgmp-dev \
+    libfontconfig1-dev \
+    fontconfig \
+    libexpat1-dev \
+    # fonts-dejavu \
+    # fonts-dejavu-core \
+    # fonts-dejavu-extra \
+    # fonts-noto \
+    # fonts-noto-cjk \
+    # fonts-noto-emoji \
     locales \
     lsb-release \
+    pandoc  \
     pkg-config \
     python3-dev \
     python3-pip \
     python3-venv \
     python-is-python3 \
     software-properties-common \
+    texlive-latex-recommended \
+    texlive-latex-extra \
+    texlive-fonts-recommended \
+    texlive-fonts-extra \
+    texlive-latex-extra \
+    texlive-xetex \
     unzip \
     vim \
     wget \
     zip \
+    unzip \
+    zlib1g-dev \
     sudo && \
     locale-gen en_US.UTF-8 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Conventional locations for system-wide tools
-# RUN mkdir -p /opt/node 
+RUN ln -sf /usr/share/texmf/fonts/opentype /usr/share/fonts/truetype/texlive-opentype || true
+RUN ln -sf /usr/share/texlive/texmf-dist/fonts/opentype /usr/share/fonts/truetype/texlive-opentype || true
+RUN fc-cache -f -v
+
+RUN apt-get update && \
+    apt-get -y install \
+    fonts-dejavu \
+    fonts-dejavu-core \
+    fonts-dejavu-extra \
+    fonts-noto \
+    fonts-noto-cjk 
+RUN fc-cache -f -v
+
+# STIX Two Text + STIX Two Math (manual install)
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     && mkdir -p /usr/local/share/fonts/opentype/stix2 \
+#     && curl -fsSL https://mirrors.ctan.org/fonts/stix2-otf.zip -o /tmp/stix2-otf.zip \
+#     && unzip -q /tmp/stix2-otf.zip -d /tmp/stix2 \
+#     && find /tmp/stix2 -type f -name "STIX2*.otf" -exec cp {} /usr/local/share/fonts/opentype/stix2/ \; \
+#     && fc-cache -f -v \
+#     && rm -rf /var/lib/apt/lists/* /tmp/stix2-otf.zip /tmp/stix2
+# RUN fc-cache -f -v
+
 
 # ----- Node.js (system-wide) -----
-# RUN curl -fsSLo /tmp/node.tar.xz "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" && \
-#     tar -xf /tmp/node.tar.xz -C /opt/node --strip-components=1 && \
-#     ln -sf /opt/node/bin/node /usr/local/bin/node && \
-#     ln -sf /opt/node/bin/npm  /usr/local/bin/npm && \
-#     ln -sf /opt/node/bin/npx  /usr/local/bin/npx && \
-#     rm -f /tmp/node.tar.xz
+RUN mkdir -p /opt/node 
+RUN curl -fsSLo /tmp/node.tar.xz "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" && \
+    tar -xf /tmp/node.tar.xz -C /opt/node --strip-components=1 && \
+    ln -sf /opt/node/bin/node /usr/local/bin/node && \
+    ln -sf /opt/node/bin/npm  /usr/local/bin/npm && \
+    ln -sf /opt/node/bin/npx  /usr/local/bin/npx && \
+    rm -f /tmp/node.tar.xz
 
 # ----- Create non-root user and workspace -----
 RUN useradd -m -s /bin/bash dev && \
@@ -68,25 +120,8 @@ RUN git config --global --add safe.directory /home/dev
 
 # ----- Switch to USER=dev for user-scoped installs -----
 USER dev
-
 WORKDIR /home/dev
 ENV HOME=/home/dev
-
-# Put user-local tools and SDKMAN candidates on PATH globally for this image
-# ENV SDKMAN_DIR="/home/dev/.sdkman" \
-#     JAVA_HOME="/home/dev/.sdkman/candidates/java/current" \
-#     PATH="/home/dev/.elan/bin:/home/dev/.local/bin:/home/dev/.sdkman/candidates/java/current/bin:/home/dev/.sdkman/candidates/gradle/current/bin:/home/dev/.sdkman/candidates/maven/current/bin:/usr/local/bin:${PATH}"
-
-# ----- SDKMAN (user-local) + Java/Maven/Gradle -----
-# RUN curl -s "https://get.sdkman.io" | bash && \
-#     bash -lc "source $SDKMAN_DIR/bin/sdkman-init.sh && \
-#     sdk install gradle 7.5 && \
-#     sdk install maven && \
-#     sdk install java 11.0.17-amzn && \
-#     sdk flush archives && sdk flush temp"
-
-# ----- elan + Lean toolchain (KEEP stable as requested) -----
-# RUN curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | bash -s -- -y 
 
 # Install GHC
 ENV PATH="$HOME/.ghcup/bin:${PATH}"
@@ -98,12 +133,31 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org \
 ENV PATH="$HOME/.ghcup/bin:${PATH}"
 RUN ghc --version && runhaskell --version && cabal --version
 
-# Install rustup, cargo, and rust for, and then, mdbook
+# Install Rust, mdbook, and mdbook extensions
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
-# Ensure cargo/rustup are on PATH for subsequent layers
 ENV PATH="/$HOME/.cargo/bin:${PATH}"
 RUN cargo install mdbook
-RUN cargo install mdbook-image-size mdbook-mermaid mdbook-toc
+RUN cargo install mdbook-image-size 
+RUN cargo install mdbook-mermaid 
+RUN cargo install mdbook-toc 
+RUN cargo install mdbook-pandoc
+
+# Last parts need root
+USER root
+
+# Grab the OTF bundle from CTAN, install, and refresh Fontconfig
+ARG STIX2_URL=https://mirrors.ctan.org/fonts/stix2-otf.zip
+RUN set -eux; \
+    mkdir -p /usr/local/share/fonts/opentype/stix2; \
+    curl -fsSL "$STIX2_URL" -o /tmp/stix2.zip; \
+    unzip -q /tmp/stix2.zip -d /tmp/stix2; \
+    find /tmp/stix2 -type f -name 'STIXTwo*.otf' -exec mv -t /usr/local/share/fonts/opentype/stix2 {} +; \
+    fc-cache -f -v; \
+    rm -rf /tmp/stix2 /tmp/stix2.zip
+
+# (Optional sanity check; you can remove after verifying)
+# RUN fc-list | grep -i "stix two" || true
+
 
 # Keep the devcontainer running so VS Code can attach
 CMD ["sleep", "infinity"]
