@@ -75,7 +75,7 @@ RUN apt-get update --fix-missing && \
     locale-gen en_US.UTF-8 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN ln -sf /usr/share/texmf/fonts/opentype /usr/share/fonts/truetype/texlive-opentype || true
+# RUN ln -sf /usr/share/texmf/fonts/opentype /usr/share/fonts/truetype/texlive-opentype || true
 RUN ln -sf /usr/share/texlive/texmf-dist/fonts/opentype /usr/share/fonts/truetype/texlive-opentype || true
 RUN fc-cache -f -v
 
@@ -142,9 +142,8 @@ RUN cargo install mdbook-mermaid
 RUN cargo install mdbook-toc 
 RUN cargo install mdbook-pandoc
 
-# Last parts need root
-USER root
 
+USER root
 # Grab the OTF bundle from CTAN, install, and refresh Fontconfig
 ARG STIX2_URL=https://mirrors.ctan.org/fonts/stix2-otf.zip
 RUN set -eux; \
@@ -155,9 +154,159 @@ RUN set -eux; \
     fc-cache -f -v; \
     rm -rf /tmp/stix2 /tmp/stix2.zip
 
-# (Optional sanity check; you can remove after verifying)
-# RUN fc-list | grep -i "stix two" || true
-
+USER dev
+RUN mkdir -p /home/dev/.pandoc/templates && \
+    echo '\documentclass{book}' > /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '% Font setup - MUST come first' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{fontspec}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{unicode-math}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\setmainfont{STIX Two Text}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\setmathfont{STIX Two Math}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\setmonofont[Scale=0.85]{DejaVu Sans Mono}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '% Unicode math symbols in text mode' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{newunicodechar}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{∧}{\ensuremath{\land}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{∨}{\ensuremath{\lor}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{¬}{\ensuremath{\lnot}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{→}{\ensuremath{\to}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{←}{\ensuremath{\leftarrow}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{↔}{\ensuremath{\leftrightarrow}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{⇒}{\ensuremath{\Rightarrow}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{⇐}{\ensuremath{\Leftarrow}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{⇔}{\ensuremath{\Leftrightarrow}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{⊤}{\ensuremath{\top}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{⊥}{\ensuremath{\bot}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{∀}{\ensuremath{\forall}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{∃}{\ensuremath{\exists}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{∈}{\ensuremath{\in}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{∉}{\ensuremath{\notin}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{⊆}{\ensuremath{\subseteq}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{⊇}{\ensuremath{\supseteq}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{⊂}{\ensuremath{\subset}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{⊃}{\ensuremath{\supset}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{∪}{\ensuremath{\cup}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{∩}{\ensuremath{\cap}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{∅}{\ensuremath{\emptyset}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{≡}{\ensuremath{\equiv}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{≠}{\ensuremath{\neq}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{≤}{\ensuremath{\leq}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{≥}{\ensuremath{\geq}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{±}{\ensuremath{\pm}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{∞}{\ensuremath{\infty}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{α}{\ensuremath{\alpha}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{β}{\ensuremath{\beta}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{γ}{\ensuremath{\gamma}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{δ}{\ensuremath{\delta}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{ε}{\ensuremath{\varepsilon}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{λ}{\ensuremath{\lambda}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{μ}{\ensuremath{\mu}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{π}{\ensuremath{\pi}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{σ}{\ensuremath{\sigma}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{τ}{\ensuremath{\tau}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{φ}{\ensuremath{\varphi}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{χ}{\ensuremath{\chi}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{ω}{\ensuremath{\omega}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{Γ}{\ensuremath{\Gamma}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{Δ}{\ensuremath{\Delta}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{Λ}{\ensuremath{\Lambda}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{Π}{\ensuremath{\Pi}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{Σ}{\ensuremath{\Sigma}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{Φ}{\ensuremath{\Phi}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newunicodechar{Ω}{\ensuremath{\Omega}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '% Essential packages' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage[margin=1in]{geometry}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{hyperref}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{graphicx}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{longtable}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{booktabs}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{array}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{xcolor}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '% List handling' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{enumitem}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\providecommand{\tightlist}{%' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '% Code and syntax highlighting' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{fancyvrb}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{fvextra}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\usepackage{framed}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\definecolor{shadecolor}{RGB}{248,248,248}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '% Pandoc syntax highlighting commands' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\BuiltInTok}[1]{#1}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\ExtensionTok}[1]{#1}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\ImportTok}[1]{#1}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\NormalTok}[1]{#1}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\RegionMarkerTok}[1]{#1}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '% Links and URLs' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\urlstyle{same}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\hypersetup{' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '  colorlinks=true,' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '  linkcolor=blue,' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '  filecolor=magenta,' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '  urlcolor=cyan,' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '% Title page' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '$if(title)$' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\title{$title$}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '$endif$' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '$if(author)$' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\author{$for(author)$$author$$sep$ \and $endfor$}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '$endif$' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '$if(date)$' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\date{$date$}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '$endif$' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\begin{document}' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '$if(title)$' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\maketitle' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newpage' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '$endif$' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '$if(toc)$' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\tableofcontents' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\newpage' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '$endif$' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '$body$' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
+    echo '\end{document}' >> /home/dev/.pandoc/templates/stix-math.latex
 
 # Keep the devcontainer running so VS Code can attach
 CMD ["sleep", "infinity"]
+

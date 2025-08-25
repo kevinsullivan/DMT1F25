@@ -36,18 +36,9 @@ command = "mdbook-image-size"
 to = "latex"
 output-file = "ReasoningAndComputation.pdf"
 pdf-engine = "xelatex"
-variables = { "mainfont" = "STIX Two Text", "mathfont" = "STIX Two Math", "monofont" = "DejaVu Sans Mono" }
+template = "/home/dev/.pandoc/templates/stix-math.latex"
 
-# In your book.toml
-[output.pandoc]
-command = "pandoc"
-args = [
-    "--pdf-engine=xelatex",
-    "--template=default",
-    "-V",
-    "mainfont:STIX Two Text",
-    "-V",
-    "mathfont:STIX Two Math",
-    "-V",
-    "monofont:DejaVu Sans Mono",
-]
+[output.pandoc.profile.debug]
+to = "latex"
+output-file = "debug.tex"
+template = "/home/dev/.pandoc/templates/stix-math.latex"

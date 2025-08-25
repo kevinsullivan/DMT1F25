@@ -1,0 +1,1 @@
+[Header 2 ("propositions-as-logical-types", [], []) [Str "Propositions as Logical Types"]]

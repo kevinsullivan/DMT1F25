@@ -1,0 +1,1435 @@
+\documentclass{book}
+
+% Font setup - MUST come first
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{STIX Two Text}
+\setmathfont{STIX Two Math}
+\setmonofont[Scale=0.85]{DejaVu Sans Mono}
+
+% Essential packages
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+
+% List handling
+\usepackage{enumitem}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Code and syntax highlighting
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\usepackage{framed}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+
+% Pandoc syntax highlighting commands
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+
+% Links and URLs
+\urlstyle{same}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=magenta,
+  urlcolor=cyan,
+}
+
+% Title page
+\title{Reasoning and Computation}
+\author{Kevin Sullivan}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__preface}{%
+\chapter*{Preface}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__preface}}
+\addcontentsline{toc}{chapter}{Preface}
+
+\begin{itemize}
+\tightlist
+\item
+  \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__preface}{Preface}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__acknowledgements}{Acknowledgements}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__disclaimers}{Disclaimers}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__a-couple-of-pillars}{A Couple of Pillars}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__some-problems}{Some Problems}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__new-approach}{New Approach}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__design-constraints}{Design Constraints}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__this-solution}{This Solution}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__an-example}{An Example}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__status}{Status}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__evaluation}{Evaluation}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__use-for-dmt1}{Use for DMT1}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__student-paths}{Student Paths}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__tool-paths}{Tool Paths}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__research-paths}{Research Paths}
+  \item
+    \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__preface.md__invitation}{Invitation}
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__acknowledgements}{%
+\section*{Acknowledgements}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__acknowledgements}}
+
+\includegraphics[width=1.04167in,height=\textheight]{pandoc.profile.debug/pandoc/debug/src/images/480px-NSF_Official_logo_Med_Res.png}
+
+This course was developed with support provided in part by a research grant from the National Science Foundation, \#1909414, SHF: Small: Explicating and Exploiting the Physical Semantics of Code.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__disclaimers}{%
+\section*{Disclaimers}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__disclaimers}}
+
+Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
+
+The views expressed in this article are those of the author(s) and do not necessarily reflect the views, policies, or positions of the University of Virginia.
+
+This work expresses cetain technical juddgments by the author based on observation and experience but not always on outcomes of scientific testing. No IRBs have been needed or sought. No student or other human subjects data is reported here or has been reported outside of official reporting channels.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__a-couple-of-pillars}{%
+\section*{A Couple of Pillars}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__a-couple-of-pillars}}
+
+Computation and reasoning are two great intertwined pillars of computer science. The definition of a procedure intended to return the sum of any two given non-negative whole numbersinvolves computational thinking, around both data and procedure definitions.
+
+On the other hand, if we want to remove any doubt that addition as defined by our code has some a critical propery of addition from elementary arithmetic, then we must engage in reasoning. First, we must express the property of arithmetic of interest in a mathematical logic. Second, we must express the proposition that the computation defined by our code has that same property. Let\textquotesingle s use a concrete example.
+
+One property of addition in elementary arithmetic is that the sum of any number, \emph{x}, with, respectively, two unequal numbers, \emph{y} and \emph{z}, will \emph{always} produce unequal results. We first make the assertion precise by expressing it in a formal logic. In  \emph{predicate logic} we could express the claims as \emph{∀ (x y z : Nat), y ≠ z → x + y ≠ x + z}: for any three natural numbers (Nat), call them x, y, and z, if y is not equal to z then x + y is not equal to x + z*.
+
+Consequently we have languages for expressing \emph{conputations}, namely \emph{programming} languages, and languages for expressing propositions about worlds or domains of interest, namely \emph{logics}, paired with formal languages for expressing rigorous arguments for either the \emph{truth} of such propositions in a specific domain or world, and their \emph{validity}, which is to say their truth in all possible worlds within the given domain of discourse.
+
+For decades, computer science educators have excelled at teaching \emph{computational} thinking and the use of programming languages to express computations. By contrast, we have done much less well teaching reasoning and the formal languages and thought processes needed to reason formally in practice.
+
+The use of programming langauges is familiar territory even to the earliest computer science students. The very first course in computer science is invariably a course in programming, and implicitly in programming languages. Programming then remains one of the primary areas of emphasis throughout the entire undergraduate curriculum. Students of CS thus today generally graduate with high proficiency in computational thinking and in the use of programming languages that support it.
+
+Recognizing the essential foundational character or reasoning, the \emph{second} course in the undergraduate CS curriculum is typically called something like CS2: Discrete Mathematics and Theory (DMT1). It is in this course that students gain their first, and sadly usually their last, exposure to formal reasoning and languages and systems that support it. Such courses are generally paper-and-pencil affairs covering propositional logic, first-order predicate logic and set theory, and induction (but usually only on natural numbers).
+
+The problem with the ubiquity of such courses are many. First, CS students tend ot find these courses boring, abstract, disconnected from their intrinsic motations to learn about computing, irrelevant to practice, and deeply forgettable.  Anecdotally, most students entering graduate programs in CS appear remember almost nothing from their early DMT courses, and few have ever had to use reasoning langauges and methods after DMT1.
+
+On the demand side, on the other hand, we are now seeing rapidly growing needs for engineers who do actually understand formal reasoning and languages. On the other hand, the supply of such talent is miniscule, due in large part to the failure to train our students in such knowledge and skills. Moreover, this explosion in demand for reasoning skills is happening at the same time we\textquotesingle re seeing a significant drop-off in demand for "mere" computational thinking and programming.
+
+The conclusions of the author include the following: (1) Our field has failed to train generations of graduating computer scientists in the thought processes and the formal languages needed to be productive with \emph{reasoning} in theory or industrial practice. (2) The standard DMT1 course is, for far too many students, not a productive or memorable experience, as evinced by the exceptionally poor state of knowledge of most incoming graduate students in computer science (in the author\textquotesingle s experience). (3) It is time to replace the standard DMT1 course with something entirely new, different, and far better. (4) It is time to think about re-balancing the entire undergraduate curriculum toward greater emphasis on mathematical abstractions and formal reasoning.
+
+The course presented here is thus offered as a model for an entirely new approach. At the highest level, it teaches all of the core material in any DMT1 course but with all of the context formalized in the reasoning language, Lean 4. In languages like this, supported by wonderful tooling, reasoning is linked to comptuation by the amazing unification known as the the \emph{Curry-Howard Correspondence} (CHC). The CHC holds that formalized deductive reasoning of certains kinds (natural deduction, which is perhaps the core concept in any DMT course) is a form of computing, but not only with the usual data and function types but with now axioms, propositions, and proofs as first-class citizens.
+
+Lean 4 is so beautifully expressive of such a broad range of mathematical concepts that a significant community of mathematicians have organized around it to drive the development of formalized versions of mathematics across a very broad range of fields. Meanwhile, CS students remain stuck learning a logic (first-order predicate logic and set theory) that is \emph{not} suitable as a foundation for formalized or automated abstract mathemtics. This course, on the other hand, adopts, \emph{type theory}, here as implemented by Lean 4, as a far better choice, even for early CS students.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__some-problems}{%
+\section*{Some Problems}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__some-problems}}
+
+That we\textquotesingle ve arrived at a point where reasoning technology is advancing at extraordinary speed but where are students are by and large entirely unprepared to understand or use it. Of course, for many decades, the demand for programming was voracious, and at the same time cost and difficulty of reasoning were prohibitively high. But now the tables are turned. Generative and related AI promise to reduce demand for programming code while the needs of industry and national security are driving significant increases in demand for formal reasoning.
+
+This course aims to help address the resulting shortfall in talent by radically replacing the traditional undergraduate DMT1 course with a new one, covering essentiall the same basic content, but now using the wildly successful reasoning and computation language and toolset of Lean 4. The course is scoped for a full undergraduate semester or as the first half of an introductory graduate course in formal languages and reasoning. Big changes in in circumstances make now a great time to consider such a transition in CS pedagogy. They include the following:
+
+\begin{itemize}
+\tightlist
+\item
+  Rapidly increasing industrial demand for formal, machine-supported and machine-checked reasoning about critical properties software-intensive systems that undergird our society
+\item
+  The emergence of type-theory-based formalisms with exceptional expressiveness and broad applications that have attracted large communities of researchers in mathematics, which gtends to validate the proposition that there\textquotesingle s something new and remarkable in them
+\item
+  The development of superb tooling for using reasoning languages effectively in practice
+\item
+  The profound intertwining of computation and reasoning afforded by such langauges
+\item
+  The real possibility that mere routine programming will increasingly be done by "AIs"
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__new-approach}{%
+\section*{New Approach}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__new-approach}}
+
+The idea is to simultaneously gain a deeper understanding of reasoning while also
+seeing it as a form computation, albeit now over reasoning rather than computational
+terms. For example, we begin with propositional logic-\/-\/-syntax, semantics, validity,
+soundness, etc.-\/-through its standard deep embedding into (the logic of) Lean 4. A
+demonstrated strength of Lean 4 is in its enabling communities to express rich theories
+in the clear, abstract, generalized terms of the particular domain itself, across a wide
+range of domains in graduate- and beyond-level mathematics.
+
+The entire course is set up this way. Predicate logic is presented through its standard
+shallow embedding in Lean 4. First-order logic is described as a special case. Set theory
+is built directly on predicate logic. Etc.
+
+This course can then express generalized mathematical concepts, such as the property of
+a relation of being reflexive (or whatever). In a first-order course, you can formally
+express what it means for a particular binary relation, r, to be "reflexive." That\textquotesingle s ok.
+But one really hopes the student will acquire is an understanding of the property itself:
+the property of any binary relation, r, on any set, s, of being reflexive. This generalized
+concept can then be \emph{applied} to any particular relation to speak of its being reflexive,
+or not. The first-order theory of the traditional DMT1 course isn\textquotesingle t expressive enough to
+represent generalized properties of higher-order things, such as relations, functions, or
+types. Lean is not much harder to learn and is really a better language for expressing
+and working with core DMT1 concepts. It\textquotesingle s really better to learn from the outset to be
+able to say things like this: reflexivity is a property of \emph{any} binary relation on \emph{any}
+set of objects of \emph{any} type. None of those \emph{anys} can be said in first-order logic as one
+cannot quantify over relations, sets, or types.
+
+It\textquotesingle s not just a nicety, either, to have \emph{reflexive} as a predicate on any binary
+relation on any set of terms of any type. It means that this predicate can be applied
+to any particular relation so as to produce the proposition that it is reflexive. The
+application of predicates to particulars is ubiquitous in formal reasoning.
+
+Another principle is that all of the main concepts taught in the traditional course must
+be taught in the new course: propositional logic, predicate logic, sets, induction. This
+course covers the same topics but in different ways.
+
+But it\textquotesingle s not only topic coverage. Notations matter. Embeddings of mathematical concepts
+in Lean often come with the standard notations of the field as a paper-and-pencil affair.
+Differences in surface syntax in having to read and write in set theory as embedded in
+Lean and as learned using paper and pencil are minor, while the gain in capabilities at
+one\textquotesingle s fingertips is substantial. They include automated syntax and proof checking, among
+other things. Having a superb supportive community of experts is a tremendous human asset.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__design-constraints}{%
+\section*{Design Constraints}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__design-constraints}}
+
+This course was developed under a few key constraints:
+
+\begin{itemize}
+\tightlist
+\item
+  Continue to focus on the basic content of the traditional course: logic, sets, induction
+\item
+  Avoid assiduously overwhelming early students with the complexity of modern proof assistants
+\item
+  Formalize every concept in the uniform logic of the proof assistant using conventional notations
+\item
+  Ensure that first-order theory is a special case of the more expressive theory of the course
+\item
+  Provide students with a deeply computational perspective, from great tooling to Curry-Howard
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__this-solution}{%
+\section*{This Solution}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__this-solution}}
+
+The solution, now tested in practice (but not scientifically evaluated yet), has a few
+key elements:
+
+\begin{itemize}
+\tightlist
+\item
+  Make standard embeddings propositional and predicate logic in Lean a path to Lean 4 itself
+\item
+  Begin with a deep embedding of propositional logic syntax, semantics, and validity in Lean 4
+\item
+  Thoroughly cover all of the axioms for reasoning in predicate logic as its embedded in Lean 4
+\item
+  Build all of the material on set theory (sets, relations, properties) on top of this logic
+\item
+  Present induction first as a way to build functions and only later as a way to build proofs
+\item
+  Minimize covereage of complex or inessential Lean; e.g., tactics are omitted until the end
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__an-example}{%
+\section*{An Example}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__an-example}}
+
+Here are two simple examples of what students might see in this course.
+
+The first  illustrates how students would write propositional logic expressions.
+
+\begin{itemize}
+\tightlist
+\item
+  def andAssociative  := ((P ∧ Q) ∧ R) ↔ (P ∧ (Q ∧ R))
+\item
+  def equivalence     := (P ↔ Q) ↔ ((P ⇒ Q) ∧ (Q ⇒ P))
+\end{itemize}
+
+This one, second, specifies the generalized property of a relation of being well founded.
+
+\begin{itemize}
+\tightlist
+\item
+  def isWellFounded  \{α  β : Type\} : Rel α α → Prop := fun r =\textgreater{} ∀ (s : Set α), s ≠ ∅ → ∃ m, (m ∈ s ∧ ¬∃ n ∈ s, r n m)
+\end{itemize}
+
+By the end of the course students should be able to read and explain what this definition
+means, and \emph{apply} it to particulars in the process of making richer claims about them.
+The undergraduate course does emphasize ongoing practice in the skills of translating between
+formal and \emph{natural} natural language.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__status}{%
+\section*{Status}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__status}}
+
+The status of this online book is \emph{drafted work in progress}. The material through the second
+chapter on induction reflects the content, edited, from my Fall 2024 undergraduate class offering.
+It\textquotesingle s also the first part of an introductory graduate \emph{software logic} course that I\textquotesingle m teaching
+this Spring of 2025. There are a few concept/chapter placeholders at the end for material not previously taught at all, including formalized reasoning about induction through well founded relations. (Students have learned and demonstrated the abilty to reason formally about properties of relations, though, and should be able to handle proofs involving this property without much more difficulty than they\textquotesingle ve already done involving other properties of relations). The entire document still needs a good editing. Some parts are still rough. A most notably rough one is the first, on talking about languages.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__evaluation}{%
+\section*{Evaluation}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__evaluation}}
+
+It is a challenge toto teach this course using Lean 4 for significant net advantage over more traditional courses. The hard problem, now cracked I hope, was reduce the added burden imposed by conceptually irrelevant aspects of Lean sufficiently to not impair students\textquotesingle{} capacity to learn the underlying concepts. At this point I believe that we can teach DMT1 using this kind of technology to the significant net advantage of our students, while covering all the essential concepts of any DMT1 class without undue haste.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__use-for-dmt1}{%
+\section*{Use for DMT1}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__use-for-dmt1}}
+
+A conservative offering could cover chapters on propositional logic, arithmetic, and induction for arithmetic function definitions, then skip theory extensions and SMT, and proceed to predicate logic, set theory, before a final return to induction generalized to proof construction. A possible capstone would be on termination via well founded relations, as they now have full command of the concept of properties of relations. I plan to reduce coverage of SMT by 80\% on the next offering to have more time for this stuff at the end.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__student-paths}{%
+\section*{Student Paths}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__student-paths}}
+
+From here, advanced courses in several areas are possible at both undergraduate and graduate
+levels: cyberphysical systems, programming language design and implementation, verification,
+provable security, machine learning (e.g., see AlphaProof), robotics, quantum computing, etc.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__tool-paths}{%
+\section*{Tool Paths}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__tool-paths}}
+
+Working knowledge of the concepts of this course will provide students with easy access to
+understanding the concepts underpinning and the use of a broad range reasoning technologies. Dafny and Z3 are good next steps and there are surely others. A small enhancement to this course would be a much shorter "highlight" on Z3 then another on one Dafny, just to show that there\textquotesingle s a whole new world of reasoning systems out there.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__research-paths}{%
+\section*{Research Paths}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__research-paths}}
+
+\begin{itemize}
+\tightlist
+\item
+  Natural experiments potentially accessible (IRBs)
+\item
+  Constructive mathematical concept inventories
+\end{itemize}
+
+There are surely problems and opportunities for improvement, in concept and presentation, here. Reach out if you wish.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__preface.md__invitation}{%
+\section*{Invitation}\label{pandoc.profile.debug__pandoc__debug__src__preface.md__invitation}}
+
+If you with to discuss, or alert us to possible issues, please do email me with DMTL4 in the subject line. It\textquotesingle s my last name at Virginia, Edu.
+
+© Kevin Sullivan 2024-2025.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__languages}{%
+\chapter{Languages}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__languages}}
+
+Computer science is deeply connected with the concept of languages,
+particularly formal languages, which are languages where the valid
+forms of expressions are precisely specific, unlike so-called natural
+languages, such as English, where one typically has greater expressive
+freedom.
+
+In this course, we will distinguish between two varieties of formal
+languages, in turn. Languages in the first class are mostly intended
+to support the specification of practical \emph{computations}. These are
+the \emph{programming} languages. The languages in the second class are
+weighted toward the expression of propositions, or claims about some
+work, and reasoning about them.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__elements}{%
+\section*{Elements}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__elements}}
+
+A language consists of several essential components that define its structure and meaning. These include:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Syntax}: The formal arrangement of symbols and symbolic expressions.
+\item
+  \textbf{Semantic Domains}: The entities to which symbols and expressions refer, commonly referred to as denotations.
+\item
+  \textbf{Interpretations}: The mappings that relate symbols to their denotations.
+\item
+  \textbf{Semantics}: The relations that map entire expressions to their corresponding denotations.
+\end{itemize}
+
+Understanding these elements is fundamental to both natural and formal languages, as they provide the foundation for meaning and interpretation.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__moods}{%
+\section*{Moods}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__moods}}
+
+Languages can be classified by their \textbf{moods}, which reflect different communicative intents:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Declarative (Indicative)}: Used to assert statements about reality (e.g., "It is the case that ...").
+\item
+  \textbf{Optative}: Expresses a desired state of affairs (e.g., "I require it to be the case that ...").
+\item
+  \textbf{Imperative}: Issues commands to achieve a certain action (e.g., "Make it the case that ...").
+\item
+  \textbf{Conditional}: Specifies a dependency between conditions and outcomes (e.g., "If X is true, then it is the case that ...").
+\item
+  \textbf{Subjunctive}: Expresses counterfactuals or uncertainty (e.g., "If only it were the case that ...").
+\item
+  \textbf{Exclamatory}: Conveys strong emotions (e.g., "Oh my!").
+\item
+  \textbf{Interrogative}: Seeks information through questioning (e.g., "Is it the case that ...?").
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__purposes}{%
+\section*{Purposes}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__purposes}}
+
+Different languages serve different functional purposes, including:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Human-Human Communication}: Facilitating communication between people (e.g., English, Mandarin).
+\item
+  \textbf{Human-Machine Communication}: Enabling humans to issue instructions to machines (e.g., Java, Python).
+\item
+  \textbf{Machine-Machine Communication}: Standardized formats for automated data exchange (e.g., JSON, XML).
+\item
+  \textbf{Automated Reasoning}: Languages designed for formal reasoning, program execution, and proof verification.
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__natural-vs-formal}{%
+\section*{Natural vs. Formal}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__natural-vs-formal}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__natural-languages}{%
+\subsection*{Natural Languages}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__natural-languages}}
+
+Natural languages---such as English, Spanish, and Mandarin---evolve to maximize ease of communication among humans. However, they introduce challenges in rigorous reasoning due to inherent properties:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Ambiguity}: A single phrase may have multiple interpretations (e.g., "Shoes must be worn, dogs must be carried").
+\item
+  \textbf{Imprecision}: Some instructions lack formal specificity (e.g., "Keep a reasonable distance from the next car").
+\item
+  \textbf{Computational Complexity}: While natural languages have historically been difficult to process computationally, large language models (LLMs) are changing this dynamic.
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__formal-languages}{%
+\subsection*{Formal Languages}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__formal-languages}}
+
+Formal languages---such as those used in logic, mathematics, and programming---are designed for precision and mechanical reasoning. Their primary benefits include:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Rigor}: Supporting exact definitions and structured reasoning.
+\item
+  \textbf{Computability}: Enabling automated processing and verification.
+\item
+  \textbf{Application Scope}: Used in programming, specification, verification, and mathematical proofs.
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__imperative-vs-declarative}{%
+\section*{Imperative vs. Declarative}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__imperative-vs-declarative}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__imperative-languages}{%
+\subsection*{Imperative Languages}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__imperative-languages}}
+
+Imperative languages define step-by-step procedures for solving problems. These languages execute commands that transform mutable states and perform I/O operations. A classic example is a Python implementation of Newton's method for computing square roots.
+
+While imperative languages enable efficient execution, they often lack expressiveness compared to declarative approaches.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__declarative-languages}{%
+\subsection*{Declarative Languages}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__declarative-languages}}
+
+Declarative languages emphasize expressiveness over step-by-step execution. Key characteristics include:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Syntax and Semantics}: Clearly defined structure and meaning.
+\item
+  \textbf{Domains, Interpretations, and Evaluation}: A well-defined mapping between symbols and their interpretations.
+\item
+  \textbf{Models}:\textbackslash n  - \textbf{Validity}: An expression is valid if it is true under all interpretations.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Satisfiability}: An expression is satisfiable if at least one interpretation makes it true.
+  \item
+    \textbf{Unsatisfiability}: An expression is unsatisfiable if no interpretation makes it true.
+  \end{itemize}
+\item
+  \textbf{Expressiveness vs. Solvability Trade-offs}: More expressive languages tend to pose greater computational challenges.
+\item
+  \textbf{Decidability}: The problem of determining the validity of arbitrary expressions may be undecidable in some cases.
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__formal-language-case-study-propositional-logic}{%
+\section*{Formal Language Case Study: Propositional Logic}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__formal-language-case-study-propositional-logic}}
+
+A classic example of a formal language is \textbf{propositional logic}, which serves as a foundation for automated reasoning.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__syntax}{%
+\subsection*{Syntax}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__syntax}}
+
+Propositional logic consists of:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Literals}: Atomic Boolean values (e.g., \texttt{true}, \texttt{false}).
+\item
+  \textbf{Variables}: Symbols that represent Boolean values (e.g., \texttt{P}, \texttt{Q}).
+\item
+  \textbf{Operators}: Logical connectives such as \texttt{AND}, \texttt{OR}, \texttt{NOT}, \texttt{IMPLIES}.
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__semantic-domain}{%
+\subsection*{Semantic Domain}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__semantic-domain}}
+
+Propositional logic is grounded in \textbf{Boolean algebra}, where expressions evaluate to either \texttt{true} or \texttt{false}.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__interpretations}{%
+\subsection*{Interpretations}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__interpretations}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Fixed Symbols}: Operators map to specific Boolean functions.
+\item
+  \textbf{Variables}: Assigned Boolean values in a given interpretation.
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__semantic-evaluation}{%
+\subsection*{Semantic Evaluation}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__semantic-evaluation}}
+
+Expressions are evaluated within a given interpretation, determining their truth values.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__properties-of-expressions}{%
+\subsection*{Properties of Expressions}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__properties-of-expressions}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Validity}: An expression is valid if it evaluates to \texttt{true} in all interpretations.
+\item
+  \textbf{Satisfiability}: An expression is satisfiable if there exists at least one interpretation where it evaluates to \texttt{true}.
+\item
+  \textbf{Unsatisfiability}: An expression is unsatisfiable if it evaluates to \texttt{false} in all interpretations.
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__computations-in-propositional-logic}{%
+\subsection*{Computations in Propositional Logic}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__computations-in-propositional-logic}}
+
+Several computational tasks arise in propositional logic:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Model Finding}: Identifying an interpretation that satisfies a given expression.
+\item
+  \textbf{Model Checking}: Verifying whether an interpretation satisfies a given expression.
+\item
+  \textbf{Validity Checking}: Determining whether an expression is valid.
+\item
+  \textbf{Counterexample Finding}: Identifying interpretations that falsify an expression.
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__languages.md__conclusion}{%
+\subsection*{Conclusion}\label{pandoc.profile.debug__pandoc__debug__src__languages.md__conclusion}}
+
+Languages---whether natural or formal---play an essential role in communication, computation, and reasoning. While natural languages prioritize human usability, formal languages enable rigorous expression and mechanical processing. The study of formal languages, including logic and programming languages, continues to shape advancements in computing, verification, and artificial intelligence.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__proplogic.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__proplogic.md__propositional-logic}{%
+\chapter{Propositional Logic}\label{pandoc.profile.debug__pandoc__debug__src__proplogic.md__propositional-logic}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l02_proplogic__formal__syntax.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l02_proplogic__formal__syntax.lean.md__syntax}{%
+\section{Syntax}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l02_proplogic__formal__syntax.lean.md__syntax}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__library__proplogic__syntax.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__library__proplogic__syntax.lean.md__syntax}{%
+\section{Syntax}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__library__proplogic__syntax.lean.md__syntax}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{namespace DMT1.Library.propLogic.syntax}
+
+\NormalTok{structure Var : Type where}
+\NormalTok{  mk :: (index: Nat)}
+\NormalTok{deriving Repr}
+
+\NormalTok{inductive UnOp : Type}
+\NormalTok{| not : UnOp}
+\NormalTok{deriving Repr}
+
+\NormalTok{inductive BinOp : Type}
+\NormalTok{| and}
+\NormalTok{| or}
+\NormalTok{| imp}
+\NormalTok{| iff}
+\NormalTok{deriving Repr}
+
+\NormalTok{inductive Expr : Type}
+\NormalTok{| lit\_expr (from\_bool : Bool) : Expr}
+\NormalTok{| var\_expr (from\_var : Var)}
+\NormalTok{| un\_op\_expr (op : UnOp) (e : Expr)}
+\NormalTok{| bin\_op\_expr (op : BinOp) (e1 e2 : Expr)}
+\NormalTok{deriving Repr}
+
+\NormalTok{open Expr}
+
+\NormalTok{notation:max " ⊤ " =\textgreater{} (Expr.lit\_expr true)}
+\NormalTok{notation:max " ⊥ " =\textgreater{} (lit\_expr false)}
+\NormalTok{notation:max "\{" v "\}" =\textgreater{} (var\_expr v)}
+\NormalTok{notation:max "¬" p:40 =\textgreater{} un\_op\_expr UnOp.not p}
+\NormalTok{infixr:35 " ∧ "  =\textgreater{}  Expr.bin\_op\_expr BinOp.and}
+\NormalTok{infixr:30 " ∨  "  =\textgreater{} Expr.bin\_op\_expr BinOp.or}
+\NormalTok{infixr:20 " ↔ " =\textgreater{} bin\_op\_expr BinOp.iff}
+\NormalTok{infixr:25 " ⇒ " =\textgreater{} bin\_op\_expr BinOp.imp}
+
+\NormalTok{end DMT1.Library.propLogic.syntax}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l02_proplogic__formal__axioms.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l02_proplogic__formal__axioms.lean.md__examples}{%
+\section{Examples}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l02_proplogic__formal__axioms.lean.md__examples}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l02_proplogic__formal__semantics.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l02_proplogic__formal__semantics.lean.md__semantics}{%
+\section{Semantics}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l02_proplogic__formal__semantics.lean.md__semantics}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l02_proplogic__formal__interpretation.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l02_proplogic__formal__interpretation.lean.md__interpretations}{%
+\section{Interpretations}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l02_proplogic__formal__interpretation.lean.md__interpretations}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__model-theory}{%
+\chapter{Model Theory}\label{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__model-theory}}
+
+THIS SECTION IS UNDER CONSTRUCTION.
+
+The semantics of propositional logic enable the
+evaluation an expression under an interpretation
+(for it). As we\textquotesingle ve seen, an interpretation in
+propositional logic is in the form of a \emph{function}
+from the variable expressions in the expression
+to the Boolean values that the interpretation is
+said to \emph{assign} to them.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__interpretations-as-world-representations}{%
+\section*{Interpretations as World Representations}\label{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__interpretations-as-world-representations}}
+
+There\textquotesingle s another way to see the interpretations for
+a given proposition, where each one specifies one
+specific possible \emph{world} (or \emph{state of affairs}),
+within which the truth of the proposition is to be evalauted.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__example-the-dog-is-dandy-or-the-cat-is-comfy}{%
+\section*{Example: The Dog is Dandy or The Cat is Comfy}\label{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__example-the-dog-is-dandy-or-the-cat-is-comfy}}
+
+Suppose we use \emph{D} to stand for the proposition,
+\emph{the dog is dandy}, and \emph{C} for, \emph{the cat is comfy}.
+Now consider the proposition, \emph{C or D}. There are
+four worlds within which it can be evaluated. The
+proposition, understood as asserting that at least
+one of the conditions, \emph{C} or \emph{D}, holds in a given
+world. This statement is true in only three of the
+four worlds, exluding as a counterexammple the one
+where neither is true.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__propositions-as-specifying-properties-of-worlds}{%
+\section*{Propositions as Specifying Properties of Worlds}\label{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__propositions-as-specifying-properties-of-worlds}}
+
+We can view our \emph{or} expression as specifying the
+subset of all of those possible (here four) worlds
+that \emph{have the property} of having at least one of
+\emph{D} or \emph{C} being true in that world. We thus have a
+first indicition of a notion of model theory. It has
+to be about models of propositions.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__model-worlds-and-counterexamples-worlds}{%
+\section*{Model Worlds and Counterexamples Worlds}\label{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__model-worlds-and-counterexamples-worlds}}
+
+We call a world in which a proposition is true a\\
+\emph{model} for the proposition, and a world in which
+it\textquotesingle s not true a \emph{counterexample}.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__generalizing-from-propositional-logic}{%
+\section*{Generalizing from Propositional Logic}\label{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__generalizing-from-propositional-logic}}
+
+At the heart of all of this is the idea that when
+syntactic expressions have elements with late-bound
+meanings, we need to provide additional structures,
+descriptions of specific worlds, states of affairs,
+within, or under, which evluation can be performed.
+Moreover, when a proposition is true within a world,
+that world is called a model,, and when false, it\textquotesingle s
+called a counterexample.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__propositional-logic-as-a-special-case}{%
+\section*{Propositional Logic as a Special Case}\label{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__propositional-logic-as-a-special-case}}
+
+In propositional logic, these structures are just
+our interpretation functions. Other logics use
+other structures. Nevertheless, across many logics,
+the structure over which a proposition is evaluated
+can be understood as specifying a particular world,
+or state of affairs, \emph{within which} the truth of a
+given proposition can be evaluated.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__validity-as-a-central-concept-in-logic-and-maths}{%
+\section*{Validity as A Central Concept in Logic and Maths}\label{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__validity-as-a-central-concept-in-logic-and-maths}}
+
+Now we come to a truly central idea. Sometimes, we
+want a proposition to defines not so much a property of certain selected worlds, but to express a more general form of reasoning that we expect that to be valid in \emph{all} possible worlds.
+
+An an example, the proposition \emph{C or D} is \emph{not}
+valid in propositional logic because there is one
+world where it\textquotesingle s false: where both propositions are false. On the other hand, we can reasonably accept the
+idea that if \emph{C and D} is true, then \emph{C} is: that is. \emph{C ∧ D → C}. Let\textquotesingle s call this expression, \emph{e}.
+
+We can easily see that \emph{e} is valid by showing that it\textquotesingle s true in in all four possible worlds. We form each of the four interpretations, then evaluate \emph{e} under each of them, to find that \emph{e} is \emph{alwasy} true.
+
+\begin{itemize}
+\tightlist
+\item
+  when w := (C := ⊤, D := ⊤) \emph{e}* is true
+\item
+  when w := (C := ⊤, D := ⊥) \emph{e}* is true
+\item
+  when w := (C := ⊥, D := ⊤) \emph{e}* is true
+\item
+  when w := (C := ⊥, D := ⊥) \emph{e}* is true
+\end{itemize}
+
+As is true in all worlds, it\textquotesingle s said to be \emph{valid}.
+We can now rightfully say that \emph{C ∧ D → C} is not
+only a \emph{valid} proposition, but a \emph{theorem}, or that it\textquotesingle s a reasonable, rational principle for reasoning under any any circumstances, in all worlds.
+
+When we prove that a proposition in mathematics is a theorem, we are proving that it\textquotesingle s valid. We can thus reasonably say it is a theorem that if \emph{C} and \emph{D} are any propositions then \emph{C ∧ D → C} is always true. It\textquotesingle s valid. It\textquotesingle s a theorem (in propositional logic).
+
+A useful logic is one that defines a set of such rules for reasoning that are both valid individually and that when used together can never produce a contradiction except from assumptions that are themselves false.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__example}{%
+\section*{Example}\label{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__example}}
+
+Now would be a good time to revisit the examples of
+syntactically correct propositions from a few chapters back. The ones we picked are mostly valid, and in fact form the basis for reasoning in many related logics. Moreover the collection of the valid propositions will provide us with a partial foundation for reasoning in predicate logic, where that can be infinite spaces of worlds, and where validity can no longer be assured by semantic evaluation of a finite number of worlds.
+
+Exercise: Determine which of the syntactically correct propositions in the bare code file are \emph{not} valid, and for each of these expressions, give a counterexample in
+the form of an interpretation as a set of variable to value bindings as used just above.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__further-study-and-next-steps}{%
+\section*{Further Study and Next Steps}\label{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__further-study-and-next-steps}}
+
+We\textquotesingle ve now given as much of an introduction as we
+can in this setting to the topic of model theory
+in teneral. Interested students might look at the
+\emph{Kripke structure} over which propositions in some
+temporal logics are evaluated.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__the-rest-of-this-chapter}{%
+\section*{The Rest of This Chapter}\label{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__the-rest-of-this-chapter}}
+
+For the rest of this chapter, we will focus on model theory for proposition logic, only. We will formally specify what validity means by brute for evaluation of a given expression over all possible inpretations for
+it and then summing of the results.
+
+In addition to being valid, we will also formally being \emph{satisfiable} (having at least one model), and being \emph{unsatisfiable} as having no models at all. We will then define procedures for checking whether all worlds are models (validity), whether at least one world is a model (satisfiability), or whether no worlds satify an expression to check for its being \emph{unsatisfiable}.
+
+Our discussion is already getting interesting, in that
+we\textquotesingle ve now viewed interpretations as representations of different worlds, propositions as specifying properties that a given world might more might not have, and now we\textquotesingle re talking about \emph{properties of propositions} (of being valid, satisfiable, or unsatisfiable). The rest of this chapter formalizes these ideas in executable forms, providing us with tools for automated reasoning about whether \emph{any given proposition} has or lacks any of these properties.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__exercise}{%
+\section*{Exercise}\label{pandoc.profile.debug__pandoc__debug__src__modeltheory.md__exercise}}
+
+How many worlds are there in the \emph{space of worlds}
+contemplated by an expression in propositional logic
+with \emph{n} distint variable expressions?
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__models.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__models.lean.md__models}{%
+\section{Models}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__models.lean.md__models}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__truthtable.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__truthtable.lean.md__truth-tables}{%
+\section{Truth Tables}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__truthtable.lean.md__truth-tables}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__counterexamples.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__counterexamples.lean.md__counterexamples}{%
+\section{Counterexamples}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__counterexamples.lean.md__counterexamples}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__properties.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__properties.lean.md__propertiesx}{%
+\section{Propertiesx}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__properties.lean.md__propertiesx}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__validity.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__validity.lean.md__validity}{%
+\section{Validity}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l03_modeltheory__validity.lean.md__validity}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__arithmetic.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__arithmetic.md__arithmetic}{%
+\chapter{Arithmetic}\label{pandoc.profile.debug__pandoc__debug__src__arithmetic.md__arithmetic}}
+
+In this chapter we adapt the what we\textquotesingle ve learned in the
+chapter on propositional logic syntax and semantics to
+specify the syntax and semantics of a simple language of
+\emph{natural number arithmetic}. The language we specify here
+will have two distinct kinds of expressions.
+
+An expression of the first kind of expression evaluates
+to a natural number. Consider \emph{2 + X}, for example. The
+operator symbol, \emph{+}, tells us that this expressions has
+a natural number as its semantic meaning: namely, the sum
+of \emph{2} and whatever (now numberic) value \emph{X} has under a
+given interpretation. We will refer to \emph{+} and similar
+symbols as arithmetic \emph{operators}, and to expressions
+that use them as arithemtic \emph{operator expressions}.
+
+An expression of the second kind will evaluate not to a
+numeric value but to a Boolean,. Consider \emph{2 \textless{} X} as an
+example. The standard symbol, \emph{\textless{}} tells us that we can
+expect this expression to evaluate to a Boolean value:
+\emph{true} if \emph{2} is less than whatever value \emph{X} evaluate
+to, and to \emph{false} otherwise. We will refer to symbols
+such as \emph{\textless{}} as \emph{predicates}, and expressions such as
+\emph{2 \textless{} X} as \emph{predicate expressions}.
+
+We will use the phrase \emph{arithmetic expression} to refer
+to either an operator or a predicate expression in our
+little language of natural number arithmetic.
+
+One of the main insights that you can expect to take
+away from this chapter is that you already knew how to
+formally define a language such as this one by simple
+adaptation of the lessons of the preceding chapter on
+the syntax and semantics of propositional logic.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__domain.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__domain.lean.md__domain}{%
+\section{Domain}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__domain.lean.md__domain}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__syntax.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__syntax.lean.md__syntax}{%
+\section{Syntax}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__syntax.lean.md__syntax}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__semantics.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__semantics.lean.md__semantics}{%
+\section{Semantics}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__semantics.lean.md__semantics}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__induction.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__induction.lean.md__induction}{%
+\section{Induction}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__induction.lean.md__induction}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__examples.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__examples.lean.md__examples}{%
+\section{Examples}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l04_natarithmetic__examples.lean.md__examples}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__theoryextensions.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__theoryextensions.md__theory-extensions}{%
+\chapter{Theory Extensions}\label{pandoc.profile.debug__pandoc__debug__src__theoryextensions.md__theory-extensions}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l05_theoryextensions__domain.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l05_theoryextensions__domain.lean.md__domain}{%
+\section{Domain}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l05_theoryextensions__domain.lean.md__domain}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l05_theoryextensions__syntax.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l05_theoryextensions__syntax.lean.md__syntax}{%
+\section{Syntax}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l05_theoryextensions__syntax.lean.md__syntax}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l05_theoryextensions__semantics.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l05_theoryextensions__semantics.lean.md__semantics}{%
+\section{Semantics}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l05_theoryextensions__semantics.lean.md__semantics}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l05_theoryextensions__examples.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l05_theoryextensions__examples.lean.md__examples}{%
+\section{Examples}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l05_theoryextensions__examples.lean.md__examples}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__smt.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__smt.md__satisfiability-modulo-theories}{%
+\section{Satisfiability Modulo Theories}\label{pandoc.profile.debug__pandoc__debug__src__smt.md__satisfiability-modulo-theories}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l06_induction__induction.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l06_induction__induction.lean.md__induction}{%
+\chapter{Induction}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l06_induction__induction.lean.md__induction}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__mathlib.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__mathlib.md__mathlib}{%
+\chapter{mathlib}\label{pandoc.profile.debug__pandoc__debug__src__mathlib.md__mathlib}}
+
+Lean\textquotesingle s mathlib is where the mathematical community\textquotesingle s formalizations
+of lots of different parts of mathematics live. There are riches here,
+for almost any application.
+
+The upshot for you at this point is that, once you master the next part of the course, on predicate logic in Lean 4, you can pick nearly any area
+of mathematics and reason in it, now with the full support of Lean, its infrastructure, and vibrant community.
+
+The great thing is that, unlike first-order theory, Lean admits the practical, abstract, expressive, and verified embedding of an incredible diversity of logical and mathematical structures into its foundational logic, formulated in the abstract concepts of the mathematical domains, and made much more useful with concrete notations appropriate to the particular field being formalized. In Lean, one can speak easily about such things as properties of relations, or \emph{real} real numbers. Neither is possible in the first-order that we mostly teach in traditional courses.
+
+Make no mistake, first-order predicate logic with first-order theory of sets and relations is still an utterly indispensable language. It\textquotesingle s syntax is used in many important reasoning systems, incluiding Z3, Dafney, Alloy, and others. But with knowledge of Lean, you \emph{also} have immediate access to this \emph{incredible} treasure trove of verified mathematical knowledge, \emph{and} it\textquotesingle s nearly trivial to understand first-order logic once you have seen the bigger picture.
+
+If you\textquotesingle re interested in a visual overview of areas of mathematics that Lean 4\textquotesingle s mathlib provides, the overview of mathlib in \href{https://leanprover-community.github.io/mathlib-overview.html}{Lean 3} is the best right now. The \href{https://leanprover-community.github.io/theories.html\#lean-mathematical-theories}{Lean 4 version} is evolving and contributions are welcome.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__predlogic.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__predlogic.md__predicate-logic}{%
+\chapter{Predicate Logic}\label{pandoc.profile.debug__pandoc__debug__src__predlogic.md__predicate-logic}}
+
+\begin{itemize}
+\tightlist
+\item
+  \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__predlogic.md__limited-expressiveness-of-propositional-logic}{Limited Expressiveness of Propositional Logic}
+\item
+  \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__predlogic.md__enhanced-expressiveness-of-predicate-logic}{Enhanced Expressiveness of Predicate Logic}
+\item
+  \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__predlogic.md__semantic-domains-for-predicate-logic}{Semantic Domains for Predicate Logic}
+\item
+  \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__predlogic.md__limited-expressiveness-of-first-order-predicate-logic}{Limited Expressiveness of First-Order Predicate Logic}
+\item
+  \protect\hyperlink{pandoc.profile.debug__pandoc__debug__src__predlogic.md__the-enhanced-expressiveness-of-higher-order-logic-in-lean}{The Enhanced Expressiveness of Higher-Order Logic in Lean}
+\end{itemize}
+
+In propositional logic, syntactic variable expressions
+are interpreted only over sets of Boolean state values.
+
+\begin{itemize}
+\tightlist
+\item
+  PressureTooHigh /\textbackslash{} ORingsFailing
+\item
+  (GreenLight \textbackslash/ RedLight) /\textbackslash{} \textasciitilde(GreenLight /\textbackslash{} RedLight)
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__predlogic.md__limited-expressiveness-of-propositional-logic}{%
+\section*{Limited Expressiveness of Propositional Logic}\label{pandoc.profile.debug__pandoc__debug__src__predlogic.md__limited-expressiveness-of-propositional-logic}}
+
+Within the logic one can thus only speak about real world
+situations in terms of sets of Boolean variables and their
+values. The choice of propositional logic as a reasoning
+language limits one to representing real-world conditions
+in these very spartan, sometimes inadequate, and sometimes
+misleading terms.
+
+As an example, suppose you want to reason about the safety
+of a driving vehicle. It has a brake and a steering system.
+Each is deemed 70.5\% likely to be operational. That\textquotesingle s high
+(by some low standards), so suppose we model this world in
+Boolean terms as \{ BrakeOk := true, SteeringOk := true \}.
+
+Now of course we want both brakes and steering for safety,
+so we evaluate BrakesOk /\textbackslash{} SteeringOk over this structure
+(intepretation) and get \emph{true}. We might make the mistake
+of believing that the result soundly reflects reality. If
+the threshold for being Ok is a greater than 50\% chance of
+success, this condition still doesn\textquotesingle t hold: assuming that
+the failures are independent, we find that the combination
+of the probabilities yields a likelyhood of the overall
+\emph{system} being ok is less than 50\%.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__predlogic.md__enhanced-expressiveness-of-predicate-logic}{%
+\section*{Enhanced Expressiveness of Predicate Logic}\label{pandoc.profile.debug__pandoc__debug__src__predlogic.md__enhanced-expressiveness-of-predicate-logic}}
+
+A way out of this bind is to pick a more expressive
+logic: one that enables us to represent worlds in richer
+terms so that we might be enabled to reason about real
+worlds more effectively. The varieties of predicate logic
+provide such improved expressiveness.
+
+In a predicate logic, we can speak not only in terms of
+Boolean variables and values, and the usual operations on
+them, but also in terms of \emph{sets} of objects, \emph{relations}
+between objects, properties (via predicates) of objects,
+\emph{functions} that take objects as arguments and return them
+as results, and about whether all, or respectively at least
+one, of the elements of a given set has a given property.
+
+It\textquotesingle s on the foundation of a simple predicate logic that
+most of contemporary mathematics rests. To give a sense
+how this could work, note that one can encode the natural
+numbers as: either the empty set, encoding zero, or as a
+set containing the set representing a one-smaller number.
+The nesting level represents the value, just as for \emph{Nat} in Lean.
+
+The larger point here is that the choice of any given
+logic in which to reason about the world brings with it
+a form of structure in terms of which one can represent
+specific states of the real world, over which expressions are evaluated.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__predlogic.md__semantic-domains-for-predicate-logic}{%
+\section*{Semantic Domains for Predicate Logic}\label{pandoc.profile.debug__pandoc__debug__src__predlogic.md__semantic-domains-for-predicate-logic}}
+
+In particular, predicate logic brings along with it a much
+richer form of structure (than vector of Boolean) that one
+use to represent real world conditions of interest. A set
+of possible world situations no longer has to be encoded
+just as a vector of binary Boolean values. We can represent
+a world now in essentially \emph{relational} terms. Predicate
+logic is the core theory underpinning relational databases.
+Our world state representation structures can now have:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{objects} representing corresponding objects in the real domain (e.g., "Tom", "Mary")
+\item
+  \emph{functions} from objects to objects  in the real world (e.g., motherOf Tom = Mary)
+\item
+  \emph{relations} among objects in the real world (e.g., youngerThan Tom Mary)
+\item
+  \emph{sets of objects} (e.g., \{ "Tom", "Mary" \}) {[}unary relation{]}
+\end{itemize}
+
+To know how to use predicate logic effectively, it really
+helps to think about how you want to represent the space of
+all of the possible worlds about which you might speak, and
+how to represent specific individual worlds in that space.
+Think in relational terms. @@@ -/
+
+/- @@@ The syntax of predicate logic is then set up to provide
+nice ways to talk about such world representations. The
+syntax provides \emph{constant} symbols (referring to fixed
+domain objects); (free) \emph{variables}, also interpreted as
+referring to objects; \emph{function} symbols (and arguments,
+interpreted as referring to functions in the world); and
+\emph{predicate} symbols refering to relations in the domain.
+Predicate logic inherits the connectives of propositional
+logic, adds two kinds of quantified expressions, and puts
+it all together into a syntax of \emph{well formed formula} in
+predicate logic.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__predlogic.md__limited-expressiveness-of-first-order-predicate-logic}{%
+\section*{Limited Expressiveness of First-Order Predicate Logic}\label{pandoc.profile.debug__pandoc__debug__src__predlogic.md__limited-expressiveness-of-first-order-predicate-logic}}
+
+The variant of predicate logic taught in typical DMT1 courses
+is called first-order predicate logic. The logic of Lean is a
+higher-order logic. The difference is in the generality of what
+can be expressed in each of these logic.
+
+To see the difference concretely, let\textquotesingle s consider what properties
+a \emph{friendOf} relation should have on some new social network. It
+could be \emph{symmetric}, as it is on \emph{FB}; or one might prefer for
+it not necessarily to be symmetric. Maybe a \emph{follows} relation
+would be better. I follow Bill Gates but he doesn\textquotesingle t follow me.
+
+In first-order logic we can use the \emph{universal quantifer} syntax
+to specify that our \emph{friendOf} relation is (to be) symmetric. We can
+write this as \emph{∀x∀y(friendOf(x,y)↔friendOf(y,x)).} The variables,
+\emph{x} and \emph{y}, are \emph{bound} by the quantifer to range over all objects
+in the semantic domain. The predicate after the comma then checks
+whether all such pairs of objects satisfy the following predicate.
+
+A major restriction on expressiveness imposed by first-order logic
+is that quantified variables can be range only over objects. One
+cannot quantify over all sets of objects, functions, or relations.
+In first order theory we can express the idea that some particular
+relation is symmetric.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\end{Highlighting}
+\end{Shaded}
+
+What we can\textquotesingle t express in first-order logic
+is the concept of symmetry as a generalized property that \emph{any} given
+binary relation on \emph{any} set of objects of \emph{any} kind might or might
+not have. And yet being able to reason fluently with concepts at this
+level of generality is essential for any literate mathematician.  in terms of We cannot express the \emph{property} of a relation
+of \emph{being symmetric,} a crucial degree of mathematical generality*,
+in first order theory because we cannot talk about \emph{all relations}.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__predlogic.md__the-enhanced-expressiveness-of-higher-order-logic-in-lean}{%
+\section*{The Enhanced Expressiveness of Higher-Order Logic in Lean}\label{pandoc.profile.debug__pandoc__debug__src__predlogic.md__the-enhanced-expressiveness-of-higher-order-logic-in-lean}}
+
+The most crucial property of Lean for this course, and for research
+worldwide on the formalization of advanced mathematics, is that Lean
+implements a higher-order logic in which you can express concepts of
+great generality by quantifying not only over elementary values but
+over such things as types, functions, propositions and predicates,
+and so forth.
+
+As an one example, in higher order predicate logic
+in Lean, one can define \emph{generalized} properties of relations: for
+example the property of a binary relation r on a set s of values of
+some type T that r relates any two values in one direction only if
+it it also relates them in the other order.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{def symmetric := }
+\NormalTok{∀ (T : Type) }
+\NormalTok{  (R : T → T → Prop) }
+\NormalTok{  (t1 t2 : T),}
+\NormalTok{r t1 t2 ↔ r t2 t1}
+\end{Highlighting}
+\end{Shaded}
+
+That is, for any type of objects, \emph{T} (quantification over types), and for any binary relation, \emph{R,} on values of this type (quantification over relations), what it means for \emph{R} to be symmetric is that for any two objects, \emph{t1, t2}
+of type \emph{T} (a first-order quantification), if \emph{R} relates \emph{t1} to \emph{t2} then it also relates \emph{t2} to \emph{t1}.
+
+We can then \emph{apply} such generalized definition to any particular binary relation on any type of values (let\textquotesingle s say, \emph{isFriend}, on values of type, \emph{Person}) to derive the proposition that \emph{that} relation is symmetric. The expression, \emph{symmetric Person isFriend}, would then reduce to the first-order proposition, *∀ t1 t2 : Person, \emph{isFriend t1 t2 \textless{}-\textgreater{}  isFriend t2 t1}.
+
+For the working mathematician it\textquotesingle s crucial to be able to reason and speak in terms of such abstract and generalized properties of complex things. We speak of relations being symmetric, reflexive, transitive, well founded, and so on, without having to think about specific relations. We think of operation being commutative, associative, invertible, again in precise but abstract and general terms, independent of particular operations. In the first-order logic of the usual CS2: DMT1 class, that\textquotesingle s just not possible. In Lean 4, it is completely natural and incredibly useful.
+
+The result has been an explosion in the community of mathematicians using Lean 4 to formalize and verify theorems in many branches of advanced mathematics. That in turn has sparked deep interest in computer science in the use of Lean 4 for research and development in trustworthy computing, among many other areas. The rest of this chapter skips over first-order logic to introduce predicate logic through its higher-order, much more useful and relevant variant, in Lean.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__00_introduction.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__00_introduction.lean.md__introduction}{%
+\section{Introduction}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__00_introduction.lean.md__introduction}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__01_propsascomptypes.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__01_propsascomptypes.lean.md__propositions-as-data-types}{%
+\section{Propositions as Data Types}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__01_propsascomptypes.lean.md__propositions-as-data-types}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__01_propsaslogicaltypes.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__01_propsaslogicaltypes.lean.md__propositions-as-logical-types}{%
+\section{Propositions as Logical Types}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__01_propsaslogicaltypes.lean.md__propositions-as-logical-types}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__03_classicalreasoning.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__03_classicalreasoning.lean.md__classical-reasoning}{%
+\section{Classical Reasoning}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__03_classicalreasoning.lean.md__classical-reasoning}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__04_predicates.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__04_predicates.lean.md__predicates}{%
+\section{Predicates}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__04_predicates.lean.md__predicates}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__05_quantifiers.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__05_quantifiers.lean.md__quantifiers}{%
+\section{Quantifiers}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__05_quantifiers.lean.md__quantifiers}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__05_quantifiers_all.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__05_quantifiers_all.lean.md__for-all}{%
+\subsection{For All}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__05_quantifiers_all.lean.md__for-all}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__05_quantifiers_exists.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__05_quantifiers_exists.lean.md__exists}{%
+\subsection{Exists}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__05_quantifiers_exists.lean.md__exists}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__06_dependenttypes.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__06_dependenttypes.lean.md__dependent-type-theory}{%
+\section{Dependent Type Theory}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l07_predicatelogic__06_dependenttypes.lean.md__dependent-type-theory}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__settheory}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__settheory__sets-relations-and-properties-thereof}{%
+\chapter{Sets Relations and Properties Thereof}\label{pandoc.profile.debug__pandoc__debug__src__settheory__sets-relations-and-properties-thereof}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l08_setsrelationsfunctions__c01_sets.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l08_setsrelationsfunctions__c01_sets.lean.md__sets}{%
+\section{Sets}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l08_setsrelationsfunctions__c01_sets.lean.md__sets}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l08_setsrelationsfunctions__c02_relations.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l08_setsrelationsfunctions__c02_relations.lean.md__relations}{%
+\section{Relations}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l08_setsrelationsfunctions__c02_relations.lean.md__relations}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l08_setsrelationsfunctions__c03_equality.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l08_setsrelationsfunctions__c03_equality.lean.md__equality}{%
+\section{Equality}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l08_setsrelationsfunctions__c03_equality.lean.md__equality}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l08_setsrelationsfunctions__c04_propertiesofrelations.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l08_setsrelationsfunctions__c04_propertiesofrelations.lean.md__properties}{%
+\section{Properties}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l08_setsrelationsfunctions__c04_propertiesofrelations.lean.md__properties}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__mathstructures}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__mathstructures__abstract-algebra}{%
+\chapter{Abstract Algebra}\label{pandoc.profile.debug__pandoc__debug__src__mathstructures__abstract-algebra}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c01_groups.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c01_groups.lean.md__groups}{%
+\section{Groups}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c01_groups.lean.md__groups}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c02_groupactions.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c02_groupactions.lean.md__actions}{%
+\section{Actions}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c02_groupactions.lean.md__actions}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c03_torsors.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c03_torsors.lean.md__torsors-over-groups}{%
+\section{Torsors over Groups}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c03_torsors.lean.md__torsors-over-groups}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c04_vectorspaces.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c04_vectorspaces.lean.md__modules-and-vector-spaces}{%
+\section{Modules and Vector Spaces}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c04_vectorspaces.lean.md__modules-and-vector-spaces}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c05_affinespaces.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c05_affinespaces.lean.md__affine-spaces}{%
+\section{Affine Spaces}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c05_affinespaces.lean.md__affine-spaces}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c06_finitedimensional.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c06_finitedimensional.lean.md__n-dimensional-spaces}{%
+\section{n-Dimensional Spaces}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l09_algebra__c06_finitedimensional.lean.md__n-dimensional-spaces}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__scalar__scalar.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__scalar__scalar.lean.md__scalar}{%
+\section{Scalar}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__scalar__scalar.lean.md__scalar}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__tuple__tuple.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__tuple__tuple.lean.md__tuple}{%
+\section{Tuple}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__tuple__tuple.lean.md__tuple}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__vector__vector.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__vector__vector.lean.md__vector}{%
+\section{Vector}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__vector__vector.lean.md__vector}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__point__point.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__point__point.lean.md__point}{%
+\section{Point}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__point__point.lean.md__point}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__torsor__torsor.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__torsor__torsor.lean.md__torsor}{%
+\section{Torsor}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__torsor__torsor.lean.md__torsor}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__affine__affine.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__affine__affine.lean.md__affine}{%
+\section{Affine}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l10_algebra__affine__affine.lean.md__affine}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__hetero}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__hetero__type-heterogeneity}{%
+\chapter{Type Heterogeneity}\label{pandoc.profile.debug__pandoc__debug__src__hetero__type-heterogeneity}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c00_heterointro.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c00_heterointro.lean.md__heterogeneous-collections}{%
+\section{Heterogeneous Collections}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c00_heterointro.lean.md__heterogeneous-collections}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c01_dyntype.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c01_dyntype.lean.md__custom-dynamic-types}{%
+\section{Custom Dynamic Types}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c01_dyntype.lean.md__custom-dynamic-types}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c02_existswrapper.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c02_existswrapper.lean.md__existential-wrappers}{%
+\section{Existential Wrappers}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c02_existswrapper.lean.md__existential-wrappers}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c03_heterosig.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c03_heterosig.lean.md__heterogeneous-signatures}{%
+\section{Heterogeneous Signatures}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c03_heterosig.lean.md__heterogeneous-signatures}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c04_heterolist.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c04_heterolist.lean.md__heterogeneous-lists}{%
+\section{Heterogeneous Lists}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c04_heterolist.lean.md__heterogeneous-lists}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c05_heterovector.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c05_heterovector.lean.md__heterogeneous-vectors}{%
+\section{Heterogeneous Vectors}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c05_heterovector.lean.md__heterogeneous-vectors}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c06_sigmachain.lean.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c06_sigmachain.lean.md__sigma-chains}{%
+\section{Sigma Chains}\label{pandoc.profile.debug__pandoc__debug__src__dmt1__lectures__l11_typeheterogeneity__c06_sigmachain.lean.md__sigma-chains}}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__build.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__build.md__getting-started}{%
+\chapter*{Getting Started}\label{pandoc.profile.debug__pandoc__debug__src__build.md__getting-started}}
+\addcontentsline{toc}{chapter}{Getting Started}
+
+The DMTL4 book is largely generated from Lean 4 source. You can experiment with
+all of the examples in the VS Code IDE. First, follow the \href{https://lean-lang.org/lean4/doc/quickstart.html}{Lean 4 quickstart} to
+install VS Code, Lean, and the Lean 4 extension. Second, \href{https://github.com/git-guides/install-git}{install \texttt{git}} and
+clone your fork of the repository. Next, open the repository in VS code.
+Finally, open the notes you wish to run. The book\textquotesingle s Lean code can be found in the
+\texttt{code/DMT1/Lectures/} directory.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__build.md__building-dmtl4}{%
+\section*{Building DMTL4}\label{pandoc.profile.debug__pandoc__debug__src__build.md__building-dmtl4}}
+
+If you wish to generate the book yourself there are additional steps and
+dependencies you will need.
+
+First, install \href{https://github.com/rust-lang/mdBook/releases/tag/v0.4.43}{\texttt{mdbook}}.
+
+Additionally, install \href{https://github.com/badboy/mdbook-toc/releases/tag/0.14.2}{\texttt{mdbook-toc}}, \href{https://github.com/badboy/mdbook-mermaid/releases/tag/v0.14.1}{\texttt{mdbook-mermaid}} and
+\href{https://github.com/lhybdv/mdbook-image-size/releases/tag/0.2.0}{\texttt{mdbook-image-size}}. To do so, download the appropriate tarball for you
+system architecture and unpack it into a directory on your path.
+
+Then, install the Haskell installer, \href{https://www.haskell.org/ghcup/}{\texttt{ghcup}}.
+
+Add \texttt{ghcup}\textquotesingle s bin directory (\texttt{\$HOME/.ghcup/bin}) to your \texttt{PATH}.
+
+Next, launch the TUI and install \texttt{ghcup}\textquotesingle s recommend Haskell version.
+
+Lastly, if not already installed, install \texttt{make} on your platform.
+
+At this point you should be able to build the book. From the top-level
+directory run \texttt{make\ all}. This will transform the code (in \texttt{code/DMT}) into
+markdown (in \texttt{src/DMT1}) for the book.
+
+Finally, you can serve up the book for browsing with \texttt{mdbook\ serve\ -\/-open\ \&}.
+Conveniently, any changes to the \texttt{src} directory will cause the book to be
+rebuilt automatically.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__build.md__install-scripts}{%
+\subsection*{Install Scripts}\label{pandoc.profile.debug__pandoc__debug__src__build.md__install-scripts}}
+
+Manual installation instructions will be replaced with automated install
+scripts over time. We welcome any and all contributions to this effort.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__build.md__windows}{%
+\subsection*{Windows}\label{pandoc.profile.debug__pandoc__debug__src__build.md__windows}}
+
+Not available at this time.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__build.md__macos}{%
+\subsection*{macOS}\label{pandoc.profile.debug__pandoc__debug__src__build.md__macos}}
+
+The dependencies described above can be installed on macOS via \href{https://brew.sh}{homebrew} with the
+following commands.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{brew}\NormalTok{ install mdbook ghcup}
+
+\CommentTok{\# Assuming x86\_64. Tweak for apple silicon.}
+\ExtensionTok{curl} \AttributeTok{{-}L}\NormalTok{ https://github.com/badboy/mdbook{-}mermaid/releases/download/v0.14.1/mdbook}
+\ExtensionTok{{-}mermaid{-}v0.14.1{-}x86\_64{-}apple{-}darwin.tar.gz} \KeywordTok{|} \FunctionTok{tar} \AttributeTok{{-}xz} \AttributeTok{{-}C} \VariableTok{$HOME}\NormalTok{/.local/bin}
+\ExtensionTok{curl} \AttributeTok{{-}L}\NormalTok{ https://github.com/badboy/mdbook{-}toc/releases/download/0.14.2/mdbook{-}toc{-}0.14.2{-}x86\_64{-}apple{-}darwin.tar.gz }\KeywordTok{|} \FunctionTok{tar} \AttributeTok{{-}xz} \AttributeTok{{-}C} \VariableTok{$HOME}\NormalTok{/.local/bin}
+
+\CommentTok{\# Assuming bash. Tweak if using a different shell.}
+\BuiltInTok{echo} \StringTok{\textquotesingle{}PATH=$PATH:$HOME/.ghcup/bin\textquotesingle{}} \OperatorTok{\textgreater{}\textgreater{}} \StringTok{"}\VariableTok{$HOME}\StringTok{/.bashrc"}
+
+\ExtensionTok{ghcup}\NormalTok{ install ghc recommended}
+\ExtensionTok{ghcup}\NormalTok{ set ghc recommended}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__build.md__other}{%
+\section*{Other}\label{pandoc.profile.debug__pandoc__debug__src__build.md__other}}
+
+Note, Windows users using git via \href{https://gitforwindows.org}{git bash} and the command line should take
+care to select the appropriate shell in the VS Code terminal. It will do to
+set git bash as the terminal by changing Settings: Terminal \textgreater{} Integrated \textgreater{}
+Defafult Profile: Windows and selecting it there. Thereafter, launching a
+terminal in VS Code will launch one with a git bash shell. You can see what\textquotesingle s
+possible there in the configuration section and eventually configure your own
+setup for terminal in VS Code.
+
+Note, rust users can install the mdbook extensions with cargo.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__resources.md}{}
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__resources.md__learning-resources}{%
+\chapter*{Learning Resources}\label{pandoc.profile.debug__pandoc__debug__src__resources.md__learning-resources}}
+\addcontentsline{toc}{chapter}{Learning Resources}
+
+There are pretty good learning resources for Lean 4. Here we
+connect you to both written documentation for Lean 4 and to two
+online communities where you can follow the leaders in the field
+and ask questions, often getting answers very quickly.
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__resources.md__help-searching-mathlib-for-relevant-definitions}{%
+\section*{Help Searching Mathlib for Relevant Definitions}\label{pandoc.profile.debug__pandoc__debug__src__resources.md__help-searching-mathlib-for-relevant-definitions}}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://leanprover-community.github.io/mathlib4_docs/index.html}{Mathlib Documentation}
+\item
+  \href{https://loogle.lean-lang.org/}{Loogle online}. Also see the Loogle VSCode extension.
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__resources.md__written-documentation-on-lean-4-and-related-tools-and-ideas}{%
+\section*{Written Documentation on Lean 4 and Related Tools and Ideas}\label{pandoc.profile.debug__pandoc__debug__src__resources.md__written-documentation-on-lean-4-and-related-tools-and-ideas}}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://lean-lang.org/}{Lean Language Site}
+\item
+  \href{https://lean-lang.org/lean4/doc/}{Lean Documentation Overview}
+\item
+  \href{https://leanprover.github.io/functional_programming_in_lean/}{Functional Programming in Lean}.
+\item
+  \href{https://leanprover.github.io/theorem_proving_in_lean4/induction_and_recursion.html}{Theorem Proving in Lean 4}
+\item
+  \href{https://leanprover-community.github.io/lean4-metaprogramming-book/}{Meta-Programming in Lean 4}
+\item
+  \href{https://leanprover-community.github.io/mathematics_in_lean/mathematics_in_lean.pdf}{Mathematics in Lean}
+\item
+  \href{https://github.com/PatrickMassot/GlimpseOfLean}{A Glimpse of Lean}
+\item
+  \href{https://ammkrn.github.io/type_checking_in_lean4/}{Type Checking in Lean 4}
+\item
+  \href{https://lean-lang.org/lean4/doc/examples.html}{Some Examples in Lean4}
+\item
+  \href{https://leanprover-community.github.io/lean-perfectoid-spaces/type_theory.html}{Kevin Buzzard\textquotesingle s Intro}
+\item
+  \href{https://lftcm2023.github.io/tutorial/index.html}{Lean for the Curious Mathematician (2023 edition)}
+\item
+  \href{https://leanprover-community.github.io/learn.html}{Learning Resources}
+\item
+  \href{https://github.com/digama0/lean-type-theory/releases}{The Type Theory of Lean}
+\item
+  \href{https://ammkrn.github.io/type_checking_in_lean4/}{Type Checking in Lean}
+\item
+  \href{https://raw.githubusercontent.com/blanchette/logical_verification_2023/main/hitchhikers_guide.pdf}{Hitchhikers Guide to Logical Verification}
+\item
+  \href{https://github.com/madvorak/lean4-tactics}{Useful Tactics for Beginners}
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__resources.md__books-on-closely-related-concepts-and-tools-mainly-coq}{%
+\section*{Books on Closely Related Concepts and Tools (mainly Coq)}\label{pandoc.profile.debug__pandoc__debug__src__resources.md__books-on-closely-related-concepts-and-tools-mainly-coq}}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://softwarefoundations.cis.upenn.edu/}{Software Foundations}
+\item
+  \href{https://hrmacbeth.github.io/math2001/}{The Mechanics of Proof}
+\item
+  \href{https://hott.github.io/book/hott-online-15-ge428abf.pdf}{Homotopy Type Theory, Chapter 1}
+\item
+  \href{https://mathvault.ca/hub/higher-math/math-symbols/logic-symbols/}{Survey of Logic Symbols}
+\item
+  \href{http://adam.chlipala.net/cpdt/}{Certified Programming with Dependent Types}
+\item
+  \href{https://softwarefoundations.cis.upenn.edu/}{Software Foundations}
+\end{itemize}
+
+\hypertarget{pandoc.profile.debug__pandoc__debug__src__resources.md__community-resources-recommended-to-join-these-groups}{%
+\section*{Community Resources (Recommended to Join These Groups!)}\label{pandoc.profile.debug__pandoc__debug__src__resources.md__community-resources-recommended-to-join-these-groups}}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://leanprover.zulipchat.com/}{Lean Zulipchat}
+\item
+  \href{https://discord.gg/WZ9bs9UCvx}{Lean Discord Channel}
+\item
+  \href{https://discord.gg/Up7KFNnF}{Programming Languages Discord Channel}
+\end{itemize}
+
+\end{document}

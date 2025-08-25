@@ -1,0 +1,960 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Reasoning and Computation</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Reasoning and Computation: Discrete Mathematics and Theory I in Lean 4">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Reasoning and Computation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/kevinsullivan/dmtl4" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="preface"><a class="header" href="#preface">Preface</a></h1>
+<ul>
+<li><a href="preface.html#preface">Preface</a>
+<ul>
+<li><a href="preface.html#acknowledgements">Acknowledgements</a></li>
+<li><a href="preface.html#disclaimers">Disclaimers</a></li>
+<li><a href="preface.html#a-couple-of-pillars">A Couple of Pillars</a></li>
+<li><a href="preface.html#some-problems">Some Problems</a></li>
+<li><a href="preface.html#new-approach">New Approach</a></li>
+<li><a href="preface.html#design-constraints">Design Constraints</a></li>
+<li><a href="preface.html#this-solution">This Solution</a></li>
+<li><a href="preface.html#an-example">An Example</a></li>
+<li><a href="preface.html#status">Status</a></li>
+<li><a href="preface.html#evaluation">Evaluation</a></li>
+<li><a href="preface.html#use-for-dmt1">Use for DMT1</a></li>
+<li><a href="preface.html#student-paths">Student Paths</a></li>
+<li><a href="preface.html#tool-paths">Tool Paths</a></li>
+<li><a href="preface.html#research-paths">Research Paths</a></li>
+<li><a href="preface.html#invitation">Invitation</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="acknowledgements"><a class="header" href="#acknowledgements">Acknowledgements</a></h2>
+<p><img src="./images/480px-NSF_Official_logo_Med_Res.png" alt="National Science Foundation Logo" title="National Science Foundation" width="100"></p>
+<p>This course was developed with support provided in part by a research grant from the National Science Foundation, #1909414, SHF: Small: Explicating and Exploiting the Physical Semantics of Code.</p>
+<h2 id="disclaimers"><a class="header" href="#disclaimers">Disclaimers</a></h2>
+<p>Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.</p>
+<p>The views expressed in this article are those of the author(s) and do not necessarily reflect the views, policies, or positions of the University of Virginia.</p>
+<p>This work expresses cetain technical juddgments by the author based on observation and experience but not always on outcomes of scientific testing. No IRBs have been needed or sought. No student or other human subjects data is reported here or has been reported outside of official reporting channels.</p>
+<h2 id="a-couple-of-pillars"><a class="header" href="#a-couple-of-pillars">A Couple of Pillars</a></h2>
+<p>Computation and reasoning are two great intertwined pillars of computer science. The definition of a procedure intended to return the sum of any two given non-negative whole numbersinvolves computational thinking, around both data and procedure definitions.</p>
+<p>On the other hand, if we want to remove any doubt that addition as defined by our code has some a critical propery of addition from elementary arithmetic, then we must engage in reasoning. First, we must express the property of arithmetic of interest in a mathematical logic. Second, we must express the proposition that the computation defined by our code has that same property. Let's use a concrete example.</p>
+<p>One property of addition in elementary arithmetic is that the sum of any number, <em>x</em>, with, respectively, two unequal numbers, <em>y</em> and <em>z</em>, will <em>always</em> produce unequal results. We first make the assertion precise by expressing it in a formal logic. In  <em>predicate logic</em> we could express the claims as <em>∀ (x y z : Nat), y ≠ z → x + y ≠ x + z</em>: for any three natural numbers (Nat), call them x, y, and z, if y is not equal to z then x + y is not equal to x + z*.</p>
+<p>Consequently we have languages for expressing <em>conputations</em>, namely <em>programming</em> languages, and languages for expressing propositions about worlds or domains of interest, namely <em>logics</em>, paired with formal languages for expressing rigorous arguments for either the <em>truth</em> of such propositions in a specific domain or world, and their <em>validity</em>, which is to say their truth in all possible worlds within the given domain of discourse.</p>
+<p>For decades, computer science educators have excelled at teaching <em>computational</em> thinking and the use of programming languages to express computations. By contrast, we have done much less well teaching reasoning and the formal languages and thought processes needed to reason formally in practice.</p>
+<p>The use of programming langauges is familiar territory even to the earliest computer science students. The very first course in computer science is invariably a course in programming, and implicitly in programming languages. Programming then remains one of the primary areas of emphasis throughout the entire undergraduate curriculum. Students of CS thus today generally graduate with high proficiency in computational thinking and in the use of programming languages that support it.</p>
+<p>Recognizing the essential foundational character or reasoning, the <em>second</em> course in the undergraduate CS curriculum is typically called something like CS2: Discrete Mathematics and Theory (DMT1). It is in this course that students gain their first, and sadly usually their last, exposure to formal reasoning and languages and systems that support it. Such courses are generally paper-and-pencil affairs covering propositional logic, first-order predicate logic and set theory, and induction (but usually only on natural numbers).</p>
+<p>The problem with the ubiquity of such courses are many. First, CS students tend ot find these courses boring, abstract, disconnected from their intrinsic motations to learn about computing, irrelevant to practice, and deeply forgettable.  Anecdotally, most students entering graduate programs in CS appear remember almost nothing from their early DMT courses, and few have ever had to use reasoning langauges and methods after DMT1.</p>
+<p>On the demand side, on the other hand, we are now seeing rapidly growing needs for engineers who do actually understand formal reasoning and languages. On the other hand, the supply of such talent is miniscule, due in large part to the failure to train our students in such knowledge and skills. Moreover, this explosion in demand for reasoning skills is happening at the same time we're seeing a significant drop-off in demand for "mere" computational thinking and programming.</p>
+<p>The conclusions of the author include the following: (1) Our field has failed to train generations of graduating computer scientists in the thought processes and the formal languages needed to be productive with <em>reasoning</em> in theory or industrial practice. (2) The standard DMT1 course is, for far too many students, not a productive or memorable experience, as evinced by the exceptionally poor state of knowledge of most incoming graduate students in computer science (in the author's experience). (3) It is time to replace the standard DMT1 course with something entirely new, different, and far better. (4) It is time to think about re-balancing the entire undergraduate curriculum toward greater emphasis on mathematical abstractions and formal reasoning.</p>
+<p>The course presented here is thus offered as a model for an entirely new approach. At the highest level, it teaches all of the core material in any DMT1 course but with all of the context formalized in the reasoning language, Lean 4. In languages like this, supported by wonderful tooling, reasoning is linked to comptuation by the amazing unification known as the the <em>Curry-Howard Correspondence</em> (CHC). The CHC holds that formalized deductive reasoning of certains kinds (natural deduction, which is perhaps the core concept in any DMT course) is a form of computing, but not only with the usual data and function types but with now axioms, propositions, and proofs as first-class citizens.</p>
+<p>Lean 4 is so beautifully expressive of such a broad range of mathematical concepts that a significant community of mathematicians have organized around it to drive the development of formalized versions of mathematics across a very broad range of fields. Meanwhile, CS students remain stuck learning a logic (first-order predicate logic and set theory) that is <em>not</em> suitable as a foundation for formalized or automated abstract mathemtics. This course, on the other hand, adopts, <em>type theory</em>, here as implemented by Lean 4, as a far better choice, even for early CS students.</p>
+<h2 id="some-problems"><a class="header" href="#some-problems">Some Problems</a></h2>
+<p>That we've arrived at a point where reasoning technology is advancing at extraordinary speed but where are students are by and large entirely unprepared to understand or use it. Of course, for many decades, the demand for programming was voracious, and at the same time cost and difficulty of reasoning were prohibitively high. But now the tables are turned. Generative and related AI promise to reduce demand for programming code while the needs of industry and national security are driving significant increases in demand for formal reasoning.</p>
+<p>This course aims to help address the resulting shortfall in talent by radically replacing the traditional undergraduate DMT1 course with a new one, covering essentiall the same basic content, but now using the wildly successful reasoning and computation language and toolset of Lean 4. The course is scoped for a full undergraduate semester or as the first half of an introductory graduate course in formal languages and reasoning. Big changes in in circumstances make now a great time to consider such a transition in CS pedagogy. They include the following:</p>
+<ul>
+<li>Rapidly increasing industrial demand for formal, machine-supported and machine-checked reasoning about critical properties software-intensive systems that undergird our society</li>
+<li>The emergence of type-theory-based formalisms with exceptional expressiveness and broad applications that have attracted large communities of researchers in mathematics, which gtends to validate the proposition that there's something new and remarkable in them</li>
+<li>The development of superb tooling for using reasoning languages effectively in practice</li>
+<li>The profound intertwining of computation and reasoning afforded by such langauges</li>
+<li>The real possibility that mere routine programming will increasingly be done by "AIs"</li>
+</ul>
+<h2 id="new-approach"><a class="header" href="#new-approach">New Approach</a></h2>
+<p>The idea is to simultaneously gain a deeper understanding of reasoning while also
+seeing it as a form computation, albeit now over reasoning rather than computational
+terms. For example, we begin with propositional logic---syntax, semantics, validity,
+soundness, etc.--through its standard deep embedding into (the logic of) Lean 4. A
+demonstrated strength of Lean 4 is in its enabling communities to express rich theories
+in the clear, abstract, generalized terms of the particular domain itself, across a wide
+range of domains in graduate- and beyond-level mathematics.</p>
+<p>The entire course is set up this way. Predicate logic is presented through its standard
+shallow embedding in Lean 4. First-order logic is described as a special case. Set theory
+is built directly on predicate logic. Etc.</p>
+<p>This course can then express generalized mathematical concepts, such as the property of
+a relation of being reflexive (or whatever). In a first-order course, you can formally
+express what it means for a particular binary relation, r, to be "reflexive." That's ok.
+But one really hopes the student will acquire is an understanding of the property itself:
+the property of any binary relation, r, on any set, s, of being reflexive. This generalized
+concept can then be <em>applied</em> to any particular relation to speak of its being reflexive,
+or not. The first-order theory of the traditional DMT1 course isn't expressive enough to
+represent generalized properties of higher-order things, such as relations, functions, or
+types. Lean is not much harder to learn and is really a better language for expressing
+and working with core DMT1 concepts. It's really better to learn from the outset to be
+able to say things like this: reflexivity is a property of <em>any</em> binary relation on <em>any</em>
+set of objects of <em>any</em> type. None of those <em>anys</em> can be said in first-order logic as one
+cannot quantify over relations, sets, or types.</p>
+<p>It's not just a nicety, either, to have <em>reflexive</em> as a predicate on any binary
+relation on any set of terms of any type. It means that this predicate can be applied
+to any particular relation so as to produce the proposition that it is reflexive. The
+application of predicates to particulars is ubiquitous in formal reasoning.</p>
+<p>Another principle is that all of the main concepts taught in the traditional course must
+be taught in the new course: propositional logic, predicate logic, sets, induction. This
+course covers the same topics but in different ways.</p>
+<p>But it's not only topic coverage. Notations matter. Embeddings of mathematical concepts
+in Lean often come with the standard notations of the field as a paper-and-pencil affair.
+Differences in surface syntax in having to read and write in set theory as embedded in
+Lean and as learned using paper and pencil are minor, while the gain in capabilities at
+one's fingertips is substantial. They include automated syntax and proof checking, among
+other things. Having a superb supportive community of experts is a tremendous human asset.</p>
+<h2 id="design-constraints"><a class="header" href="#design-constraints">Design Constraints</a></h2>
+<p>This course was developed under a few key constraints:</p>
+<ul>
+<li>Continue to focus on the basic content of the traditional course: logic, sets, induction</li>
+<li>Avoid assiduously overwhelming early students with the complexity of modern proof assistants</li>
+<li>Formalize every concept in the uniform logic of the proof assistant using conventional notations</li>
+<li>Ensure that first-order theory is a special case of the more expressive theory of the course</li>
+<li>Provide students with a deeply computational perspective, from great tooling to Curry-Howard</li>
+</ul>
+<h2 id="this-solution"><a class="header" href="#this-solution">This Solution</a></h2>
+<p>The solution, now tested in practice (but not scientifically evaluated yet), has a few
+key elements:</p>
+<ul>
+<li>Make standard embeddings propositional and predicate logic in Lean a path to Lean 4 itself</li>
+<li>Begin with a deep embedding of propositional logic syntax, semantics, and validity in Lean 4</li>
+<li>Thoroughly cover all of the axioms for reasoning in predicate logic as its embedded in Lean 4</li>
+<li>Build all of the material on set theory (sets, relations, properties) on top of this logic</li>
+<li>Present induction first as a way to build functions and only later as a way to build proofs</li>
+<li>Minimize covereage of complex or inessential Lean; e.g., tactics are omitted until the end</li>
+</ul>
+<h2 id="an-example"><a class="header" href="#an-example">An Example</a></h2>
+<p>Here are two simple examples of what students might see in this course.</p>
+<p>The first  illustrates how students would write propositional logic expressions.</p>
+<ul>
+<li>def andAssociative  := ((P ∧ Q) ∧ R) ↔ (P ∧ (Q ∧ R))</li>
+<li>def equivalence     := (P ↔ Q) ↔ ((P ⇒ Q) ∧ (Q ⇒ P))</li>
+</ul>
+<p>This one, second, specifies the generalized property of a relation of being well founded.</p>
+<ul>
+<li>def isWellFounded  {α  β : Type} : Rel α α → Prop := fun r =&gt; ∀ (s : Set α), s ≠ ∅ → ∃ m, (m ∈ s ∧ ¬∃ n ∈ s, r n m)</li>
+</ul>
+<p>By the end of the course students should be able to read and explain what this definition
+means, and <em>apply</em> it to particulars in the process of making richer claims about them.
+The undergraduate course does emphasize ongoing practice in the skills of translating between
+formal and <em>natural</em> natural language.</p>
+<h2 id="status"><a class="header" href="#status">Status</a></h2>
+<p>The status of this online book is <em>drafted work in progress</em>. The material through the second
+chapter on induction reflects the content, edited, from my Fall 2024 undergraduate class offering.
+It's also the first part of an introductory graduate <em>software logic</em> course that I'm teaching
+this Spring of 2025. There are a few concept/chapter placeholders at the end for material not previously taught at all, including formalized reasoning about induction through well founded relations. (Students have learned and demonstrated the abilty to reason formally about properties of relations, though, and should be able to handle proofs involving this property without much more difficulty than they've already done involving other properties of relations). The entire document still needs a good editing. Some parts are still rough. A most notably rough one is the first, on talking about languages.</p>
+<h2 id="evaluation"><a class="header" href="#evaluation">Evaluation</a></h2>
+<p>It is a challenge toto teach this course using Lean 4 for significant net advantage over more traditional courses. The hard problem, now cracked I hope, was reduce the added burden imposed by conceptually irrelevant aspects of Lean sufficiently to not impair students' capacity to learn the underlying concepts. At this point I believe that we can teach DMT1 using this kind of technology to the significant net advantage of our students, while covering all the essential concepts of any DMT1 class without undue haste.</p>
+<h2 id="use-for-dmt1"><a class="header" href="#use-for-dmt1">Use for DMT1</a></h2>
+<p>A conservative offering could cover chapters on propositional logic, arithmetic, and induction for arithmetic function definitions, then skip theory extensions and SMT, and proceed to predicate logic, set theory, before a final return to induction generalized to proof construction. A possible capstone would be on termination via well founded relations, as they now have full command of the concept of properties of relations. I plan to reduce coverage of SMT by 80% on the next offering to have more time for this stuff at the end.</p>
+<h2 id="student-paths"><a class="header" href="#student-paths">Student Paths</a></h2>
+<p>From here, advanced courses in several areas are possible at both undergraduate and graduate
+levels: cyberphysical systems, programming language design and implementation, verification,
+provable security, machine learning (e.g., see AlphaProof), robotics, quantum computing, etc.</p>
+<h2 id="tool-paths"><a class="header" href="#tool-paths">Tool Paths</a></h2>
+<p>Working knowledge of the concepts of this course will provide students with easy access to
+understanding the concepts underpinning and the use of a broad range reasoning technologies. Dafny and Z3 are good next steps and there are surely others. A small enhancement to this course would be a much shorter "highlight" on Z3 then another on one Dafny, just to show that there's a whole new world of reasoning systems out there.</p>
+<h2 id="research-paths"><a class="header" href="#research-paths">Research Paths</a></h2>
+<ul>
+<li>Natural experiments potentially accessible (IRBs)</li>
+<li>Constructive mathematical concept inventories</li>
+</ul>
+<p>There are surely problems and opportunities for improvement, in concept and presentation, here. Reach out if you wish.</p>
+<h2 id="invitation"><a class="header" href="#invitation">Invitation</a></h2>
+<p>If you with to discuss, or alert us to possible issues, please do email me with DMTL4 in the subject line. It's my last name at Virginia, Edu.</p>
+<p>© Kevin Sullivan 2024-2025.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="languages"><a class="header" href="#languages">Languages</a></h1>
+<p>Computer science is deeply connected with the concept of languages,
+particularly formal languages, which are languages where the valid
+forms of expressions are precisely specific, unlike so-called natural
+languages, such as English, where one typically has greater expressive
+freedom.</p>
+<p>In this course, we will distinguish between two varieties of formal
+languages, in turn. Languages in the first class are mostly intended
+to support the specification of practical <em>computations</em>. These are
+the <em>programming</em> languages. The languages in the second class are
+weighted toward the expression of propositions, or claims about some
+work, and reasoning about them.</p>
+<h2 id="elements"><a class="header" href="#elements">Elements</a></h2>
+<p>A language consists of several essential components that define its structure and meaning. These include:</p>
+<ul>
+<li><strong>Syntax</strong>: The formal arrangement of symbols and symbolic expressions.</li>
+<li><strong>Semantic Domains</strong>: The entities to which symbols and expressions refer, commonly referred to as denotations.</li>
+<li><strong>Interpretations</strong>: The mappings that relate symbols to their denotations.</li>
+<li><strong>Semantics</strong>: The relations that map entire expressions to their corresponding denotations.</li>
+</ul>
+<p>Understanding these elements is fundamental to both natural and formal languages, as they provide the foundation for meaning and interpretation.</p>
+<h2 id="moods"><a class="header" href="#moods">Moods</a></h2>
+<p>Languages can be classified by their <strong>moods</strong>, which reflect different communicative intents:</p>
+<ul>
+<li><strong>Declarative (Indicative)</strong>: Used to assert statements about reality (e.g., "It is the case that ...").</li>
+<li><strong>Optative</strong>: Expresses a desired state of affairs (e.g., "I require it to be the case that ...").</li>
+<li><strong>Imperative</strong>: Issues commands to achieve a certain action (e.g., "Make it the case that ...").</li>
+<li><strong>Conditional</strong>: Specifies a dependency between conditions and outcomes (e.g., "If X is true, then it is the case that ...").</li>
+<li><strong>Subjunctive</strong>: Expresses counterfactuals or uncertainty (e.g., "If only it were the case that ...").</li>
+<li><strong>Exclamatory</strong>: Conveys strong emotions (e.g., "Oh my!").</li>
+<li><strong>Interrogative</strong>: Seeks information through questioning (e.g., "Is it the case that ...?").</li>
+</ul>
+<h2 id="purposes"><a class="header" href="#purposes">Purposes</a></h2>
+<p>Different languages serve different functional purposes, including:</p>
+<ul>
+<li><strong>Human-Human Communication</strong>: Facilitating communication between people (e.g., English, Mandarin).</li>
+<li><strong>Human-Machine Communication</strong>: Enabling humans to issue instructions to machines (e.g., Java, Python).</li>
+<li><strong>Machine-Machine Communication</strong>: Standardized formats for automated data exchange (e.g., JSON, XML).</li>
+<li><strong>Automated Reasoning</strong>: Languages designed for formal reasoning, program execution, and proof verification.</li>
+</ul>
+<h2 id="natural-vs-formal"><a class="header" href="#natural-vs-formal">Natural vs. Formal</a></h2>
+<h3 id="natural-languages"><a class="header" href="#natural-languages">Natural Languages</a></h3>
+<p>Natural languages—such as English, Spanish, and Mandarin—evolve to maximize ease of communication among humans. However, they introduce challenges in rigorous reasoning due to inherent properties:</p>
+<ul>
+<li><strong>Ambiguity</strong>: A single phrase may have multiple interpretations (e.g., "Shoes must be worn, dogs must be carried").</li>
+<li><strong>Imprecision</strong>: Some instructions lack formal specificity (e.g., "Keep a reasonable distance from the next car").</li>
+<li><strong>Computational Complexity</strong>: While natural languages have historically been difficult to process computationally, large language models (LLMs) are changing this dynamic.</li>
+</ul>
+<h3 id="formal-languages"><a class="header" href="#formal-languages">Formal Languages</a></h3>
+<p>Formal languages—such as those used in logic, mathematics, and programming—are designed for precision and mechanical reasoning. Their primary benefits include:</p>
+<ul>
+<li><strong>Rigor</strong>: Supporting exact definitions and structured reasoning.</li>
+<li><strong>Computability</strong>: Enabling automated processing and verification.</li>
+<li><strong>Application Scope</strong>: Used in programming, specification, verification, and mathematical proofs.</li>
+</ul>
+<h2 id="imperative-vs-declarative"><a class="header" href="#imperative-vs-declarative">Imperative vs. Declarative</a></h2>
+<h3 id="imperative-languages"><a class="header" href="#imperative-languages">Imperative Languages</a></h3>
+<p>Imperative languages define step-by-step procedures for solving problems. These languages execute commands that transform mutable states and perform I/O operations. A classic example is a Python implementation of Newton’s method for computing square roots.</p>
+<p>While imperative languages enable efficient execution, they often lack expressiveness compared to declarative approaches.</p>
+<h3 id="declarative-languages"><a class="header" href="#declarative-languages">Declarative Languages</a></h3>
+<p>Declarative languages emphasize expressiveness over step-by-step execution. Key characteristics include:</p>
+<ul>
+<li><strong>Syntax and Semantics</strong>: Clearly defined structure and meaning.</li>
+<li><strong>Domains, Interpretations, and Evaluation</strong>: A well-defined mapping between symbols and their interpretations.</li>
+<li><strong>Models</strong>:\n  - <strong>Validity</strong>: An expression is valid if it is true under all interpretations.
+<ul>
+<li><strong>Satisfiability</strong>: An expression is satisfiable if at least one interpretation makes it true.</li>
+<li><strong>Unsatisfiability</strong>: An expression is unsatisfiable if no interpretation makes it true.</li>
+</ul>
+</li>
+<li><strong>Expressiveness vs. Solvability Trade-offs</strong>: More expressive languages tend to pose greater computational challenges.</li>
+<li><strong>Decidability</strong>: The problem of determining the validity of arbitrary expressions may be undecidable in some cases.</li>
+</ul>
+<h2 id="formal-language-case-study-propositional-logic"><a class="header" href="#formal-language-case-study-propositional-logic">Formal Language Case Study: Propositional Logic</a></h2>
+<p>A classic example of a formal language is <strong>propositional logic</strong>, which serves as a foundation for automated reasoning.</p>
+<h3 id="syntax"><a class="header" href="#syntax">Syntax</a></h3>
+<p>Propositional logic consists of:</p>
+<ul>
+<li><strong>Literals</strong>: Atomic Boolean values (e.g., <code>true</code>, <code>false</code>).</li>
+<li><strong>Variables</strong>: Symbols that represent Boolean values (e.g., <code>P</code>, <code>Q</code>).</li>
+<li><strong>Operators</strong>: Logical connectives such as <code>AND</code>, <code>OR</code>, <code>NOT</code>, <code>IMPLIES</code>.</li>
+</ul>
+<h3 id="semantic-domain"><a class="header" href="#semantic-domain">Semantic Domain</a></h3>
+<p>Propositional logic is grounded in <strong>Boolean algebra</strong>, where expressions evaluate to either <code>true</code> or <code>false</code>.</p>
+<h3 id="interpretations"><a class="header" href="#interpretations">Interpretations</a></h3>
+<ul>
+<li><strong>Fixed Symbols</strong>: Operators map to specific Boolean functions.</li>
+<li><strong>Variables</strong>: Assigned Boolean values in a given interpretation.</li>
+</ul>
+<h3 id="semantic-evaluation"><a class="header" href="#semantic-evaluation">Semantic Evaluation</a></h3>
+<p>Expressions are evaluated within a given interpretation, determining their truth values.</p>
+<h3 id="properties-of-expressions"><a class="header" href="#properties-of-expressions">Properties of Expressions</a></h3>
+<ul>
+<li><strong>Validity</strong>: An expression is valid if it evaluates to <code>true</code> in all interpretations.</li>
+<li><strong>Satisfiability</strong>: An expression is satisfiable if there exists at least one interpretation where it evaluates to <code>true</code>.</li>
+<li><strong>Unsatisfiability</strong>: An expression is unsatisfiable if it evaluates to <code>false</code> in all interpretations.</li>
+</ul>
+<h3 id="computations-in-propositional-logic"><a class="header" href="#computations-in-propositional-logic">Computations in Propositional Logic</a></h3>
+<p>Several computational tasks arise in propositional logic:</p>
+<ul>
+<li><strong>Model Finding</strong>: Identifying an interpretation that satisfies a given expression.</li>
+<li><strong>Model Checking</strong>: Verifying whether an interpretation satisfies a given expression.</li>
+<li><strong>Validity Checking</strong>: Determining whether an expression is valid.</li>
+<li><strong>Counterexample Finding</strong>: Identifying interpretations that falsify an expression.</li>
+</ul>
+<h3 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h3>
+<p>Languages—whether natural or formal—play an essential role in communication, computation, and reasoning. While natural languages prioritize human usability, formal languages enable rigorous expression and mechanical processing. The study of formal languages, including logic and programming languages, continues to shape advancements in computing, verification, and artificial intelligence.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="propositional-logic"><a class="header" href="#propositional-logic">Propositional Logic</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="syntax-1"><a class="header" href="#syntax-1">Syntax</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="syntax-2"><a class="header" href="#syntax-2">Syntax</a></h1>
+<pre><code class="language-lean">namespace DMT1.Library.propLogic.syntax
+
+structure Var : Type where
+  mk :: (index: Nat)
+deriving Repr
+
+inductive UnOp : Type
+| not : UnOp
+deriving Repr
+
+inductive BinOp : Type
+| and
+| or
+| imp
+| iff
+deriving Repr
+
+inductive Expr : Type
+| lit_expr (from_bool : Bool) : Expr
+| var_expr (from_var : Var)
+| un_op_expr (op : UnOp) (e : Expr)
+| bin_op_expr (op : BinOp) (e1 e2 : Expr)
+deriving Repr
+
+open Expr
+
+notation:max " ⊤ " =&gt; (Expr.lit_expr true)
+notation:max " ⊥ " =&gt; (lit_expr false)
+notation:max "{" v "}" =&gt; (var_expr v)
+notation:max "¬" p:40 =&gt; un_op_expr UnOp.not p
+infixr:35 " ∧ "  =&gt;  Expr.bin_op_expr BinOp.and
+infixr:30 " ∨  "  =&gt; Expr.bin_op_expr BinOp.or
+infixr:20 " ↔ " =&gt; bin_op_expr BinOp.iff
+infixr:25 " ⇒ " =&gt; bin_op_expr BinOp.imp
+
+end DMT1.Library.propLogic.syntax
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="examples"><a class="header" href="#examples">Examples</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="semantics"><a class="header" href="#semantics">Semantics</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="interpretations-1"><a class="header" href="#interpretations-1">Interpretations</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="model-theory"><a class="header" href="#model-theory">Model Theory</a></h1>
+<p>THIS SECTION IS UNDER CONSTRUCTION.</p>
+<p>The semantics of propositional logic enable the
+evaluation an expression under an interpretation
+(for it). As we've seen, an interpretation in
+propositional logic is in the form of a <em>function</em>
+from the variable expressions in the expression
+to the Boolean values that the interpretation is
+said to <em>assign</em> to them.</p>
+<h2 id="interpretations-as-world-representations"><a class="header" href="#interpretations-as-world-representations">Interpretations as World Representations</a></h2>
+<p>There's another way to see the interpretations for
+a given proposition, where each one specifies one
+specific possible <em>world</em> (or <em>state of affairs</em>),
+within which the truth of the proposition is to be
+evalauted.</p>
+<h2 id="example-the-dog-is-dandy-or-the-cat-is-comfy"><a class="header" href="#example-the-dog-is-dandy-or-the-cat-is-comfy">Example: The Dog is Dandy or The Cat is Comfy</a></h2>
+<p>Suppose we use <em>D</em> to stand for the proposition,
+<em>the dog is dandy</em>, and <em>C</em> for, <em>the cat is comfy</em>.
+Now consider the proposition, <em>C or D</em>. There are
+four worlds within which it can be evaluated. The
+proposition, understood as asserting that at least
+one of the conditions, <em>C</em> or <em>D</em>, holds in a given
+world. This statement is true in only three of the
+four worlds, exluding as a counterexammple the one
+where neither is true.</p>
+<h2 id="propositions-as-specifying-properties-of-worlds"><a class="header" href="#propositions-as-specifying-properties-of-worlds">Propositions as Specifying Properties of Worlds</a></h2>
+<p>We can view our <em>or</em> expression as specifying the
+subset of all of those possible (here four) worlds
+that <em>have the property</em> of having at least one of
+<em>D</em> or <em>C</em> being true in that world. We thus have a
+first indicition of a notion of model theory. It has
+to be about models of propositions.</p>
+<h2 id="model-worlds-and-counterexamples-worlds"><a class="header" href="#model-worlds-and-counterexamples-worlds">Model Worlds and Counterexamples Worlds</a></h2>
+<p>We call a world in which a proposition is true a<br />
+<em>model</em> for the proposition, and a world in which
+it's not true a <em>counterexample</em>.</p>
+<h2 id="generalizing-from-propositional-logic"><a class="header" href="#generalizing-from-propositional-logic">Generalizing from Propositional Logic</a></h2>
+<p>At the heart of all of this is the idea that when
+syntactic expressions have elements with late-bound
+meanings, we need to provide additional structures,
+descriptions of specific worlds, states of affairs,
+within, or under, which evluation can be performed.
+Moreover, when a proposition is true within a world,
+that world is called a model,, and when false, it's
+called a counterexample.</p>
+<h2 id="propositional-logic-as-a-special-case"><a class="header" href="#propositional-logic-as-a-special-case">Propositional Logic as a Special Case</a></h2>
+<p>In propositional logic, these structures are just
+our interpretation functions. Other logics use
+other structures. Nevertheless, across many logics,
+the structure over which a proposition is evaluated
+can be understood as specifying a particular world,
+or state of affairs, <em>within which</em> the truth of a
+given proposition can be evaluated.</p>
+<h2 id="validity-as-a-central-concept-in-logic-and-maths"><a class="header" href="#validity-as-a-central-concept-in-logic-and-maths">Validity as A Central Concept in Logic and Maths</a></h2>
+<p>Now we come to a truly central idea. Sometimes, we
+want a proposition to defines not so much a property of certain selected worlds, but to express a more general form of reasoning that we expect that to be valid in <em>all</em> possible worlds.</p>
+<p>An an example, the proposition <em>C or D</em> is <em>not</em>
+valid in propositional logic because there is one
+world where it's false: where both propositions are false. On the other hand, we can reasonably accept the
+idea that if <em>C and D</em> is true, then <em>C</em> is: that is. <em>C ∧ D → C</em>. Let's call this expression, <em>e</em>.</p>
+<p>We can easily see that <em>e</em> is valid by showing that it's true in in all four possible worlds. We form each of the four interpretations, then evaluate <em>e</em> under each of them, to find that <em>e</em> is <em>alwasy</em> true.</p>
+<ul>
+<li>when w := (C := ⊤, D := ⊤) <em>e</em>* is true</li>
+<li>when w := (C := ⊤, D := ⊥) <em>e</em>* is true</li>
+<li>when w := (C := ⊥, D := ⊤) <em>e</em>* is true</li>
+<li>when w := (C := ⊥, D := ⊥) <em>e</em>* is true</li>
+</ul>
+<p>As is true in all worlds, it's said to be <em>valid</em>.
+We can now rightfully say that <em>C ∧ D → C</em> is not
+only a <em>valid</em> proposition, but a <em>theorem</em>, or that it's a reasonable, rational principle for reasoning under any any circumstances, in all worlds.</p>
+<p>When we prove that a proposition in mathematics is a theorem, we are proving that it's valid. We can thus reasonably say it is a theorem that if <em>C</em> and <em>D</em> are any propositions then <em>C ∧ D → C</em> is always true. It's valid. It's a theorem (in propositional logic).</p>
+<p>A useful logic is one that defines a set of such rules for reasoning that are both valid individually and that when used together can never produce a contradiction except from assumptions that are themselves false.</p>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<p>Now would be a good time to revisit the examples of
+syntactically correct propositions from a few chapters back. The ones we picked are mostly valid, and in fact form the basis for reasoning in many related logics. Moreover the collection of the valid propositions will provide us with a partial foundation for reasoning in predicate logic, where that can be infinite spaces of worlds, and where validity can no longer be assured by semantic evaluation of a finite number of worlds.</p>
+<p>Exercise: Determine which of the syntactically correct propositions in the bare code file are <em>not</em> valid, and for each of these expressions, give a counterexample in
+the form of an interpretation as a set of variable to value bindings as used just above.</p>
+<h2 id="further-study-and-next-steps"><a class="header" href="#further-study-and-next-steps">Further Study and Next Steps</a></h2>
+<p>We've now given as much of an introduction as we
+can in this setting to the topic of model theory
+in teneral. Interested students might look at the
+<em>Kripke structure</em> over which propositions in some
+temporal logics are evaluated.</p>
+<h2 id="the-rest-of-this-chapter"><a class="header" href="#the-rest-of-this-chapter">The Rest of This Chapter</a></h2>
+<p>For the rest of this chapter, we will focus on model theory for proposition logic, only. We will formally specify what validity means by brute for evaluation of a given expression over all possible inpretations for
+it and then summing of the results.</p>
+<p>In addition to being valid, we will also formally being <em>satisfiable</em> (having at least one model), and being <em>unsatisfiable</em> as having no models at all. We will then define procedures for checking whether all worlds are models (validity), whether at least one world is a model (satisfiability), or whether no worlds satify an expression to check for its being <em>unsatisfiable</em>.</p>
+<p>Our discussion is already getting interesting, in that
+we've now viewed interpretations as representations of different worlds, propositions as specifying properties that a given world might more might not have, and now we're talking about <em>properties of propositions</em> (of being valid, satisfiable, or unsatisfiable). The rest of this chapter formalizes these ideas in executable forms, providing us with tools for automated reasoning about whether <em>any given proposition</em> has or lacks any of these properties.</p>
+<h2 id="exercise"><a class="header" href="#exercise">Exercise</a></h2>
+<p>How many worlds are there in the <em>space of worlds</em>
+contemplated by an expression in propositional logic
+with <em>n</em> distint variable expressions?</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="models"><a class="header" href="#models">Models</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="truth-tables"><a class="header" href="#truth-tables">Truth Tables</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="counterexamples"><a class="header" href="#counterexamples">Counterexamples</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="propertiesx"><a class="header" href="#propertiesx">Propertiesx</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="validity"><a class="header" href="#validity">Validity</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="arithmetic"><a class="header" href="#arithmetic">Arithmetic</a></h1>
+<p>In this chapter we adapt the what we've learned in the
+chapter on propositional logic syntax and semantics to
+specify the syntax and semantics of a simple language of
+<em>natural number arithmetic</em>. The language we specify here
+will have two distinct kinds of expressions.</p>
+<p>An expression of the first kind of expression evaluates
+to a natural number. Consider <em>2 + X</em>, for example. The
+operator symbol, <em>+</em>, tells us that this expressions has
+a natural number as its semantic meaning: namely, the sum
+of <em>2</em> and whatever (now numberic) value <em>X</em> has under a
+given interpretation. We will refer to <em>+</em> and similar
+symbols as arithmetic <em>operators</em>, and to expressions
+that use them as arithemtic <em>operator expressions</em>.</p>
+<p>An expression of the second kind will evaluate not to a
+numeric value but to a Boolean,. Consider <em>2 &lt; X</em> as an
+example. The standard symbol, <em>&lt;</em> tells us that we can
+expect this expression to evaluate to a Boolean value:
+<em>true</em> if <em>2</em> is less than whatever value <em>X</em> evaluate
+to, and to <em>false</em> otherwise. We will refer to symbols
+such as <em>&lt;</em> as <em>predicates</em>, and expressions such as
+<em>2 &lt; X</em> as <em>predicate expressions</em>.</p>
+<p>We will use the phrase <em>arithmetic expression</em> to refer
+to either an operator or a predicate expression in our
+little language of natural number arithmetic.</p>
+<p>One of the main insights that you can expect to take
+away from this chapter is that you already knew how to
+formally define a language such as this one by simple
+adaptation of the lessons of the preceding chapter on
+the syntax and semantics of propositional logic.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="domain"><a class="header" href="#domain">Domain</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="syntax-3"><a class="header" href="#syntax-3">Syntax</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="semantics-1"><a class="header" href="#semantics-1">Semantics</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="induction"><a class="header" href="#induction">Induction</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="examples-1"><a class="header" href="#examples-1">Examples</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="theory-extensions"><a class="header" href="#theory-extensions">Theory Extensions</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="domain-1"><a class="header" href="#domain-1">Domain</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="syntax-4"><a class="header" href="#syntax-4">Syntax</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="semantics-2"><a class="header" href="#semantics-2">Semantics</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="examples-2"><a class="header" href="#examples-2">Examples</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="satisfiability-modulo-theories"><a class="header" href="#satisfiability-modulo-theories">Satisfiability Modulo Theories</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="induction-1"><a class="header" href="#induction-1">Induction</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mathlib"><a class="header" href="#mathlib">mathlib</a></h1>
+<p>Lean's mathlib is where the mathematical community's formalizations
+of lots of different parts of mathematics live. There are riches here,
+for almost any application.</p>
+<p>The upshot for you at this point is that, once you master the next part of the course, on predicate logic in Lean 4, you can pick nearly any area
+of mathematics and reason in it, now with the full support of Lean, its infrastructure, and vibrant community.</p>
+<p>The great thing is that, unlike first-order theory, Lean admits the practical, abstract, expressive, and verified embedding of an incredible diversity of logical and mathematical structures into its foundational logic, formulated in the abstract concepts of the mathematical domains, and made much more useful with concrete notations appropriate to the particular field being formalized. In Lean, one can speak easily about such things as properties of relations, or <em>real</em> real numbers. Neither is possible in the first-order that we mostly teach in traditional courses.</p>
+<p>Make no mistake, first-order predicate logic with first-order theory of sets and relations is still an utterly indispensable language. It's syntax is used in many important reasoning systems, incluiding Z3, Dafney, Alloy, and others. But with knowledge of Lean, you <em>also</em> have immediate access to this <em>incredible</em> treasure trove of verified mathematical knowledge, <em>and</em> it's nearly trivial to understand first-order logic once you have seen the bigger picture.</p>
+<p>If you're interested in a visual overview of areas of mathematics that Lean 4's mathlib provides, the overview of mathlib in <a href="https://leanprover-community.github.io/mathlib-overview.html">Lean 3</a> is the best right now. The <a href="https://leanprover-community.github.io/theories.html#lean-mathematical-theories">Lean 4 version</a> is evolving and contributions are welcome.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="predicate-logic"><a class="header" href="#predicate-logic">Predicate Logic</a></h1>
+<ul>
+<li><a href="predLogic.html#limited-expressiveness-of-propositional-logic">Limited Expressiveness of Propositional Logic</a></li>
+<li><a href="predLogic.html#enhanced-expressiveness-of-predicate-logic">Enhanced Expressiveness of Predicate Logic</a></li>
+<li><a href="predLogic.html#semantic-domains-for-predicate-logic">Semantic Domains for Predicate Logic</a></li>
+<li><a href="predLogic.html#limited-expressiveness-of-first-order-predicate-logic">Limited Expressiveness of First-Order Predicate Logic</a></li>
+<li><a href="predLogic.html#the-enhanced-expressiveness-of-higher-order-logic-in-lean">The Enhanced Expressiveness of Higher-Order Logic in Lean</a></li>
+</ul>
+<p>In propositional logic, syntactic variable expressions
+are interpreted only over sets of Boolean state values.</p>
+<ul>
+<li>PressureTooHigh /\ ORingsFailing</li>
+<li>(GreenLight \/ RedLight) /\ ~(GreenLight /\ RedLight)</li>
+</ul>
+<h2 id="limited-expressiveness-of-propositional-logic"><a class="header" href="#limited-expressiveness-of-propositional-logic">Limited Expressiveness of Propositional Logic</a></h2>
+<p>Within the logic one can thus only speak about real world
+situations in terms of sets of Boolean variables and their
+values. The choice of propositional logic as a reasoning
+language limits one to representing real-world conditions
+in these very spartan, sometimes inadequate, and sometimes
+misleading terms.</p>
+<p>As an example, suppose you want to reason about the safety
+of a driving vehicle. It has a brake and a steering system.
+Each is deemed 70.5% likely to be operational. That's high
+(by some low standards), so suppose we model this world in
+Boolean terms as { BrakeOk := true, SteeringOk := true }.</p>
+<p>Now of course we want both brakes and steering for safety,
+so we evaluate BrakesOk /\ SteeringOk over this structure
+(intepretation) and get <em>true</em>. We might make the mistake
+of believing that the result soundly reflects reality. If
+the threshold for being Ok is a greater than 50% chance of
+success, this condition still doesn't hold: assuming that
+the failures are independent, we find that the combination
+of the probabilities yields a likelyhood of the overall
+<em>system</em> being ok is less than 50%.</p>
+<h2 id="enhanced-expressiveness-of-predicate-logic"><a class="header" href="#enhanced-expressiveness-of-predicate-logic">Enhanced Expressiveness of Predicate Logic</a></h2>
+<p>A way out of this bind is to pick a more expressive
+logic: one that enables us to represent worlds in richer
+terms so that we might be enabled to reason about real
+worlds more effectively. The varieties of predicate logic
+provide such improved expressiveness.</p>
+<p>In a predicate logic, we can speak not only in terms of
+Boolean variables and values, and the usual operations on
+them, but also in terms of <em>sets</em> of objects, <em>relations</em>
+between objects, properties (via predicates) of objects,
+<em>functions</em> that take objects as arguments and return them
+as results, and about whether all, or respectively at least
+one, of the elements of a given set has a given property.</p>
+<p>It's on the foundation of a simple predicate logic that
+most of contemporary mathematics rests. To give a sense
+how this could work, note that one can encode the natural
+numbers as: either the empty set, encoding zero, or as a
+set containing the set representing a one-smaller number.
+The nesting level represents the value, just as for <em>Nat</em>
+in Lean.</p>
+<p>The larger point here is that the choice of any given
+logic in which to reason about the world brings with it
+a form of structure in terms of which one can represent
+specific states of the real world, over which expressions
+are evaluated.</p>
+<h2 id="semantic-domains-for-predicate-logic"><a class="header" href="#semantic-domains-for-predicate-logic">Semantic Domains for Predicate Logic</a></h2>
+<p>In particular, predicate logic brings along with it a much
+richer form of structure (than vector of Boolean) that one
+use to represent real world conditions of interest. A set
+of possible world situations no longer has to be encoded
+just as a vector of binary Boolean values. We can represent
+a world now in essentially <em>relational</em> terms. Predicate
+logic is the core theory underpinning relational databases.
+Our world state representation structures can now have:</p>
+<ul>
+<li><em>objects</em> representing corresponding objects in the real domain (e.g., "Tom", "Mary")</li>
+<li><em>functions</em> from objects to objects  in the real world (e.g., motherOf Tom = Mary)</li>
+<li><em>relations</em> among objects in the real world (e.g., youngerThan Tom Mary)</li>
+<li><em>sets of objects</em> (e.g., { "Tom", "Mary" }) [unary relation]</li>
+</ul>
+<p>To know how to use predicate logic effectively, it really
+helps to think about how you want to represent the space of
+all of the possible worlds about which you might speak, and
+how to represent specific individual worlds in that space.
+Think in relational terms.
+@@@ -/</p>
+<p>/- @@@
+The syntax of predicate logic is then set up to provide
+nice ways to talk about such world representations. The
+syntax provides <em>constant</em> symbols (referring to fixed
+domain objects); (free) <em>variables</em>, also interpreted as
+referring to objects; <em>function</em> symbols (and arguments,
+interpreted as referring to functions in the world); and
+<em>predicate</em> symbols refering to relations in the domain.
+Predicate logic inherits the connectives of propositional
+logic, adds two kinds of quantified expressions, and puts
+it all together into a syntax of <em>well formed formula</em> in
+predicate logic.</p>
+<h2 id="limited-expressiveness-of-first-order-predicate-logic"><a class="header" href="#limited-expressiveness-of-first-order-predicate-logic">Limited Expressiveness of First-Order Predicate Logic</a></h2>
+<p>The variant of predicate logic taught in typical DMT1 courses
+is called first-order predicate logic. The logic of Lean is a
+higher-order logic. The difference is in the generality of what
+can be expressed in each of these logic.</p>
+<p>To see the difference concretely, let's consider what properties
+a <em>friendOf</em> relation should have on some new social network. It
+could be <em>symmetric</em>, as it is on <em>FB</em>; or one might prefer for
+it not necessarily to be symmetric. Maybe a <em>follows</em> relation
+would be better. I follow Bill Gates but he doesn't follow me.</p>
+<p>In first-order logic we can use the <em>universal quantifer</em> syntax
+to specify that our <em>friendOf</em> relation is (to be) symmetric. We can
+write this as <em>∀x∀y(friendOf(x,y)↔friendOf(y,x)).</em> The variables,
+<em>x</em> and <em>y</em>, are <em>bound</em> by the quantifer to range over all objects
+in the semantic domain. The predicate after the comma then checks
+whether all such pairs of objects satisfy the following predicate.</p>
+<p>A major restriction on expressiveness imposed by first-order logic
+is that quantified variables can be range only over objects. One
+cannot quantify over all sets of objects, functions, or relations.
+In first order theory we can express the idea that some particular
+relation is symmetric.</p>
+<pre><code class="language-lean">
+</code></pre>
+<p>What we can't express in first-order logic
+is the concept of symmetry as a generalized property that <em>any</em> given
+binary relation on <em>any</em> set of objects of <em>any</em> kind might or might
+not have. And yet being able to reason fluently with concepts at this
+level of generality is essential for any literate mathematician.  in terms of We cannot express the <em>property</em> of a relation
+of <em>being symmetric,</em> a crucial degree of mathematical generality*,
+in first order theory because we cannot talk about <em>all relations</em>.</p>
+<h2 id="the-enhanced-expressiveness-of-higher-order-logic-in-lean"><a class="header" href="#the-enhanced-expressiveness-of-higher-order-logic-in-lean">The Enhanced Expressiveness of Higher-Order Logic in Lean</a></h2>
+<p>The most crucial property of Lean for this course, and for research
+worldwide on the formalization of advanced mathematics, is that Lean
+implements a higher-order logic in which you can express concepts of
+great generality by quantifying not only over elementary values but
+over such things as types, functions, propositions and predicates,
+and so forth.</p>
+<p>As an one example, in higher order predicate logic
+in Lean, one can define <em>generalized</em> properties of relations: for
+example the property of a binary relation r on a set s of values of
+some type T that r relates any two values in one direction only if
+it it also relates them in the other order.</p>
+<pre><code class="language-lean">def symmetric := 
+∀ (T : Type) 
+  (R : T → T → Prop) 
+  (t1 t2 : T),
+r t1 t2 ↔ r t2 t1
+</code></pre>
+<p>That is, for any type of objects, <em>T</em> (quantification over types), and for any binary relation, <em>R,</em> on values of this type (quantification over relations), what it means for <em>R</em> to be symmetric is that for any two objects, <em>t1, t2</em>
+of type <em>T</em> (a first-order quantification), if <em>R</em> relates <em>t1</em> to <em>t2</em> then it also relates <em>t2</em> to <em>t1</em>.</p>
+<p>We can then <em>apply</em> such generalized definition to any particular binary relation on any type of values (let's say, <em>isFriend</em>, on values of type, <em>Person</em>) to derive the proposition that <em>that</em> relation is symmetric. The expression, <em>symmetric Person isFriend</em>, would then reduce to the first-order proposition, *∀ t1 t2 : Person, <em>isFriend t1 t2 &lt;-&gt;  isFriend t2 t1</em>.</p>
+<p>For the working mathematician it's crucial to be able to reason and speak in terms of such abstract and generalized properties of complex things. We speak of relations being symmetric, reflexive, transitive, well founded, and so on, without having to think about specific relations. We think of operation being commutative, associative, invertible, again in precise but abstract and general terms, independent of particular operations. In the first-order logic of the usual CS2: DMT1 class, that's just not possible. In Lean 4, it is completely natural and incredibly useful.</p>
+<p>The result has been an explosion in the community of mathematicians using Lean 4 to formalize and verify theorems in many branches of advanced mathematics. That in turn has sparked deep interest in computer science in the use of Lean 4 for research and development in trustworthy computing, among many other areas. The rest of this chapter skips over first-order logic to introduce predicate logic through its higher-order, much more useful and relevant variant, in Lean.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="propositions-as-data-types"><a class="header" href="#propositions-as-data-types">Propositions as Data Types</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="propositions-as-logical-types"><a class="header" href="#propositions-as-logical-types">Propositions as Logical Types</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="classical-reasoning"><a class="header" href="#classical-reasoning">Classical Reasoning</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="predicates"><a class="header" href="#predicates">Predicates</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="quantifiers"><a class="header" href="#quantifiers">Quantifiers</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="for-all"><a class="header" href="#for-all">For All</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="exists"><a class="header" href="#exists">Exists</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="dependent-type-theory"><a class="header" href="#dependent-type-theory">Dependent Type Theory</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sets-relations-and-properties-thereof"><a class="header" href="#sets-relations-and-properties-thereof">Sets Relations and Properties Thereof</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sets"><a class="header" href="#sets">Sets</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="relations"><a class="header" href="#relations">Relations</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="equality"><a class="header" href="#equality">Equality</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="properties"><a class="header" href="#properties">Properties</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="abstract-algebra"><a class="header" href="#abstract-algebra">Abstract Algebra</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="groups"><a class="header" href="#groups">Groups</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="actions"><a class="header" href="#actions">Actions</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="torsors-over-groups"><a class="header" href="#torsors-over-groups">Torsors over Groups</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="modules-and-vector-spaces"><a class="header" href="#modules-and-vector-spaces">Modules and Vector Spaces</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="affine-spaces"><a class="header" href="#affine-spaces">Affine Spaces</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="n-dimensional-spaces"><a class="header" href="#n-dimensional-spaces">n-Dimensional Spaces</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="scalar"><a class="header" href="#scalar">Scalar</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tuple"><a class="header" href="#tuple">Tuple</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="vector"><a class="header" href="#vector">Vector</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="point"><a class="header" href="#point">Point</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="torsor"><a class="header" href="#torsor">Torsor</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="affine"><a class="header" href="#affine">Affine</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="type-heterogeneity"><a class="header" href="#type-heterogeneity">Type Heterogeneity</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="heterogeneous-collections"><a class="header" href="#heterogeneous-collections">Heterogeneous Collections</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="custom-dynamic-types"><a class="header" href="#custom-dynamic-types">Custom Dynamic Types</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="existential-wrappers"><a class="header" href="#existential-wrappers">Existential Wrappers</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="heterogeneous-signatures"><a class="header" href="#heterogeneous-signatures">Heterogeneous Signatures</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="heterogeneous-lists"><a class="header" href="#heterogeneous-lists">Heterogeneous Lists</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="heterogeneous-vectors"><a class="header" href="#heterogeneous-vectors">Heterogeneous Vectors</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sigma-chains"><a class="header" href="#sigma-chains">Sigma Chains</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
+<p>The DMTL4 book is largely generated from Lean 4 source. You can experiment with
+all of the examples in the VS Code IDE. First, follow the <a href="https://lean-lang.org/lean4/doc/quickstart.html">Lean 4 quickstart</a> to
+install VS Code, Lean, and the Lean 4 extension. Second, <a href="https://github.com/git-guides/install-git">install <code>git</code></a> and
+clone your fork of the repository. Next, open the repository in VS code.
+Finally, open the notes you wish to run. The book's Lean code can be found in the
+<code>code/DMT1/Lectures/</code> directory.</p>
+<h2 id="building-dmtl4"><a class="header" href="#building-dmtl4">Building DMTL4</a></h2>
+<p>If you wish to generate the book yourself there are additional steps and
+dependencies you will need.</p>
+<p>First, install <a href="https://github.com/rust-lang/mdBook/releases/tag/v0.4.43"><code>mdbook</code></a>.</p>
+<p>Additionally, install <a href="https://github.com/badboy/mdbook-toc/releases/tag/0.14.2"><code>mdbook-toc</code></a>, <a href="https://github.com/badboy/mdbook-mermaid/releases/tag/v0.14.1"><code>mdbook-mermaid</code></a> and
+<a href="https://github.com/lhybdv/mdbook-image-size/releases/tag/0.2.0"><code>mdbook-image-size</code></a>. To do so, download the appropriate tarball for you
+system architecture and unpack it into a directory on your path.</p>
+<p>Then, install the Haskell installer, <a href="https://www.haskell.org/ghcup/"><code>ghcup</code></a>.</p>
+<p>Add <code>ghcup</code>'s bin directory (<code>$HOME/.ghcup/bin</code>) to your <code>PATH</code>.</p>
+<p>Next, launch the TUI and install <code>ghcup</code>'s recommend Haskell version.</p>
+<p>Lastly, if not already installed, install <code>make</code> on your platform.</p>
+<p>At this point you should be able to build the book. From the top-level
+directory run <code>make all</code>. This will transform the code (in <code>code/DMT</code>) into
+markdown (in <code>src/DMT1</code>) for the book.</p>
+<p>Finally, you can serve up the book for browsing with <code>mdbook serve --open &amp;</code>.
+Conveniently, any changes to the <code>src</code> directory will cause the book to be
+rebuilt automatically.</p>
+<h3 id="install-scripts"><a class="header" href="#install-scripts">Install Scripts</a></h3>
+<p>Manual installation instructions will be replaced with automated install
+scripts over time. We welcome any and all contributions to this effort.</p>
+<h3 id="windows"><a class="header" href="#windows">Windows</a></h3>
+<p>Not available at this time.</p>
+<h3 id="macos"><a class="header" href="#macos">macOS</a></h3>
+<p>The dependencies described above can be installed on macOS via <a href="https://brew.sh">homebrew</a> with the
+following commands.</p>
+<pre><code class="language-bash">brew install mdbook ghcup
+
+# Assuming x86_64. Tweak for apple silicon.
+curl -L https://github.com/badboy/mdbook-mermaid/releases/download/v0.14.1/mdbook
+-mermaid-v0.14.1-x86_64-apple-darwin.tar.gz | tar -xz -C $HOME/.local/bin
+curl -L https://github.com/badboy/mdbook-toc/releases/download/0.14.2/mdbook-toc-0.14.2-x86_64-apple-darwin.tar.gz | tar -xz -C $HOME/.local/bin
+
+# Assuming bash. Tweak if using a different shell.
+echo 'PATH=$PATH:$HOME/.ghcup/bin' &gt;&gt; "$HOME/.bashrc"
+
+ghcup install ghc recommended
+ghcup set ghc recommended
+</code></pre>
+<h2 id="other"><a class="header" href="#other">Other</a></h2>
+<p>Note, Windows users using git via <a href="https://gitforwindows.org">git bash</a> and the command line should take
+care to select the appropriate shell in the VS Code terminal. It will do to
+set git bash as the terminal by changing Settings: Terminal &gt; Integrated &gt;
+Defafult Profile: Windows and selecting it there. Thereafter, launching a
+terminal in VS Code will launch one with a git bash shell. You can see what's
+possible there in the configuration section and eventually configure your own
+setup for terminal in VS Code.</p>
+<p>Note, rust users can install the mdbook extensions with cargo.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="learning-resources"><a class="header" href="#learning-resources">Learning Resources</a></h1>
+<p>There are pretty good learning resources for Lean 4. Here we
+connect you to both written documentation for Lean 4 and to two
+online communities where you can follow the leaders in the field
+and ask questions, often getting answers very quickly.</p>
+<h2 id="help-searching-mathlib-for-relevant-definitions"><a class="header" href="#help-searching-mathlib-for-relevant-definitions">Help Searching Mathlib for Relevant Definitions</a></h2>
+<ul>
+<li><a href="https://leanprover-community.github.io/mathlib4_docs/index.html">Mathlib Documentation</a></li>
+<li><a href="https://loogle.lean-lang.org/">Loogle online</a>. Also see the Loogle VSCode extension.</li>
+</ul>
+<h2 id="written-documentation-on-lean-4-and-related-tools-and-ideas"><a class="header" href="#written-documentation-on-lean-4-and-related-tools-and-ideas">Written Documentation on Lean 4 and Related Tools and Ideas</a></h2>
+<ul>
+<li><a href="https://lean-lang.org/">Lean Language Site</a></li>
+<li><a href="https://lean-lang.org/lean4/doc/">Lean Documentation Overview</a></li>
+<li><a href="https://leanprover.github.io/functional_programming_in_lean/">Functional Programming in Lean</a>.</li>
+<li><a href="https://leanprover.github.io/theorem_proving_in_lean4/induction_and_recursion.html">Theorem Proving in Lean 4</a></li>
+<li><a href="https://leanprover-community.github.io/lean4-metaprogramming-book/">Meta-Programming in Lean 4</a></li>
+<li><a href="https://leanprover-community.github.io/mathematics_in_lean/mathematics_in_lean.pdf">Mathematics in Lean</a></li>
+<li><a href="https://github.com/PatrickMassot/GlimpseOfLean">A Glimpse of Lean</a></li>
+<li><a href="https://ammkrn.github.io/type_checking_in_lean4/">Type Checking in Lean 4</a></li>
+<li><a href="https://lean-lang.org/lean4/doc/examples.html">Some Examples in Lean4</a></li>
+<li><a href="https://leanprover-community.github.io/lean-perfectoid-spaces/type_theory.html">Kevin Buzzard's Intro</a></li>
+<li><a href="https://lftcm2023.github.io/tutorial/index.html">Lean for the Curious Mathematician (2023 edition)</a></li>
+<li><a href="https://leanprover-community.github.io/learn.html">Learning Resources</a></li>
+<li><a href="https://github.com/digama0/lean-type-theory/releases">The Type Theory of Lean</a></li>
+<li><a href="https://ammkrn.github.io/type_checking_in_lean4/">Type Checking in Lean</a></li>
+<li><a href="https://raw.githubusercontent.com/blanchette/logical_verification_2023/main/hitchhikers_guide.pdf">Hitchhikers Guide to Logical Verification</a></li>
+<li><a href="https://github.com/madvorak/lean4-tactics">Useful Tactics for Beginners</a></li>
+</ul>
+<h2 id="books-on-closely-related-concepts-and-tools-mainly-coq"><a class="header" href="#books-on-closely-related-concepts-and-tools-mainly-coq">Books on Closely Related Concepts and Tools (mainly Coq)</a></h2>
+<ul>
+<li><a href="https://softwarefoundations.cis.upenn.edu/">Software Foundations</a></li>
+<li><a href="https://hrmacbeth.github.io/math2001/">The Mechanics of Proof</a></li>
+<li><a href="https://hott.github.io/book/hott-online-15-ge428abf.pdf">Homotopy Type Theory, Chapter 1</a></li>
+<li><a href="https://mathvault.ca/hub/higher-math/math-symbols/logic-symbols/">Survey of Logic Symbols</a></li>
+<li><a href="http://adam.chlipala.net/cpdt/">Certified Programming with Dependent Types</a></li>
+<li><a href="https://softwarefoundations.cis.upenn.edu/">Software Foundations</a></li>
+</ul>
+<h2 id="community-resources-recommended-to-join-these-groups"><a class="header" href="#community-resources-recommended-to-join-these-groups">Community Resources (Recommended to Join These Groups!)</a></h2>
+<ul>
+<li><a href="https://leanprover.zulipchat.com/">Lean Zulipchat</a></li>
+<li><a href="https://discord.gg/WZ9bs9UCvx">Lean Discord Channel</a></li>
+<li><a href="https://discord.gg/Up7KFNnF">Programming Languages Discord Channel</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="assets/lean.min.js"></script>
+        <script src="assets/mermaid.min.js"></script>
+        <script src="assets/mermaid-init.js"></script>
+
+        <script>
+        window.addEventListener('load', function() {
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>
