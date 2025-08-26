@@ -8,7 +8,7 @@ on:
 
 env:
   # Set your custom domain here, or leave empty for default GitHub Pages URL
-  CUSTOM_DOMAIN: "kevinsullivan.github.io/dmt1" # Change this to your domain
+  CUSTOM_DOMAIN: "kevinsullivan.github.io/dmtl4" # Change this to your domain
   MDBOOK_VERSION: "0.4.52"
 
 jobs:
