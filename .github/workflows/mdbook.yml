@@ -76,10 +76,16 @@ jobs:
       - name: Add Cargo bin to PATH
         run: echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
 
-      - name: Setup Node
+      - name: Setup Node (no cache)
         uses: actions/setup-node@v4
         with:
-        node-version: "18.19.1"
+          node-version: "18.19.1" # overrides any .nvmrc/.node-version
+
+      - name: Install mermaid-cli
+        run: |
+          npm config set registry https://registry.npmjs.org/
+          npm config set @mermaid-js:registry https://registry.npmjs.org/
+          npm install -g @mermaid-js/mermaid-cli@10.9.1
 
       # Cache Node.js and npm packages
       # - name: Setup Node and cache npm
