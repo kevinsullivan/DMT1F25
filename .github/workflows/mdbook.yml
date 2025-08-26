@@ -31,49 +31,52 @@ jobs:
         shell: bash
         run: |
           set -eux
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           "$HOME/.cargo/bin/rustup" update
           "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_VERSION}" mdbook
-
-      - name: Install mermaid-cli
-        run: |
-          npm config set registry https://registry.npmjs.org/
-          npm config set @mermaid-js:registry https://registry.npmjs.org/
-          npm install -g @mermaid-js/mermaid-cli@10.9.1
-
-      - name: Install mdbook-toc & mdbook-image-size (cargo)
-        shell: bash
-        run: |
-          set -eux
-          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
           "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_TOC_VERSION}" mdbook-toc
           "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_IMAGE_SIZE_VERSION}" mdbook-image-size
           "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_MERMAID_VERSION}" mdbook-mermaid
 
-      # Preprocessors (toc, mermaid, image-size)
-      - name: Install mdBook preprocessors
-        shell: bash
-        run: |
-          set -eux
-          mkdir -p "$HOME/.local/bin"
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      # # - name: Install mermaid-cli
+      # #   run: |
+      # #     npm config set registry https://registry.npmjs.org/
+      # #     npm config set @mermaid-js:registry https://registry.npmjs.org/
+      # #     npm install -g @mermaid-js/mermaid-cli@10.9.1
 
-          # mdbook-toc
-          wget -qO- "https://github.com/badboy/mdbook-toc/releases/download/${MDBOOK_TOC_VERSION}/mdbook-toc-${MDBOOK_TOC_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
-            | tar xz -C "$HOME/.local/bin"
+      # # - name: Install mdbook-toc & mdbook-image-size (cargo)
+      # #   shell: bash
+      # #   run: |
+      # #     set -eux
+      # #     echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
 
-          # mdbook-image-size
-          wget -qO- "https://github.com/nicholasphair/mdbook-image-size/releases/download/v.${MDBOOK_IMAGE_SIZE_VERSION}/mdbook-image-size-v.${MDBOOK_IMAGE_SIZE_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
-            | tar xz -C "$HOME/.local/bin"
+      # #     "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_IMAGE_SIZE_VERSION}" mdbook-image-size
+      # #     "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_MERMAID_VERSION}" mdbook-mermaid
 
-      # Mermaid CLI required by mdbook-mermaid
-      - name: Setup Node and install mermaid-cli
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Install mermaid-cli
-        run: npm install -g @mermaid-js/mermaid-cli
+      # # Preprocessors (toc, mermaid, image-size)
+      # - name: Install mdBook preprocessors
+      #   shell: bash
+      #   run: |
+      #     set -eux
+      #     mkdir -p "$HOME/.local/bin"
+      #     echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      #     # mdbook-toc
+      #     wget -qO- "https://github.com/badboy/mdbook-toc/releases/download/${MDBOOK_TOC_VERSION}/mdbook-toc-${MDBOOK_TOC_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+      #       | tar xz -C "$HOME/.local/bin"
+
+      #     # mdbook-image-size
+      #     wget -qO- "https://github.com/nicholasphair/mdbook-image-size/releases/download/v.${MDBOOK_IMAGE_SIZE_VERSION}/mdbook-image-size-v.${MDBOOK_IMAGE_SIZE_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+      #       | tar xz -C "$HOME/.local/bin"
+
+      # # Mermaid CLI required by mdbook-mermaid
+      # - name: Setup Node and install mermaid-cli
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
+      # - name: Install mermaid-cli
+      #   run: npm install -g @mermaid-js/mermaid-cli
 
       # Pages setup & build
       - name: Setup Pages
