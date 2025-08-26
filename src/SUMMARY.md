@@ -9,7 +9,7 @@
   
 - [Propositional Logic](propLogic.md)
 
-  - [Syntax](DMT1/L02_propLogic/syntax.md)
+  - [Syntax](./DMT1/L02_propLogic/syntax.md)
   - [Bare Code](DMT1/Library/propLogic/syntax.md)
   - [Examples](DMT1/L02_propLogic/axioms.md)
   - [Semantics](DMT1/L02_propLogic/semantics.md)
