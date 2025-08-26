@@ -70,7 +70,7 @@ jobs:
           "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_VERSION}" mdbook --locked
           "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_TOC_VERSION}" mdbook-toc --locked
           "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_IMAGE_SIZE_VERSION}" mdbook-image-size --locked
-          "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_MERMAID_VERSION}" mdbook-mermaid --locked
+          "$HOME/.cargo/bin/cargo" install mdbook-mermaid --locked
 
       # Add Cargo bin to PATH (needed whether cached or not)
       - name: Add Cargo bin to PATH
