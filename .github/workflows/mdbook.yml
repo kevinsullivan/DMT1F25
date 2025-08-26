@@ -1,89 +1,245 @@
-# Deploy mdBook with custom domain support
-name: Deploy mdBook to Custom Domain
+# Deploy mdBook site using official GitHub Pages Actions (Cargo Installation)
+name: Deploy mdBook to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "book.toml"
   workflow_dispatch:
 
-# env:
-# Set your custom domain here, or leave empty for default GitHub Pages URL
-# CUSTOM_DOMAIN: "kevinsullivan.github.io/dmtl4" # Change this to your domain
-# MDBOOK_VERSION: "0.4.52"
+# Required permissions for GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+env:
+  MDBOOK_VERSION: "0.4.52"
+  MDBOOK_TOC_VERSION: "0.14.2"
+  MDBOOK_MERMAID_VERSION: "0.15.0"
+  MDBOOK_IMAGE_SIZE_VERSION: "0.2.1"
+  CARGO_TERM_COLOR: always
 
 jobs:
-  build-and-deploy:
+  # Build job
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Cache Rust toolchain and cargo registry
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.rustup
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+          key: ${{ runner.os }}-cargo-${{ env.MDBOOK_VERSION }}-${{ env.MDBOOK_TOC_VERSION }}-${{ env.MDBOOK_MERMAID_VERSION }}-${{ env.MDBOOK_IMAGE_SIZE_VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ env.MDBOOK_VERSION }}-
+            ${{ runner.os }}-cargo-
+
+      - name: Setup Rust toolchain
         run: |
-          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git .
-          git checkout ${{ github.sha }}
+          # Install rustup if not already installed
+          if ! command -v rustup &> /dev/null; then
+            echo "📦 Installing Rust toolchain..."
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+            source ~/.cargo/env
+          else
+            echo "✅ Rust toolchain already installed"
+            rustup update stable
+          fi
+
+          # Ensure cargo bin is in PATH
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+          # Show versions
+          echo "🦀 Rust version: $(rustc --version)"
+          echo "📦 Cargo version: $(cargo --version)"
+
+      - name: Check if binaries are cached
+        id: check-cache
+        run: |
+          if [[ -f ~/.cargo/bin/mdbook ]] && ~/.cargo/bin/mdbook --version | grep -q "v${{ env.MDBOOK_VERSION }}"; then
+            echo "mdbook-cached=true" >> $GITHUB_OUTPUT
+          else
+            echo "mdbook-cached=false" >> $GITHUB_OUTPUT
+          fi
+
+          if [[ -f ~/.cargo/bin/mdbook-toc ]] && ~/.cargo/bin/mdbook-toc --version | grep -q "${{ env.MDBOOK_TOC_VERSION }}"; then
+            echo "toc-cached=true" >> $GITHUB_OUTPUT
+          else
+            echo "toc-cached=false" >> $GITHUB_OUTPUT
+          fi
+
+          if [[ -f ~/.cargo/bin/mdbook-mermaid ]] && ~/.cargo/bin/mdbook-mermaid --version | grep -q "${{ env.MDBOOK_MERMAID_VERSION }}"; then
+            echo "mermaid-cached=true" >> $GITHUB_OUTPUT
+          else
+            echo "mermaid-cached=false" >> $GITHUB_OUTPUT
+          fi
+
+          if [[ -f ~/.cargo/bin/mdbook-image-size ]]; then
+            echo "image-size-cached=true" >> $GITHUB_OUTPUT
+          else
+            echo "image-size-cached=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Install mdBook
+        if: steps.check-cache.outputs.mdbook-cached != 'true'
         run: |
-          curl -L https://github.com/rust-lang/mdBook/releases/download/v${MDBOOK_VERSION}/mdbook-v${MDBOOK_VERSION}-x86_64-unknown-linux-gnu.tar.gz | tar xz
-          sudo mv mdbook /usr/local/bin/
+          echo "📖 Installing mdBook v${{ env.MDBOOK_VERSION }}..."
+          cargo install mdbook \
+            --vers "${{ env.MDBOOK_VERSION }}" \
+            --locked \
+            --no-default-features \
+            --features search
+          echo "✅ mdBook installed successfully"
 
-      - name: Build site
+      - name: Install mdbook-toc
+        if: steps.check-cache.outputs.toc-cached != 'true'
         run: |
+          echo "📑 Installing mdbook-toc v${{ env.MDBOOK_TOC_VERSION }}..."
+          cargo install mdbook-toc \
+            --vers "${{ env.MDBOOK_TOC_VERSION }}" \
+            --locked
+          echo "✅ mdbook-toc installed successfully"
+
+      - name: Install mdbook-mermaid
+        if: steps.check-cache.outputs.mermaid-cached != 'true'
+        run: |
+          echo "🧜‍♀️ Installing mdbook-mermaid v${{ env.MDBOOK_MERMAID_VERSION }}..."
+          cargo install mdbook-mermaid \
+            --vers "${{ env.MDBOOK_MERMAID_VERSION }}" \
+            --locked
+          echo "✅ mdbook-mermaid installed successfully"
+
+      - name: Install mdbook-image-size
+        if: steps.check-cache.outputs.image-size-cached != 'true'
+        run: |
+          echo "🖼️ Installing mdbook-image-size v${{ env.MDBOOK_IMAGE_SIZE_VERSION }}..."
+          cargo install mdbook-image-size \
+            --vers "${{ env.MDBOOK_IMAGE_SIZE_VERSION }}" \
+            --locked || {
+            echo "⚠️ mdbook-image-size installation failed (optional preprocessor)"
+            echo "This is not critical - continuing without image-size support"
+          }
+
+      - name: Verify installations
+        run: |
+          echo "🔍 Verifying installations..."
+          echo "📖 mdBook: $(mdbook --version)"
+          echo "📑 mdbook-toc: $(mdbook-toc --version || echo 'not available')"
+          echo "🧜‍♀️ mdbook-mermaid: $(mdbook-mermaid --version || echo 'not available')"
+          echo "🖼️ mdbook-image-size: $(mdbook-image-size --version 2>/dev/null || echo 'not available')"
+          echo "✅ All required tools verified"
+
+      - name: Build with mdBook
+        run: |
+          echo "🔨 Building mdBook site..."
+
+          # Show book configuration
+          if [[ -f book.toml ]]; then
+            echo "📋 Book configuration:"
+            cat book.toml
+          fi
+
+          # Build the site
           mdbook build
 
-          # Add custom domain configuration
-          if [[ -n "$CUSTOM_DOMAIN" ]]; then
-            echo "Configuring custom domain: $CUSTOM_DOMAIN"
-            echo "$CUSTOM_DOMAIN" > book/CNAME
+          # Verify build output
+          if [[ ! -d "./book" ]]; then
+            echo "❌ Build output directory not found"
+            exit 1
           fi
 
-          # Add robots.txt
-          cat > book/robots.txt << EOF
-          User-agent: *
-          Allow: /
+          if [[ ! -f "./book/index.html" ]]; then
+            echo "❌ Main index.html not found"
+            exit 1
+          fi
 
-          Sitemap: https://${CUSTOM_DOMAIN:-${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}}/sitemap.xml
-          EOF
+          # Show build statistics
+          html_count=$(find ./book -name "*.html" | wc -l)
+          total_files=$(find ./book -type f | wc -l)
+          build_size=$(du -sh ./book | cut -f1)
 
-          # Generate basic sitemap
-          echo "Generating sitemap..."
-          cat > book/sitemap.xml << 'EOF'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-          EOF
+          echo "✅ Build completed successfully!"
+          echo "📊 Build Statistics:"
+          echo "  📄 HTML files: $html_count"
+          echo "  📁 Total files: $total_files" 
+          echo "  💾 Build size: $build_size"
 
-          find book -name "*.html" | while read file; do
-            url_path=${file#book/}
-            if [[ -n "$CUSTOM_DOMAIN" ]]; then
-              base_url="https://$CUSTOM_DOMAIN"
-            else
-              base_url="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
-            fi
-            echo "  <url><loc>$base_url/$url_path</loc></url>" >> book/sitemap.xml
-          done
+          # List generated files (first 20)
+          echo "📋 Generated files (sample):"
+          find ./book -type f | head -20 | sed 's|^|  |'
 
-          echo "</urlset>" >> book/sitemap.xml
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./book
 
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Display deployment info
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          echo "🚀 Deployment completed successfully!"
+          echo "🌐 Site URL: ${{ steps.deployment.outputs.page_url }}"
+          echo ""
+          echo "📝 Deployment Summary:"
+          echo "  • Repository: ${{ github.repository }}"
+          echo "  • Branch: ${{ github.ref_name }}"
+          echo "  • Commit: ${{ github.sha }}"
+          echo "  • Actor: ${{ github.actor }}"
+          echo "  • Workflow: ${{ github.workflow }}"
+          echo "  • Run ID: ${{ github.run_id }}"
 
-          # Deploy to gh-pages branch
-          git checkout --orphan gh-pages || git checkout gh-pages
-          git rm -rf . 2>/dev/null || true
-          cp -r book/* .
-          git add .
-
-          if ! git diff --staged --quiet; then
-            git commit -m "Deploy to GitHub Pages
-            
-            Domain: ${CUSTOM_DOMAIN:-Default GitHub Pages}
-            Commit: ${{ github.sha }}
-            Date: $(date -u)"
-            git push -f origin gh-pages
-            
-            if [[ -n "$CUSTOM_DOMAIN" ]]; then
-              echo "✅ Site deployed to: https://$CUSTOM_DOMAIN"
-            else
-              echo "✅ Site deployed to: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
-            fi
-          fi
+      - name: Create deployment summary
+        run: |
+          echo "## 🎉 mdBook Deployment Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**🌐 Live Site:** [${{ steps.deployment.outputs.page_url }}](${{ steps.deployment.outputs.page_url }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📊 Deployment Details" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Repository | \`${{ github.repository }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Branch | \`${{ github.ref_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| mdBook Version | \`${{ env.MDBOOK_VERSION }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Deployed by | \`${{ github.actor }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Timestamp | \`$(date -u)\` |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔧 Installed Tools" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ mdBook v${{ env.MDBOOK_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ mdbook-toc v${{ env.MDBOOK_TOC_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ mdbook-mermaid v${{ env.MDBOOK_MERMAID_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ mdbook-image-size v${{ env.MDBOOK_IMAGE_SIZE_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📚 Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "1. Visit your deployed site using the link above" >> $GITHUB_STEP_SUMMARY
+          echo "2. It may take a few minutes for changes to propagate" >> $GITHUB_STEP_SUMMARY
+          echo "3. Configure a custom domain in repository Settings → Pages if desired" >> $GITHUB_STEP_SUMMARY
+          echo "4. Consider setting up branch protection rules for your main branch" >> $GITHUB_STEP_SUMMARY
