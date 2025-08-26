@@ -1,1 +1,0 @@
-# Propositions as Data Types
