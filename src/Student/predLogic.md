@@ -1,1 +1,0 @@
-# (Higher-Order) Predicate Logic

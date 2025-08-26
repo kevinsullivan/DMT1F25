@@ -1,1 +1,0 @@
-[Header 2 ("classical-reasoning", [], []) [Str "Classical Reasoning"]]

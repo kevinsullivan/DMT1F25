@@ -10,20 +10,23 @@ src = "src"
 build-dir = "book"
 
 [output.html]
+# Only include JS files that actually exist - remove or comment out missing ones
 additional-js = [
-    "assets/lean.min.js",
-    "assets/mermaid.min.js",
-    "assets/mermaid-init.js",
+    # "assets/lean.min.js",        # Uncomment only if this file exists
+    # "assets/mermaid.min.js",     # Remove - conflicts with mdbook-mermaid preprocessor
+    # "assets/mermaid-init.js",    # Uncomment only if you have custom mermaid config
 ]
 mathjax-support = true
-git-repository-url = "https://github.com/kevinsullivan/dmtl4"
+git-repository-url = "https://github.com/kevinsullivan/Instructor"
+git-repository-icon = "fa-github" # Optional: adds GitHub icon
 
 [output.html.playground]
 boring-prefixes = ["# "]
 
+# Preprocessor configuration - order matters!
 [preprocessor.toc]
 command = "mdbook-toc"
-depth = 2
+renderer = ["html"]    # Specify renderer for consistency
 
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
@@ -31,12 +34,30 @@ renderer = ["html"]
 
 [preprocessor.image-size]
 command = "mdbook-image-size"
+renderer = ["html"]           # Specify renderer for consistency
 
-#[output.pandoc.profile.pdf]
+# Optional: Add search functionality
+[output.html.search]
+enable = true
+limit-results = 30
+teaser-word-count = 30
+use-boolean-and = true
+boost-title = 2
+boost-hierarchy = 1
+boost-paragraph = 1
+expand = true
+heading-split-level = 3
+
+# Optional: Improve print output
+[output.html.print]
+enable = true
+
+# Commented out Pandoc configuration (can be enabled later)
+# [output.pandoc.profile.pdf]
 # [output.pandoc]
 # to = "latex"
 # output-file = "ReasoningAndComputation.pdf"
-# pdf-engine = "xelatex"
+# pdf-engine = "xelatex"  
 # template = "/home/dev/.pandoc/templates/stix-math.latex"
 
 # [output.pandoc.profile.debug]

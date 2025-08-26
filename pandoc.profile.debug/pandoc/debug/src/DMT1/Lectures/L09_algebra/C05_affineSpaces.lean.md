@@ -1,1 +1,0 @@
-[Header 2 ("affine-spaces", [], []) [Str "Affine Spaces"]]

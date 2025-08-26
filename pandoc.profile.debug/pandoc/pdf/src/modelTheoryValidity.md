@@ -1,1 +1,0 @@
-# Model-Theoretic Validity

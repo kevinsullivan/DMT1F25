@@ -1,1 +1,0 @@
-[Header 2 ("counterexamples", [], []) [Str "Counterexamples"]]

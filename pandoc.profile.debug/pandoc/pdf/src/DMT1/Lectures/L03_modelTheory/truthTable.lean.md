@@ -1,1 +1,0 @@
-[Header 2 ("truth-tables", [], []) [Str "Truth Tables"]]
