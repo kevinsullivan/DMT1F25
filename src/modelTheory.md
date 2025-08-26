@@ -5,7 +5,7 @@ THIS SECTION IS UNDER CONSTRUCTION.
 The semantics of propositional logic enable the
 evaluation an expression under an interpretation
 (for it). As we've seen, an interpretation in
-propositional logic is in the form of a *function*
+propositional logic is in the form of a *function*m
 from the variable expressions in the expression
 to the Boolean values that the interpretation is
 said to *assign* to them.

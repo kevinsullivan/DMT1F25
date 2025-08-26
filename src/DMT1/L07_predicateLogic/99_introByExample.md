@@ -1,4 +1,4 @@
-mak# Propositions as Types by Example
+# Propositions as Types by Example
 
 <!-- toc -->
 

@@ -2,7 +2,7 @@
 
 <!-- toc -->
 
-The materials in this chapter depends on our specification
+The material in this chapter depends on our specification
 of the syntax of propositional logic. We enclose these
 definitions in a namespace, DMT1.lecture.propLogic.axioms,
 to avoid naming conflicts with definitions in other files.

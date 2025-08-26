@@ -18,7 +18,7 @@ additional-js = [
 ]
 mathjax-support = true
 git-repository-url = "https://github.com/kevinsullivan/Instructor"
-git-repository-icon = "fa-github" # Optional: adds GitHub icon
+# git-repository-icon = "fa-github" # Optional: adds GitHub icon
 
 [output.html.playground]
 boring-prefixes = ["# "]
@@ -37,16 +37,16 @@ command = "mdbook-image-size"
 renderer = ["html"]           # Specify renderer for consistency
 
 # Optional: Add search functionality
-[output.html.search]
-enable = true
-limit-results = 30
-teaser-word-count = 30
-use-boolean-and = true
-boost-title = 2
-boost-hierarchy = 1
-boost-paragraph = 1
-expand = true
-heading-split-level = 3
+# [output.html.search]
+# enable = true
+# limit-results = 30
+# teaser-word-count = 30
+# use-boolean-and = true
+# boost-title = 2
+# boost-hierarchy = 1
+# boost-paragraph = 1
+# expand = true
+# heading-split-level = 3
 
 # Optional: Improve print output
 [output.html.print]

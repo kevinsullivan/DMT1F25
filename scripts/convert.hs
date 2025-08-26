@@ -1,12 +1,11 @@
 #!/usr/bin/env runhaskell
-
 {-# LANGUAGE OverloadedStrings #-}
-
 import Data.Char (isSpace)
 import Data.List (isInfixOf)
 import Data.Text qualified as T
 import Data.Text.IO qualified as TIO
 import System.Environment (getArgs)
+import System.FilePath (dropExtension)
 import System.IO (hPutStrLn, stderr)
 
 separator :: String
@@ -25,7 +24,7 @@ main :: IO ()
 main = do
   args <- getArgs
   case args of
-    [inputFile] -> processFile inputFile (inputFile <> "." <> ext)
+    [inputFile] -> processFile inputFile (dropExtension inputFile <> "." <> ext)
     [inputFile, outputFile] -> processFile inputFile outputFile
     _ -> hPutStrLn stderr "Usage: runhaskell convert.hs <input filename> [output filename]"
 
@@ -43,7 +42,7 @@ statefulMap f s [] = ([], s)
 statefulMap f s (x : xs) =
   let (b, s') = f s x
       (bs, s'') = statefulMap f s' xs
-   in (b : bs, s'')
+  in (b : bs, s'')
 
 data Mode = Code | Lit deriving (Eq, Show)
 
@@ -60,11 +59,11 @@ formatCodeBlock :: [String] -> [String]
 formatCodeBlock ls
   | null nonBlanks = ls
   | otherwise =
-      replicate startBlanks []
-        ++ [codeStart]
-        ++ nonBlanks
-        ++ [codeEnd]
-        ++ replicate endBlanks []
+    replicate startBlanks []
+    ++ [codeStart]
+    ++ nonBlanks
+    ++ [codeEnd]
+    ++ replicate endBlanks []
   where
     startBlanks = length $ takeWhile whitespace ls
     endBlanks = length $ takeWhile whitespace $ reverse ls
@@ -75,7 +74,7 @@ group [] = []
 group ((k, v) : rest) =
   let (matching, others) = span (\(k', _) -> k == k') rest
       values = v : map snd matching
-   in (k, values) : group others
+  in (k, values) : group others
 
 step :: Mode -> String -> ([(Mode, String)], Mode)
 step Lit l
