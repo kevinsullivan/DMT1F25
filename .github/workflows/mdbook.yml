@@ -77,12 +77,12 @@ jobs:
         run: echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
 
       # Cache Node.js and npm packages
-      - name: Setup Node and cache npm
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
+      # - name: Setup Node and cache npm
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
+      #     cache: "npm"
+      #     cache-dependency-path: "**/package-lock.json"
 
       # Cache mermaid-cli globally
       - name: Cache global npm packages
