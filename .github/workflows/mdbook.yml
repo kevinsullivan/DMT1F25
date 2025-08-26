@@ -81,35 +81,6 @@ jobs:
         with:
           node-version: "18.19.1" # overrides any .nvmrc/.node-version
 
-      # - name: Install mermaid-cli
-      #   run: |
-      #     npm config set registry https://registry.npmjs.org/
-      #     npm config set @mermaid-js:registry https://registry.npmjs.org/
-      #     npm install -g @mermaid-js/mermaid-cli@10.9.1
-
-      # Cache Node.js and npm packages
-      # - name: Setup Node and cache npm
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: ${{ env.NODE_VERSION }}
-      #     cache: "npm"
-      #     cache-dependency-path: "**/package-lock.json"
-
-      # Cache mermaid-cli globally
-      # - name: Cache global npm packages
-      #   uses: actions/cache@v4
-      #   id: cache-npm-global
-      #   with:
-      #     path: ~/.npm
-      #     key: npm-global-${{ runner.os }}-mermaid-cli-${{ hashFiles('**/package-lock.json') }}-v1
-      #     restore-keys: |
-      #       npm-global-${{ runner.os }}-mermaid-cli-
-
-      # Install mermaid-cli (only if not cached)
-      # - name: Install mermaid-cli
-      #   if: steps.cache-npm-global.outputs.cache-hit != 'true'
-      #   run: npm install -g @mermaid-js/mermaid-cli
-
       # Cache mdBook build dependencies
       - name: Cache mdBook build
         uses: actions/cache@v4
