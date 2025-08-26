@@ -5,9 +5,9 @@
 
 ---
 
-- [Languages](./languages.md)
+- [Languages](./Student/languages.md)
   
-- [Propositional Logic](./propLogic.md)
+- [Propositional Logic](./Student/propLogic.md)
 
   - [Syntax](./Student/DMT1/Lectures/L02_propLogic/formal/syntax.lean.md)
   - [Bare Code](./Student/DMT1/Library/propLogic/syntax.lean.md)
@@ -15,21 +15,21 @@
   - [Semantics](./Student/DMT1/Lectures/L02_propLogic/formal/semantics.lean.md)
   - [Interpretations](./Student/DMT1/Lectures/L02_propLogic/formal/interpretation.lean.md)
 
-- [Model Theory](./modelTheory.md)
+- [Model Theory](./Student/modelTheory.md)
   - [Models](./Student/DMT1/Lectures/L03_modelTheory/models.lean.md)
   - [Truth Tables](./Student/DMT1/Lectures/L03_modelTheory/truthTable.lean.md)
   - [Counterexamples](./Student/DMT1/Lectures/L03_modelTheory/counterexamples.lean.md)
   - [Propertiesx](./Student/DMT1/Lectures/L03_modelTheory/properties.lean.md)
   - [Validity](./Student/DMT1/Lectures/L03_modelTheory/validity.lean.md)
   
-- [Arithmetic](./arithmetic.md)
+- [Arithmetic](./Student/arithmetic.md)
   - [Domain](./Student/DMT1/Lectures/L04_natArithmetic/domain.lean.md)
   - [Syntax](./Student/DMT1/Lectures/L04_natArithmetic/syntax.lean.md)
   - [Semantics](./Student/DMT1/Lectures/L04_natArithmetic/semantics.lean.md)
   - [Induction](./Student/DMT1/Lectures/L04_natArithmetic/induction.lean.md)
   - [Examples](./Student/DMT1/Lectures/L04_natArithmetic/examples.lean.md)
   
-- [Theory Extensions](./TheoryExtensions.md)
+- [Theory Extensions](./Student/TheoryExtensions.md)
   - [Domain](./Student/DMT1/Lectures/L05_theoryExtensions/domain.lean.md)
   - [Syntax](./Student/DMT1/Lectures/L05_theoryExtensions/syntax.lean.md)
   - [Semantics](./Student/DMT1/Lectures/L05_theoryExtensions/semantics.lean.md)
@@ -38,9 +38,9 @@
 
 - [Induction](./Student/DMT1/Lectures/L06_induction/induction.lean.md)
 
-- [Mathlib](./mathlib.md)
+- [Mathlib](./Student/mathlib.md)
 
-- [(Higher-Order) Predicate Logic](./predLogic.md)
+- [(Higher-Order) Predicate Logic](./Student/predLogic.md)
   - [Introduction](./Student/DMT1/Lectures/L07_predicateLogic/00_introduction.lean.md)
   - [Propositions as Data Types](./Student/DMT1/Lectures/L07_predicateLogic/01_propsAsCompTypes.lean.md)
   - [Propositions as Logical Types](./Student/DMT1/Lectures/L07_predicateLogic/01_propsAsLogicalTypes.lean.md)
@@ -51,7 +51,7 @@
     - [Exists](./Student/DMT1/Lectures/L07_predicateLogic/05_quantifiers_exists.lean.md)
   - [Dependent Type Theory](./Student/DMT1/Lectures/L07_predicateLogic/06_dependentTypes.lean.md)
   
-- [Sets and Relations](./setTheory)
+- [Sets and Relations](./Student/setTheory)
   - [Sets](./Student/DMT1/Lectures/L08_setsRelationsFunctions/C01_sets.lean.md)
   - [Relations](./Student/DMT1/Lectures/L08_setsRelationsFunctions/C02_relations.lean.md)
   - [Equality](./Student/DMT1/Lectures/L08_setsRelationsFunctions/C03_equality.lean.md)
