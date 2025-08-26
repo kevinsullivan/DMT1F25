@@ -23,60 +23,103 @@ jobs:
       MDBOOK_MERMAID_VERSION: "0.15.0"
       MDBOOK_IMAGE_SIZE_VERSION: "0.2.1"
       NODE_VERSION: "18.19.1"
+
     steps:
       - uses: actions/checkout@v4
 
-      # Rust & mdBook
+      # Cache Rust toolchain and Cargo registry
+      - name: Cache Rust toolchain
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.rustup
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+          key: rust-toolchain-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml') }}-v2
+          restore-keys: |
+            rust-toolchain-${{ runner.os }}-
+
+      # Cache Cargo binaries (mdBook and preprocessors)
+      - name: Cache Cargo binaries
+        uses: actions/cache@v4
+        id: cache-cargo-binaries
+        with:
+          path: ~/.cargo/bin
+          key: cargo-binaries-${{ runner.os }}-mdbook-${{ env.MDBOOK_VERSION }}-toc-${{ env.MDBOOK_TOC_VERSION }}-mermaid-${{ env.MDBOOK_MERMAID_VERSION }}-imgsize-${{ env.MDBOOK_IMAGE_SIZE_VERSION }}-v1
+          restore-keys: |
+            cargo-binaries-${{ runner.os }}-mdbook-${{ env.MDBOOK_VERSION }}-
+
+      # Install Rust & mdBook (only if not cached)
       - name: Install Rust & mdBook
+        if: steps.cache-cargo-binaries.outputs.cache-hit != 'true'
         shell: bash
         run: |
           set -eux
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          "$HOME/.cargo/bin/rustup" update
-          "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_VERSION}" mdbook
-          "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_TOC_VERSION}" mdbook-toc
-          "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_IMAGE_SIZE_VERSION}" mdbook-image-size
-          "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_MERMAID_VERSION}" mdbook-mermaid
 
-      # # - name: Install mermaid-cli
-      # #   run: |
-      # #     npm config set registry https://registry.npmjs.org/
-      # #     npm config set @mermaid-js:registry https://registry.npmjs.org/
-      # #     npm install -g @mermaid-js/mermaid-cli@10.9.1
+          # Install Rust if not already installed
+          if ! command -v rustup &> /dev/null; then
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          fi
 
-      # # - name: Install mdbook-toc & mdbook-image-size (cargo)
-      # #   shell: bash
-      # #   run: |
-      # #     set -eux
-      # #     echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          "$HOME/.cargo/bin/rustup" update stable
+          "$HOME/.cargo/bin/rustup" default stable
 
-      # #     "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_IMAGE_SIZE_VERSION}" mdbook-image-size
-      # #     "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_MERMAID_VERSION}" mdbook-mermaid
+          # Install mdBook and preprocessors
+          "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_VERSION}" mdbook --locked
+          "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_TOC_VERSION}" mdbook-toc --locked
+          "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_IMAGE_SIZE_VERSION}" mdbook-image-size --locked
+          "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_MERMAID_VERSION}" mdbook-mermaid --locked
 
-      # # Preprocessors (toc, mermaid, image-size)
-      # - name: Install mdBook preprocessors
-      #   shell: bash
-      #   run: |
-      #     set -eux
-      #     mkdir -p "$HOME/.local/bin"
-      #     echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      # Add Cargo bin to PATH (needed whether cached or not)
+      - name: Add Cargo bin to PATH
+        run: echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
 
-      #     # mdbook-toc
-      #     wget -qO- "https://github.com/badboy/mdbook-toc/releases/download/${MDBOOK_TOC_VERSION}/mdbook-toc-${MDBOOK_TOC_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
-      #       | tar xz -C "$HOME/.local/bin"
+      # Cache Node.js and npm packages
+      - name: Setup Node and cache npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
 
-      #     # mdbook-image-size
-      #     wget -qO- "https://github.com/nicholasphair/mdbook-image-size/releases/download/v.${MDBOOK_IMAGE_SIZE_VERSION}/mdbook-image-size-v.${MDBOOK_IMAGE_SIZE_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
-      #       | tar xz -C "$HOME/.local/bin"
+      # Cache mermaid-cli globally
+      - name: Cache global npm packages
+        uses: actions/cache@v4
+        id: cache-npm-global
+        with:
+          path: ~/.npm
+          key: npm-global-${{ runner.os }}-mermaid-cli-${{ hashFiles('**/package-lock.json') }}-v1
+          restore-keys: |
+            npm-global-${{ runner.os }}-mermaid-cli-
 
-      # # Mermaid CLI required by mdbook-mermaid
-      # - name: Setup Node and install mermaid-cli
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: ${{ env.NODE_VERSION }}
-      # - name: Install mermaid-cli
-      #   run: npm install -g @mermaid-js/mermaid-cli
+      # Install mermaid-cli (only if not cached)
+      - name: Install mermaid-cli
+        if: steps.cache-npm-global.outputs.cache-hit != 'true'
+        run: npm install -g @mermaid-js/mermaid-cli
+
+      # Cache mdBook build dependencies
+      - name: Cache mdBook build
+        uses: actions/cache@v4
+        with:
+          path: |
+            book/
+            target/
+          key: mdbook-build-${{ runner.os }}-${{ hashFiles('book.toml', 'src/**/*.md') }}-v1
+          restore-keys: |
+            mdbook-build-${{ runner.os }}-
+
+      # Verify installations
+      - name: Verify tool installations
+        run: |
+          echo "🔍 Verifying installations..."
+          mdbook --version
+          mdbook-toc --version || echo "⚠️ mdbook-toc not available"
+          mdbook-mermaid --version || echo "⚠️ mdbook-mermaid not available"
+          mdbook-image-size --version || echo "⚠️ mdbook-image-size not available"
+          mmdc --version || echo "⚠️ mermaid-cli not available"
+          echo "✅ Tool verification complete"
 
       # Pages setup & build
       - name: Setup Pages
@@ -84,7 +127,20 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Build with mdBook
-        run: mdbook build
+        run: |
+          echo "🔨 Building mdBook..."
+          mdbook build
+
+          # Show build statistics
+          if [[ -d book ]]; then
+            echo "📊 Build completed successfully!"
+            echo "📄 HTML files: $(find book -name '*.html' | wc -l)"
+            echo "📁 Total files: $(find book -type f | wc -l)"
+            echo "💾 Book size: $(du -sh book | cut -f1)"
+          else
+            echo "❌ Build failed - no output directory found"
+            exit 1
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -101,3 +157,9 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # Optional: Show deployment summary
+      - name: Deployment Summary
+        run: |
+          echo "🚀 Deployment completed successfully!"
+          echo "🌐 Site URL: ${{ steps.deployment.outputs.page_url }}"
