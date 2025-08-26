@@ -52,6 +52,8 @@ RUN apt-get update --fix-missing && \
     # fonts-noto-emoji \
     locales \
     lsb-release \
+    nodejs \
+    npm \
     pandoc  \
     pkg-config \
     python3-dev \
@@ -99,16 +101,6 @@ RUN fc-cache -f -v
 #     && fc-cache -f -v \
 #     && rm -rf /var/lib/apt/lists/* /tmp/stix2-otf.zip /tmp/stix2
 # RUN fc-cache -f -v
-
-
-# ----- Node.js (system-wide) -----
-RUN mkdir -p /opt/node 
-RUN curl -fsSLo /tmp/node.tar.xz "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" && \
-    tar -xf /tmp/node.tar.xz -C /opt/node --strip-components=1 && \
-    ln -sf /opt/node/bin/node /usr/local/bin/node && \
-    ln -sf /opt/node/bin/npm  /usr/local/bin/npm && \
-    ln -sf /opt/node/bin/npx  /usr/local/bin/npx && \
-    rm -f /tmp/node.tar.xz
 
 # ----- Create non-root user and workspace -----
 RUN useradd -m -s /bin/bash dev && \
