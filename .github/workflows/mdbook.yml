@@ -1,4 +1,4 @@
-# Deploy mdBook site - Binary download with fallbacks
+# Deploy mdBook site - No external actions required
 name: Deploy mdBook to GitHub Pages
 
 on:
@@ -11,9 +11,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: "pages"
@@ -23,201 +21,333 @@ env:
   MDBOOK_VERSION: "0.4.52"
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Manual checkout and setup
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
+          echo "🔧 Setting up environment..."
 
-      - name: Create bin directory
-        run: mkdir -p bin
+          # Manual checkout
+          echo "📥 Checking out repository..."
+          git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git .
+          git checkout ${{ github.sha }}
+
+          echo "✅ Repository checked out successfully"
+          echo "📍 Current commit: $(git rev-parse HEAD)"
+
+          # Show repository structure
+          echo "📁 Repository structure:"
+          ls -la
+
+          if [[ -d src ]]; then
+            echo "📚 Source files:"
+            find src -name "*.md" | head -5 | sed 's/^/  /'
+          fi
 
       - name: Download and install mdBook
         run: |
           set -euo pipefail
 
-          echo "🔍 Attempting to download mdBook v${MDBOOK_VERSION}..."
+          echo "📦 Creating directories..."
+          mkdir -p bin
 
-          # Method 1: Direct download with proper extraction
-          download_mdbook() {
-            local url="https://github.com/rust-lang/mdBook/releases/download/v${MDBOOK_VERSION}/mdbook-v${MDBOOK_VERSION}-x86_64-unknown-linux-gnu.tar.gz"
-            echo "📥 Trying direct download from: $url"
+          echo "📥 Downloading mdBook v${MDBOOK_VERSION}..."
+
+          # Download with wget and comprehensive error checking
+          if wget -q --show-progress --timeout=30 --tries=3 \
+            "https://github.com/rust-lang/mdBook/releases/download/v${MDBOOK_VERSION}/mdbook-v${MDBOOK_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            -O mdbook.tar.gz; then
             
-            if curl -fsSL "$url" -o mdbook.tar.gz; then
-              # Check if we got a real file (not an error page)
-              if [[ $(stat -c%s mdbook.tar.gz) -gt 1000 ]]; then
-                echo "✅ Download successful, extracting..."
-                if tar -xzf mdbook.tar.gz -C bin/; then
-                  echo "✅ mdBook extracted successfully"
-                  return 0
+            echo "📊 Download completed. Checking file..."
+            
+            # Check if we got a real file
+            if [[ -f mdbook.tar.gz ]]; then
+              file_size=$(stat -c%s mdbook.tar.gz)
+              echo "📏 Downloaded file size: $file_size bytes"
+              
+              if [[ $file_size -gt 100000 ]]; then
+                echo "📦 Extracting mdBook..."
+                if tar -xzf mdbook.tar.gz; then
+                  if [[ -f mdbook ]]; then
+                    mv mdbook bin/
+                    chmod +x bin/mdbook
+                    echo "✅ mdBook installed successfully"
+                  else
+                    echo "❌ mdbook binary not found after extraction"
+                    exit 1
+                  fi
                 else
-                  echo "❌ Failed to extract mdBook"
-                  return 1
+                  echo "❌ Failed to extract mdbook.tar.gz"
+                  echo "File type: $(file mdbook.tar.gz)"
+                  exit 1
                 fi
               else
-                echo "❌ Downloaded file too small (probably an error page)"
-                return 1
+                echo "❌ Downloaded file too small, likely an error page"
+                echo "File contents:"
+                head -n 20 mdbook.tar.gz
+                exit 1
               fi
             else
-              echo "❌ Download failed"
-              return 1
+              echo "❌ Download failed - no file created"
+              exit 1
             fi
-          }
-
-          # Method 2: Using wget as fallback
-          download_mdbook_wget() {
-            local url="https://github.com/rust-lang/mdBook/releases/download/v${MDBOOK_VERSION}/mdbook-v${MDBOOK_VERSION}-x86_64-unknown-linux-gnu.tar.gz"
-            echo "📥 Trying wget download from: $url"
-            
-            if wget -q "$url" -O mdbook.tar.gz; then
-              if [[ $(stat -c%s mdbook.tar.gz) -gt 1000 ]]; then
-                if tar -xzf mdbook.tar.gz -C bin/; then
-                  echo "✅ mdBook extracted successfully via wget"
-                  return 0
-                fi
-              fi
-            fi
+          else
             echo "❌ wget download failed"
-            return 1
-          }
-
-          # Method 3: Try alternative version (0.4.51 as fallback)
-          download_fallback_version() {
-            local fallback_version="0.4.51"
-            local url="https://github.com/rust-lang/mdBook/releases/download/v${fallback_version}/mdbook-v${fallback_version}-x86_64-unknown-linux-gnu.tar.gz"
-            echo "📥 Trying fallback version v${fallback_version}: $url"
+            echo "Trying alternative approach..."
             
-            if curl -fsSL "$url" -o mdbook.tar.gz && [[ $(stat -c%s mdbook.tar.gz) -gt 1000 ]]; then
-              if tar -xzf mdbook.tar.gz -C bin/; then
-                echo "✅ Fallback mdBook v${fallback_version} installed successfully"
-                return 0
+            # Fallback: try with curl
+            if command -v curl >/dev/null; then
+              echo "🔄 Attempting download with curl..."
+              if curl -fsSL --retry 3 --retry-delay 5 \
+                "https://github.com/rust-lang/mdBook/releases/download/v${MDBOOK_VERSION}/mdbook-v${MDBOOK_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+                -o mdbook.tar.gz; then
+                
+                file_size=$(stat -c%s mdbook.tar.gz)
+                if [[ $file_size -gt 100000 ]]; then
+                  tar -xzf mdbook.tar.gz
+                  mv mdbook bin/
+                  chmod +x bin/mdbook
+                  echo "✅ mdBook installed via curl fallback"
+                else
+                  echo "❌ Curl download also failed"
+                  exit 1
+                fi
+              else
+                echo "❌ Curl download failed too"
+                exit 1
               fi
+            else
+              echo "❌ No curl available for fallback"
+              exit 1
             fi
-            echo "❌ Fallback version download failed"
-            return 1
-          }
-
-          # Method 4: Install via package manager
-          install_via_apt() {
-            echo "📦 Trying installation via package manager..."
-            
-            # Update package list and try to install via snap
-            if command -v snap >/dev/null 2>&1; then
-              if sudo snap install mdbook; then
-                # Create symlink in bin directory
-                ln -s /snap/bin/mdbook bin/mdbook
-                echo "✅ mdBook installed via snap"
-                return 0
-              fi
-            fi
-            
-            echo "❌ Package manager installation failed"
-            return 1
-          }
-
-          # Method 5: Compile from source (last resort)
-          compile_from_source() {
-            echo "🦀 Last resort: compiling from source..."
-            
-            # Install Rust
-            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-            source ~/.cargo/env
-            
-            # Install mdBook
-            if cargo install mdbook --vers "${MDBOOK_VERSION}" --locked --root ./; then
-              echo "✅ mdBook compiled from source successfully"
-              return 0
-            fi
-            
-            echo "❌ Source compilation failed"
-            return 1
-          }
-
-          # Try methods in order
-          if download_mdbook; then
-            echo "🎉 Method 1 (direct download) succeeded"
-          elif download_mdbook_wget; then
-            echo "🎉 Method 2 (wget) succeeded"
-          elif download_fallback_version; then
-            echo "🎉 Method 3 (fallback version) succeeded"
-          elif install_via_apt; then
-            echo "🎉 Method 4 (package manager) succeeded"
-          elif compile_from_source; then
-            echo "🎉 Method 5 (source compilation) succeeded"
-          else
-            echo "❌ All installation methods failed"
-            exit 1
-          fi
-
-          # Verify installation
-          if [[ -x "bin/mdbook" ]]; then
-            echo "✅ mdBook binary verified in bin/mdbook"
-            ./bin/mdbook --version
-          else
-            echo "❌ mdBook binary not found in expected location"
-            echo "Available files in bin/:"
-            ls -la bin/ || echo "bin/ directory empty or doesn't exist"
-            exit 1
           fi
 
           # Clean up
           rm -f mdbook.tar.gz
 
-      - name: Add mdbook to PATH
-        run: echo "${GITHUB_WORKSPACE}/bin" >> $GITHUB_PATH
+          # Verify installation
+          if ./bin/mdbook --version; then
+            echo "🎉 mdBook installation verified"
+          else
+            echo "❌ mdBook installation verification failed"
+            exit 1
+          fi
 
-      - name: Verify mdBook installation
+      - name: Build mdBook site
         run: |
-          echo "🔍 Verifying mdBook installation..."
-          which mdbook || echo "mdbook not in PATH"
-          mdbook --version || echo "mdbook version check failed"
+          set -euo pipefail
 
-          # Show PATH for debugging
-          echo "Current PATH: $PATH"
-          echo "Available executables in bin/:"
-          ls -la bin/ || echo "bin/ directory issue"
-
-      - name: Build with mdBook
-        run: |
           echo "🔨 Building mdBook site..."
 
-          # Show current directory and files
-          echo "📁 Current directory: $(pwd)"
-          echo "📋 Available files:"
-          ls -la
+          # Add mdbook to PATH
+          export PATH="${PWD}/bin:$PATH"
+
+          # Show configuration
+          if [[ -f book.toml ]]; then
+            echo "📋 Book configuration:"
+            echo "----------------------------------------"
+            cat book.toml
+            echo "----------------------------------------"
+          else
+            echo "⚠️ No book.toml found - using mdBook defaults"
+          fi
 
           # Build the book
-          mdbook build
-
-          # Verify build output  
-          if [[ ! -d "./book" ]]; then
-            echo "❌ Build failed: book directory not found"
+          echo "🏗️ Running mdbook build..."
+          if mdbook build; then
+            echo "✅ Build successful"
+          else
+            echo "❌ Build failed"
+            echo "📁 Current directory contents:"
+            ls -la
+            if [[ -d src ]]; then
+              echo "📚 Source directory contents:"
+              find src -type f | head -10
+            fi
             exit 1
           fi
 
-          if [[ ! -f "./book/index.html" ]]; then
-            echo "❌ Build failed: index.html not found"
+          # Verify output
+          if [[ ! -d book ]]; then
+            echo "❌ Build output directory 'book' not found"
+            echo "Available directories:"
+            ls -la
             exit 1
           fi
 
-          echo "✅ Build completed successfully"
-          echo "📊 Generated $(find ./book -name "*.html" | wc -l) HTML files"
+          if [[ ! -f book/index.html ]]; then
+            echo "❌ No index.html in build output"
+            echo "Book directory contents:"
+            ls -la book/
+            exit 1
+          fi
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: ./book
+          # Show build statistics
+          html_count=$(find book -name "*.html" | wc -l)
+          total_files=$(find book -type f | wc -l)
+          book_size=$(du -sh book | cut -f1)
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
+          echo "📊 Build Statistics:"
+          echo "  📄 HTML files: $html_count"
+          echo "  📁 Total files: $total_files"
+          echo "  💾 Book size: $book_size"
+
+          echo "📋 Sample generated files:"
+          find book -name "*.html" | head -5 | sed 's/^/  /'
+
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          echo "🚀 Deploying to GitHub Pages..."
+
+          # Configure git
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Save current state
+          CURRENT_COMMIT=$(git rev-parse HEAD)
+          CURRENT_BRANCH=$(git branch --show-current)
+
+          echo "📋 Deployment info:"
+          echo "  Source commit: $CURRENT_COMMIT"
+          echo "  Source branch: $CURRENT_BRANCH"
+          echo "  Repository: ${{ github.repository }}"
+
+          # Create deployment directory
+          echo "📦 Preparing deployment content..."
+          mkdir -p /tmp/deploy
+          cp -r book/* /tmp/deploy/
+
+          # Add deployment metadata
+          cat >> /tmp/deploy/index.html << EOF
+          <!-- 
+          Generated by mdBook ${MDBOOK_VERSION}
+          Source: ${{ github.repository }}
+          Commit: $CURRENT_COMMIT
+          Branch: $CURRENT_BRANCH  
+          Built: $(date -u)
+          Workflow: ${{ github.workflow }}
+          Run: ${{ github.run_id }}
+          -->
+          EOF
+
+          # Add .nojekyll to prevent Jekyll processing
+          touch /tmp/deploy/.nojekyll
+
+          # Switch to gh-pages branch
+          if git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
+            echo "📋 Checking out existing gh-pages branch..."
+            git fetch origin gh-pages:gh-pages
+            git checkout gh-pages
+          else
+            echo "🆕 Creating new gh-pages branch..."
+            git checkout --orphan gh-pages
+          fi
+
+          # Clear existing content (but keep .git)
+          echo "🧹 Clearing old content..."
+          find . -maxdepth 1 -not -name '.git' -not -name '.' -not -name '..' -exec rm -rf {} + 2>/dev/null || true
+
+          # Copy new content
+          echo "📂 Copying new content..."
+          cp -r /tmp/deploy/* .
+
+          # Clean up temp directory
+          rm -rf /tmp/deploy
+
+          # Add all files
+          git add .
+
+          # Check if there are changes
+          if git diff --staged --quiet; then
+            echo "ℹ️ No changes to deploy"
+            echo "🌐 Site URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+          else
+            echo "💾 Committing changes..."
+            git commit -m "🚀 Deploy mdBook site
+
+          📖 mdBook version: ${MDBOOK_VERSION}
+          📊 Source commit: $CURRENT_COMMIT
+          🌿 Source branch: $CURRENT_BRANCH
+          👤 Deployed by: ${{ github.actor }}
+          📅 Deploy time: $(date -u)
+          🏃 Workflow run: ${{ github.run_id }}
+
+          Generated $(find . -name '*.html' | wc -l) HTML files"
+            
+            echo "⬆️ Pushing to gh-pages branch..."
+            if git push origin gh-pages; then
+              echo "✅ Deployment successful!"
+              echo ""
+              echo "🌐 Your site will be available at:"
+              echo "   https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+              echo ""
+              echo "📝 Note: It may take 5-10 minutes for changes to appear"
+            else
+              echo "❌ Failed to push to gh-pages branch"
+              exit 1
+            fi
+          fi
+
+      - name: Deployment summary
+        if: success()
+        run: |
+          echo ""
+          echo "🎉 ================================"
+          echo "   mdBook Deployment Complete!"
+          echo "================================"
+          echo ""
+          echo "🌐 Site URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+          echo "📖 mdBook Version: ${MDBOOK_VERSION}"
+          echo "📊 Repository: ${{ github.repository }}"
+          echo "🌿 Branch: ${{ github.ref_name }}"
+          echo "📍 Commit: ${{ github.sha }}"
+          echo "👤 Deployed by: ${{ github.actor }}"
+          echo "📅 Deploy time: $(date -u)"
+          echo ""
+          echo "📚 Next steps:"
+          echo "  1. Visit your site (link above)"
+          echo "  2. Changes may take 5-10 minutes to appear"
+          echo "  3. Configure custom domain in repo Settings > Pages"
+          echo "  4. Set up branch protection for main branch"
+          echo ""
+
+      - name: Failure troubleshooting
+        if: failure()
+        run: |
+          echo ""
+          echo "❌ ================================"
+          echo "   Deployment Failed - Debug Info"
+          echo "================================"
+          echo ""
+          echo "🔍 Environment info:"
+          echo "  Repository: ${{ github.repository }}"
+          echo "  Branch: ${{ github.ref_name }}"
+          echo "  Commit: ${{ github.sha }}"
+          echo "  Runner: $(uname -a)"
+          echo ""
+          echo "📁 Current directory:"
+          pwd
+          ls -la
+          echo ""
+          echo "🌐 Network connectivity test:"
+          curl -s --max-time 10 https://github.com/rust-lang/mdBook/releases || echo "Cannot reach GitHub releases"
+          echo ""
+          echo "🔧 Available tools:"
+          echo "  wget: $(which wget || echo 'not found')"
+          echo "  curl: $(which curl || echo 'not found')"
+          echo "  git: $(git --version || echo 'not found')"
+          echo ""
+          echo "📋 Troubleshooting steps:"
+          echo "  1. Check network connectivity"
+          echo "  2. Verify GitHub Pages is enabled in repo settings"
+          echo "  3. Ensure workflow has write permissions"
+          echo "  4. Check if book.toml and src/ directory exist"
