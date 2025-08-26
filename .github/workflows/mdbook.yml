@@ -39,7 +39,8 @@ jobs:
       - name: Install mermaid-cli
         run: |
           npm config set registry https://registry.npmjs.org/
-          npm install -g @mermaid-js/mermaid-cli
+          npm config set @mermaid-js:registry https://registry.npmjs.org/
+          npm install -g @mermaid-js/mermaid-cli@10.9.1
 
       - name: Install mdbook-toc & mdbook-image-size (cargo)
         shell: bash
