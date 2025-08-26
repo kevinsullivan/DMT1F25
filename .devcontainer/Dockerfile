@@ -75,6 +75,8 @@ RUN apt-get update --fix-missing && \
     locale-gen en_US.UTF-8 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN curl -s https://raw.githubusercontent.com/nektos/act/master/install.sh | bash
+
 # RUN ln -sf /usr/share/texmf/fonts/opentype /usr/share/fonts/truetype/texlive-opentype || true
 RUN ln -sf /usr/share/texlive/texmf-dist/fonts/opentype /usr/share/fonts/truetype/texlive-opentype || true
 RUN fc-cache -f -v
