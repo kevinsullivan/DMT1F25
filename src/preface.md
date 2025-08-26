@@ -29,7 +29,7 @@ Any opinions, findings, and conclusions or recommendations expressed in this mat
 
 The views expressed in this article are those of the author(s) and do not necessarily reflect the views, policies, or positions of the University of Virginia.
 
-This work expresses cetain technical juddgments by the author based on observation and experience but not always on outcomes of scientific testing. No IRBs have been needed or sought. No student or other human subjects data is reported here or has been reported outside of official reporting channels.
+This work expresses cetain technical judgments by the author based on observation and experience but not always on outcomes of scientific testing. No IRBs have been needed or sought. No student or other human subjects data is reported here or has been reported outside of official reporting channels.
 
 ## A Couple of Pillars
 
@@ -38,8 +38,6 @@ Computation and reasoning are two great intertwined pillars of computer science.
 On the other hand, if we want to remove any doubt that addition as defined by our code has some a critical propery of addition from elementary arithmetic, then we must engage in reasoning. First, we must express the property of arithmetic of interest in a mathematical logic. Second, we must express the proposition that the computation defined by our code has that same property. Let's use a concrete example.
 
 One property of addition in elementary arithmetic is that the sum of any number, *x*, with, respectively, two unequal numbers, *y* and *z*, will *always* produce unequal results. We first make the assertion precise by expressing it in a formal logic. In  *predicate logic* we could express the claims as *∀ (x y z : Nat), y ≠ z → x + y ≠ x + z*: for any three natural numbers (Nat), call them x, y, and z, if y is not equal to z then x + y is not equal to x + z*.
-
-
 
 Consequently we have languages for expressing *conputations*, namely *programming* languages, and languages for expressing propositions about worlds or domains of interest, namely *logics*, paired with formal languages for expressing rigorous arguments for either the *truth* of such propositions in a specific domain or world, and their *validity*, which is to say their truth in all possible worlds within the given domain of discourse.
 
@@ -55,13 +53,13 @@ On the demand side, on the other hand, we are now seeing rapidly growing needs f
 
 The conclusions of the author include the following: (1) Our field has failed to train generations of graduating computer scientists in the thought processes and the formal languages needed to be productive with *reasoning* in theory or industrial practice. (2) The standard DMT1 course is, for far too many students, not a productive or memorable experience, as evinced by the exceptionally poor state of knowledge of most incoming graduate students in computer science (in the author's experience). (3) It is time to replace the standard DMT1 course with something entirely new, different, and far better. (4) It is time to think about re-balancing the entire undergraduate curriculum toward greater emphasis on mathematical abstractions and formal reasoning.
 
-The course presented here is thus offered as a model for an entirely new approach. At the highest level, it teaches all of the core material in any DMT1 course but with all of the context formalized in the reasoning language, Lean 4. In languages like this, supported by wonderful tooling, reasoning is linked to comptuation by the amazing unification known as the the *Curry-Howard Correspondence* (CHC). The CHC holds that formalized deductive reasoning of certains kinds (natural deduction, which is perhaps the core concept in any DMT course) is a form of computing, but not only with the usual data and function types but with now axioms, propositions, and proofs as first-class citizens. 
+The course presented here is thus offered as a model for an entirely new approach. At the highest level, it teaches all of the core material in any DMT1 course but with all of the context formalized in the reasoning language, Lean 4. In languages like this, supported by wonderful tooling, reasoning is linked to comptuation by the amazing unification known as the the *Curry-Howard Correspondence* (CHC). The CHC holds that formalized deductive reasoning of certains kinds (natural deduction, which is perhaps the core concept in any DMT course) is a form of computing, but not only with the usual data and function types but with now axioms, propositions, and proofs as first-class citizens.
 
 Lean 4 is so beautifully expressive of such a broad range of mathematical concepts that a significant community of mathematicians have organized around it to drive the development of formalized versions of mathematics across a very broad range of fields. Meanwhile, CS students remain stuck learning a logic (first-order predicate logic and set theory) that is *not* suitable as a foundation for formalized or automated abstract mathemtics. This course, on the other hand, adopts, *type theory*, here as implemented by Lean 4, as a far better choice, even for early CS students.
 
 ## Some Problems
 
-That we've arrived at a point where reasoning technology is advancing at extraordinary speed but where are students are by and large entirely unprepared to understand or use it. Of course, for many decades, the demand for programming was voracious, and at the same time cost and difficulty of reasoning were prohibitively high. But now the tables are turned. Generative and related AI promise to reduce demand for programming code while the needs of industry and national security are driving significant increases in demand for formal reasoning. 
+That we've arrived at a point where reasoning technology is advancing at extraordinary speed but where are students are by and large entirely unprepared to understand or use it. Of course, for many decades, the demand for programming was voracious, and at the same time cost and difficulty of reasoning were prohibitively high. But now the tables are turned. Generative and related AI promise to reduce demand for programming code while the needs of industry and national security are driving significant increases in demand for formal reasoning.
 
 This course aims to help address the resulting shortfall in talent by radically replacing the traditional undergraduate DMT1 course with a new one, covering essentiall the same basic content, but now using the wildly successful reasoning and computation language and toolset of Lean 4. The course is scoped for a full undergraduate semester or as the first half of an introductory graduate course in formal languages and reasoning. Big changes in in circumstances make now a great time to consider such a transition in CS pedagogy. They include the following:
 
@@ -106,10 +104,10 @@ application of predicates to particulars is ubiquitous in formal reasoning.
 
 Another principle is that all of the main concepts taught in the traditional course must
 be taught in the new course: propositional logic, predicate logic, sets, induction. This
-course covers the same topics but in different ways. 
+course covers the same topics but in different ways.
 
-But it's not only topic coverage. Notations matter. Embeddings of mathematical concepts 
-in Lean often come with the standard notations of the field as a paper-and-pencil affair. 
+But it's not only topic coverage. Notations matter. Embeddings of mathematical concepts
+in Lean often come with the standard notations of the field as a paper-and-pencil affair.
 Differences in surface syntax in having to read and write in set theory as embedded in
 Lean and as learned using paper and pencil are minor, while the gain in capabilities at
 one's fingertips is substantial. They include automated syntax and proof checking, among
@@ -150,9 +148,9 @@ This one, second, specifies the generalized property of a relation of being well
 
 - def isWellFounded  {α  β : Type} : Rel α α → Prop := fun r => ∀ (s : Set α), s ≠ ∅ → ∃ m, (m ∈ s ∧ ¬∃ n ∈ s, r n m)
 
-By the end of the course students should be able to read and explain what this definition 
+By the end of the course students should be able to read and explain what this definition
 means, and *apply* it to particulars in the process of making richer claims about them.
-The undergraduate course does emphasize ongoing practice in the skills of translating between 
+The undergraduate course does emphasize ongoing practice in the skills of translating between
 formal and *natural* natural language.
 
 ## Status
