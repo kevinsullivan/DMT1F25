@@ -6,10 +6,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
-env:
-  # Set your custom domain here, or leave empty for default GitHub Pages URL
-  CUSTOM_DOMAIN: "kevinsullivan.github.io/dmtl4" # Change this to your domain
-  MDBOOK_VERSION: "0.4.52"
+# env:
+# Set your custom domain here, or leave empty for default GitHub Pages URL
+# CUSTOM_DOMAIN: "kevinsullivan.github.io/dmtl4" # Change this to your domain
+# MDBOOK_VERSION: "0.4.52"
 
 jobs:
   build-and-deploy:
