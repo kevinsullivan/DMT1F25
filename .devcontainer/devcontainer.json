@@ -3,16 +3,12 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
-    // Use the non-root user created in the Dockerfile
     "remoteUser": "dev",
     "overrideCommand": false,
     "updateRemoteUserUID": true,
-    // Useful inside tasks/terminals for scripts that read this var
     "containerEnv": {
         "WORKSPACE_FOLDER": "${containerWorkspaceFolder}"
     },
-    // Make elan/lean/lake available in VS Code shells & tasks.
-    // IMPORTANT: use the container's HOME, not the host's.
     "remoteEnv": {
         "PATH": "/home/dev/.elan/bin:/home/dev/.local/bin:${containerEnv:PATH}"
     },
@@ -23,9 +19,20 @@
         "--security-opt",
         "seccomp=unconfined"
     ],
-    // If the Dockerfile already sets PATH (e.g., /etc/profile.d/elan.sh),
-    // this does nothing. Otherwise it appends once so non-login shells see it.
-    // "postCreateCommand": "bash -lc 'command -v lean >/dev/null 2>&1 || { echo \"export PATH=\\\"$HOME/.elan/bin:$HOME/.local/bin:$PATH\\\"\" >> ~/.bashrc; echo \"export PATH=\\\"$HOME/.elan/bin:$HOME/.local/bin:$PATH\\\"\" >> ~/.profile; } && (lean --version || true) && (lake --version || true)'",
+    "forwardPorts": [
+        5037,
+        5038,
+        5555,
+        5554,
+        3000,
+        8080
+    ],
+    "portsAttributes": {
+        "3000": {
+            "label": "Web Server",
+            "onAutoForward": "openBrowser"
+        }
+    },
     "customizations": {
         "vscode": {
             "settings": {
@@ -99,21 +106,11 @@
                 "ms-vscode-remote.remote-wsl",
                 "redhat.vscode-yaml",
                 "ms-vsliveshare.vsliveshare-pack",
-                "yzhang.markdown-all-in-one",
-                "goessner.mdmath",
-                "davidanson.vscode-markdownlint",
-                "mathematic.vscode-pdf",
-                "ms-azuretools.vscode-docker",
-                "eamodio.gitlens",
                 "stephanvs.dot",
-                "ms-vscode-remote.remote-ssh",
                 "github.codespaces",
-                "github.vscode-pull-request-github",
-                "esbenp.prettier-vscode",
                 "vscjava.vscode-java-pack",
                 "Dart-Code.flutter",
                 "vaticle.typeql",
-                "mechatroner.rainbow-csv",
                 "redhat.fabric8-analytics",
                 "ZainChen.json",
                 "42Crunch.vscode-openapi",
@@ -128,11 +125,9 @@
                 "Dart-Code.dart-code",
                 "GitHub.vscode-github-actions",
                 "dt.ghlink",
-                "pflannery.vscode-versionlens",
                 "wayou.vscode-todo-highlight",
                 "denis-gorbachev.lean4-code-actions"
             ]
         }
     }
-    // , "forwardPorts": [5037, 5038, 5555, 5554]
 }

@@ -32,13 +32,14 @@ renderer = ["html"]
 [preprocessor.image-size]
 command = "mdbook-image-size"
 
-[output.pandoc.profile.pdf]
+#[output.pandoc.profile.pdf]
+[output.pandoc]
 to = "latex"
 output-file = "ReasoningAndComputation.pdf"
 pdf-engine = "xelatex"
 template = "/home/dev/.pandoc/templates/stix-math.latex"
 
-[output.pandoc.profile.debug]
-to = "latex"
-output-file = "debug.tex"
-template = "/home/dev/.pandoc/templates/stix-math.latex"
+# [output.pandoc.profile.debug]
+# to = "latex"
+# output-file = "debug.tex"
+# template = "/home/dev/.pandoc/templates/stix-math.latex"
