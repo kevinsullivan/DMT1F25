@@ -46,24 +46,23 @@ def PandQ := And P Q
 ```
 
 
-### Proofs of Propositions -/
+### Proofs of Propositions
 
-```lean
 We've already discussed proofs. Let's now assume that we have
 a few and see what we can do with them.
 
 Next assume that we have proof objects, p, q, and r:
 proofs the propositions, P, Q, and R, respectively.
-```
 
+```lean
 axiom p : P
 axiom q : Q
 axiom r : R
 
 #check P
 #check p
+```
 
-```lean
 ### Logical Connectives: The Case of And (∧)
 
 We've seen that from a few elementary
@@ -87,10 +86,10 @@ As an example, consider this. So far we have:
   - in: (P Q : Prop) (p : Q) (q : Q)
   - out: (And.intro p q) : P ∧ Q
 - notation: for And.intro p q, ⟨ p, q ⟩
-```
 
 
 
+```lean
 -- Two ways of writing the same concept
 def pq :    P ∧ Q    :=  And.intro p q
 def pq' :   P ∧ Q    :=  ⟨ p, q ⟩
@@ -103,8 +102,8 @@ def p_qr' :  P ∧ (Q ∧ R)  :=  ⟨ p, ⟨ q, r ⟩ ⟩
 -- nesting in the other order
 def pq_r :  (P ∧ Q) ∧ R  :=  And.intro (And.intro p q) r
 def pq_r' :  (P ∧ Q) ∧ R  :=  ⟨ ⟨ p, q ⟩, r ⟩
+```
 
-```lean
 ### Deconstructing Proof Objects
 
 And just as we have ways of using proofs of smaller
@@ -115,8 +114,8 @@ elements. For example, from a proof, ⟨ p, q ⟩ of P ∧ Q
 we should be able to "logically deduce, haha" a proof,
 (p : P). Yeah, it's just the first element of the pair
 of proofs that proves P ∧ Q.
-```
 
+```lean
 #check pq.left
 #check pq.right
 #check p_qr
@@ -125,8 +124,8 @@ of proofs that proves P ∧ Q.
 #check pq_r.left
 #check pq_r.left.left
 #check pq_r.left.right
+```
 
-```lean
 ## Theorems!
 
 The combination of primitive programs both for putting
@@ -144,8 +143,8 @@ we nean that for any proposition, P, Q, if you have a proof
 that shows P ∧ Q is true you can always convert it into one
 showing Q ∧ P is true. In short P ∧ Q → Q ∧ P (and it works
 in the other direction, too.)
-```
 
+```lean
 theorem andCommutes : P ∧ Q → Q ∧ P :=
   fun (h : P ∧ Q) =>    -- given a proof of P and Q
     And.intro           -- construct a proof from
@@ -156,8 +155,8 @@ theorem andCommutes : P ∧ Q → Q ∧ P :=
 theorem andCommutes' : P ∧ Q → Q ∧ P :=
   fun (h : P ∧ Q) =>    -- assume we're given proof h
     ⟨ h.right, h.left ⟩ -- construct/return the result
+```
 
-```lean
 There's another whole language in Lean for
 writing exactly the same kind of content, but
 using higher levels of abstraction provided by
@@ -167,24 +166,22 @@ For now we'll continue to use bare programming
 construct proofs, but be aware of the so-called
 *tactic language* as an alternative that you will
 eventually want to use.
-```
 
+```lean
 theorem andCommutes'' : P ∧ Q → Q ∧ P :=
 by                      -- toggles to tactic mode
   intro h               -- introduce h as argument
   let p := And.left h   -- from h extract (p : P)
   let q := And.right h  -- from h extract (q : Q)
   exact  ⟨ q, p ⟩       -- return ⟨ q, p ⟩ : Q ∧ P
+```
 
-```lean
 What we just proved beyond any doubt is that
 if P ∧ Q is true (because there's a proof of it)
 then invariables Q ∧ P must also be true, because
 from that proof of P ∧ Q one can construct a proof
 of Q ∧ P.
-```
 
-```lean
 ### Conjection is Associative
 
 One might similarly expect, based on intuition,
@@ -194,8 +191,8 @@ vice verse. But is that actually true. Here we
 show that it's true in the forward direction, as
 stated. Your assignment is to show that it's true
 in the reverse direction.
-```
 
+```lean
 theorem andAssoc : P ∧ Q ∧ R ↔ (P ∧ Q) ∧ R :=
 by
   -- to prove ↔, prove both directions
@@ -217,8 +214,8 @@ by
     let qr := And.intro q r
     exact (And.intro p qr)
   }
+```
 
-```lean
 ## Wrap Up: New Ideas
 
 ### Implies (→)
@@ -251,6 +248,7 @@ The *Iff (↔)* logical connective. P ↔ Q simple means
 both a proof of P → Q and a proof of Q → P. That's it.
 Moreover, if you have a proof of P ↔ Q then from it you
 can always extract a proof P → Q and a proof of Q → P.
-```
 
+```lean
 end reasoning
+```

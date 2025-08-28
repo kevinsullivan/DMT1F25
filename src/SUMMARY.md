@@ -5,11 +5,10 @@
 
 - [Propositional Logic](propLogic.md)
 
-  - [Syntax](./DMT1/L02_propLogic/syntax.md)
-  - [Bare Code](./DMT1/Library/propLogic/syntax.md)
-  - [Examples](./DMT1/L02_propLogic/axioms.md)
-  - [Semantics](./DMT1/L02_propLogic/semantics.md)
-  - [Interpretations](./DMT1/L02_propLogic/interpretation.md)
+  - [Syntax](./Student/L0DMT1/L02_propLogic/syntax.md)
+  - [Examples](./Student/DMT1/L02_propLogic/axioms.md)
+  - [Semantics](./Student/DMT1/L02_propLogic/semantics.md)
+  - [Interpretations](./Student/DMT1/L02_propLogic/interpretation.md)
 
 ---
 
