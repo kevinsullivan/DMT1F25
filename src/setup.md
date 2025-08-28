@@ -6,9 +6,9 @@ up right away to work with all of this material (which I will frequently update)
 using Lean 4 in the VSCode IDE. To do so you'll have to install a few software
 packages on your computer. Here's what to do.
 
-- if you don't already have *git* [install it](https://git-scm.com/downloads)
+- If you don't already have *git* [install it](https://git-scm.com/downloads)
 - If you don't already have an account on [GitHub.com](https://GitHub.com) create one
-- if you don't already have [VSCode](https://code.visualstudio.com/download), install it
+- If you don't already have [VSCode](https://code.visualstudio.com/download), install it
 - Go to the [class GitHub repo](http://GitHub.com/kevinsullivan/Instructor)
 - *Fork* this repo to make a new copy of it in your GitHub account
 - Go to *your* GitHub account; get the URL of your repo; and clone it on your computer
