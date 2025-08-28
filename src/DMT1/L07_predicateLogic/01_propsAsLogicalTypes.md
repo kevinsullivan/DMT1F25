@@ -1,1 +1,0 @@
-# Propositions as Logical Types
