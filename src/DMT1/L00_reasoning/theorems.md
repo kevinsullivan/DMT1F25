@@ -1,204 +1,59 @@
-# Reasoning in Action: The Case of Conjunction
-```lean
-namespace DMT1.reasoning
-```
+# Theorems
 
-## Propositions
+We now have the inference rules, as axioms, that define
+exactly how proofs of conjunctions (P ∧ Q propositions)
+behave: how you can produce them, and how you can use ones
+you have in constructing other proofs).
 
-Assume that P, Q, and R are arbitrary propositions.
-```lean
-axiom P : Prop
-axiom Q : Prop
-axiom R : Prop
+As a great example, in our logic *we want to know* that
+no matter what propositions one start with, our friends
+*P* and *Q*, that *P ∧ Q* will be true if and only if (in
+other words exactly when) *Q ∧ P* is true. This property
+would rule out that *And* imposes any sense of ordering
+on its two arguments and would allow one to swap the two
+sides of a conjunction at any time with no fear that that
+would change its logical meaning.
 
-#check P
-#check 5
-#check "Hello, World!"
--- #check Z
-```
+A problem we face is that we have no *proof* that *And*
+always behave this way. So far all we have to work with
+are the inference rules: the axioms of *And*. And these
+rules alone don't say directly that *changing argument
+order never changes meanings*.
 
-From these elementary propositions we can form larger
-propositions by combining the existing ones using what
-we call logical connective operators, or connectives.
-One of these connectives is *And*. As a function, it
-takes two propositions as arguments and yields a new
-proposition in which the two given ones are *conjoined*.
+In this chapter we will give a crisp exanmple of deductive
+reasoning by starting with the axioms of *And* and showing
+that *the of commutativity And is a necessary consequence
+of taking these particular inference rules as axioms.* To
+show that *this* claim (proposition) us true, we will of
+course construct a proof of it. Which. Lean. Will. Check!
 
-```lean
-#check And P Q
-```
+## Conjectures
 
-In everyday logical writing, instead of writing *And* in
-front of its its two arguments, as in *And P Q* we use ∧
-as a shorter *infix* notation for *And* and write *P ∧ Q*.
-
-```lean
-#check P ∧ Q
-```
-
-In Lean, propositions are objects, like ordinary values,
-to which we can give names. Here, to the name *PandQ* that
-we just made up, we can bind the proposition, P ∧ Q as a
-value.
-
-```lean
-def PandQ := And P Q
-#check PandQ
-#reduce (types := true) PandQ
-```
-
-
-## Proofs (of Propositions)
-
-We've already discussed proofs. Let's now assume that we have
-a few and see what we can do with them.
-
-Next assume that we have proof objects, p, q, and r:
-proofs the propositions, P, Q, and R, respectively.
-
-```lean
-axiom p : P
-axiom q : Q
-axiom r : R
-
-#check P
-#check p
-```
-
-## Proposition Builders: The Case of And (∧)
-
-We've seen that with one connective, ∧, we
-can rapidly assemble large propositions from
-smaller ones already on hand.
-
-```lean
-def PQ0 : Prop := P ∧ Q   -- 1 PQ1
-#reduce (types := true) PQ0
-
-def PQ1 := PQ0 ∧ PQ0      -- 2 PQ1s
-#reduce (types := true) PQ1
-
-def PQ2 := PQ1 ∧ PQ1      -- 4 PQ1s
-#reduce (types := true) PQ2
-
-def PQ3 := PQ2 ∧ PQ2      -- 8 PQ1s!
-#reduce (types := true) PQ3
-```
-
-QUESTION:
-
-If we continued defining PQ4, PQ5, on up
-to PQ10, in the same manner, how many PQ1s
-would that final PQ10 proposition contain?
-
-ANSWER: ___________
-
-
-## Proof Builders: The Case of And.intro _ _
-
-Just as we can construct new propositions by
-composing existing ones, we will most often
-construct new proofs *using* other proofs as
-inputs. We have already seen that we can build
-the proposition, *P ∧ Q*, from the given ones,
-*P*, and *Q*, respectively.
-
-Suppose we want a proof of this new proposition.
-Assume furthermore that we have two proofs already
-on hand: *p*, a proof of *P*, and *q* a proof of
-*Q*.
-
-Fortunately, we have just the proof builder we need!
-It's a function, And.intro _ _. I write it with two
-placeholders after the name to remind us that it is
-a function that takes two arguments: a proof of the
-left side of a proposition, and a proof of the right
-side. It then returns (*reduces to*)
-
-All we have to do is
-*apply* it to two actual parameter values, the first
-a proof of P, and the second a proof of Q.
--/
-
-#check P              -- Proposition
-#check Q              -- Proposition
-#check P ∧ Q          -- Proposition
-#check p              -- Proof of P
-#check q              -- Proof of Q
-#check And.intro p q  -- Proof of P ∧ Q
-
-/-
-∧=intro, as you'll see it written, is an *inference
-rule* in all of the logics we'll study this semester.
-An inference rule is fundamental principle of sound
-*logical* reasoning, but, in this class, we will also
-them of them as *proof-producing* functions.
-
-Our one and main example of a  *And.intro* When applied to a proof, p : P, and a proof, q : Q,
-the result is a proof, ⟨ p, q ⟩ : P ∧ Q.
-
-Proposition builders are also called connectives.
-Now just as connectives , such as ∧, compose given
-propositions into larger ones, so we also have ways
-to use proofs we already have in the construction of
-proofs that we need.
-
-As an example, consider this. So far we have:
-
-- *P* and *Q* are propositions
-- because they are, so is P ∧ Q
-- *p* and *q* are proofs of P, Q
-- And.intro is a function
-  - in: (P Q : Prop) (p : P) (q : Q)
-  - out: (And.intro p q) : P ∧ Q
-- notation: for And.intro p q, ⟨ p, q ⟩
-
+In mathematical discourse the word, *conjecture*, refers
+to a proposition that one has hypothesized as being true
+(often the result of abductive brilliance), for which one
+now seeks a proof. Here we have conjectured that *And* is
+commutative: for any propositions whatsoever, call them *P*
+and *Q* for now, if *P ∧ Q* is true then so must be *Q ∧ P*,
+if *Q ∧ P* is true then so must be *P ∧ Q*. So here it is
+in the language of predicate logic: our proposition, given
+the name, *andCommutes*.
 
 
 ```lean
--- Two ways of writing the same concept
-def pq :    P ∧ Q    :=  And.intro p q
-def pq' :   P ∧ Q    :=  ⟨ p, q ⟩
-
-
--- nested proofs in this case for nested propositions
-def p_qr :  P ∧ (Q ∧ R)  :=  And.intro p (And.intro q r)
-def p_qr' :  P ∧ (Q ∧ R)  :=  ⟨ p, ⟨ q, r ⟩ ⟩
-
--- nesting in the other order
-def pq_r :  (P ∧ Q) ∧ R  :=  And.intro (And.intro p q) r
-def pq_r' :  (P ∧ Q) ∧ R  :=  ⟨ ⟨ p, q ⟩, r ⟩
+def andCommutes : Prop :=
+  ∀ (P Q : Prop),       -- for *all* propositions, P, Q
+    (P ∧ Q → Q ∧ P) ∧   -- if P∧Q is true then Q∧P is true
+    (P ∧ Q → Q ∧ P)    -- if Q∧P is true then P∧Q is true
 ```
 
-### Deconstructing Proof Objects
+At this point we have a formal definition in Lean of the
+mathematical claim that *And is commutative*. We don't yet
+have a proof of it. To get there we first have to see the
+inference rules in enough detail that it's entirely clear
+to how how they work to capture the meaning of *And* that
+*we* want *for this class*. So let's go.
 
-And just as we have ways of using proofs of smaller
-propositions in the construction of proofs of larger
-propositions composed from the smaller ones, so we
-have ways to take apart larger proofs into component
-elements. For example, from a proof, ⟨ p, q ⟩ of P ∧ Q
-we should be able to "logically deduce, haha" a proof,
-(p : P). Yeah, it's just the first element of the pair
-of proofs that proves P ∧ Q.
-
-```lean
-#check pq.left
-#check pq.right
-#check p_qr
-#check pq_r
-#check pq_r.right
-#check pq_r.left
-#check pq_r.left.left
-#check pq_r.left.right
-```
-
-## Theorems!
-
-The combination of primitive programs both for putting
-proofs together and for taking them apart means that we
-can prove truly deep and interesting results, where the
-very concepts being proved are fundamental across all of
-mathematics.
 
 ### Conjunction (And, ∧) is Commutative
 
@@ -211,14 +66,27 @@ showing Q ∧ P is true. In short P ∧ Q → Q ∧ P (and it works
 in the other direction, too.)
 
 ```lean
-theorem andIsCommutative : P ∧ Q → Q ∧ P :=
-  fun (h : P ∧ Q) =>    -- given a proof of P and Q
-    And.intro           -- construct a proof from
-      (And.right h)     -- (q : Q)
-      (And.left h)      -- (p: P), in that order, voila!
+theorem proofAndCommutes : andCommutes :=
+  fun (_ _ : Prop) =>               -- assume propositions, P, Q
+    And.intro                       -- construct proof of conj
+      (fun h =>                     -- assume proof P ∧ Q
+        (
+          And.intro h.right h.left  -- get proof of of Q ∧ P
+        )
+      )
+      (
+        sorry
+      )
+
+
+    -- (h : P ∧ Q → Q ∧ P) ∧ (P ∧ Q → Q ∧ P)    =>    -- given a proof of P and Q
+    -- fun (P Q : Prop) =>
+    --   And.intro           -- construct a proof from
+    --   (And.right h)     -- (q : Q)
+    --   (And.left h)      -- (p: P), in that order, voila!
 
 -- Here it is using shorthand notation
-theorem andIsCommutative' : P ∧ Q → Q ∧ P :=
+theorem proofAndCommutes' : P ∧ Q → Q ∧ P :=
   fun (h : P ∧ Q) =>    -- assume we're given proof h
     ⟨ h.right, h.left ⟩ -- construct/return the result
 ```
@@ -234,7 +102,7 @@ construct proofs, but be aware of the so-called
 eventually want to use.
 
 ```lean
-theorem andIsCommutative'' : P ∧ Q → Q ∧ P :=
+theorem proofAndCommutes'' : P ∧ Q → Q ∧ P :=
 by                      -- toggles to tactic mode
   intro h               -- introduce h as argument
   let p := And.left h   -- from h extract (p : P)
@@ -259,98 +127,91 @@ stated. Your assignment is to show that it's true
 in the reverse direction.
 
 ```lean
-theorem andAssoc : P ∧ Q ∧ R ↔ (P ∧ Q) ∧ R :=
+theorem proofAndAssoc : P ∧ Q ∧ R ↔ (P ∧ Q) ∧ R :=
   -- to prove ↔, prove both directions
   Iff.intro
+  -- prove forward direction: P ∧ Q ∧ R → (P ∧ Q) ∧ R
   (
     fun
     (h : P ∧ Q ∧ R) =>
-    (
-      _
-    )
-  )
-  (
-    fun
-    (h : (P ∧ Q) ∧ R) =>
-    (
-      _
-    )
-  )
-  -- { -- forward: P ∧ Q ∧ R → (P ∧ Q) ∧ R
-  --   intro h                   -- assumption
-  --   let p := h.left           -- get smaller proofs
-  --   let q := h.right.left
-  --   let r := h.right.right
-  --   let pq := And.intro p q   -- assumble and retirn
-  --   exact (And.intro pq r)    -- the final proof object
-  -- }
-  -- { -- reverse: (P ∧ Q) ∧ R → P ∧ Q ∧ R
-  --   -- the same basic approach applies here
-  --   intro h
-  --   let p := h.left.left
-  --   let q := h.left.right
-  --   let r := h.right
-  --   let qr := And.intro q r
-  --   exact (And.intro p qr)
-  -- }
-
-
-
-theorem andAssoc' : P ∧ Q ∧ R ↔ (P ∧ Q) ∧ R :=
-  -- to prove ↔, prove both directions
-  Iff.intro
-    ( by -- forward: P ∧ Q ∧ R → (P ∧ Q) ∧ R
-      intro h                   -- assumption
+    by (
       let p := h.left           -- get smaller proofs
       let q := h.right.left
       let r := h.right.right
       let pq := And.intro p q   -- assumble and retirn
       exact (And.intro pq r)    -- the final proof object
     )
-    ( by -- reverse: (P ∧ Q) ∧ R → P ∧ Q ∧ R
-    -- the same basic approach applies here
-    intro h
-    let p := h.left.left
-    let q := h.left.right
-    let r := h.right
-    let qr := And.intro q r
-    exact (And.intro p qr)
+  )
+  -- provde reverse: (P ∧ Q) ∧ R → P ∧ Q ∧ R
+  (
+    fun
+    (h : (P ∧ Q) ∧ R) =>
+    (
+      sorry
     )
+  )
 ```
+
 
 ## Wrap Up: New Ideas
 
 ### Implies (→)
 
 You can read the proposition, P → Q, as asserting that
-*if P is true then so is Q.* Now this question is what
-proves this kind of proposition to be true. Here's the
+*if P is true then so is Q.* What proves this kind of
+proposition, and *implication*, to be true. Here's the
 idea. Assume P is true, with a proof p. Now show that
 from that p you can construct a proof of Q. That shows
-that if P is true (with a proof p) then Q is true, too,
-as it's always possible to derive a proof of Q using p.
+that if P (as witnessed by a proof $p$) then Q is true,
+too, as it's always possible to derive a proof of Q from
+p.
 
-So that's how you construct a proof of P → Q: just give
-a way to convert any proof of P into a proof of Q. That
-is it. The resulting proof, in our logic, will then be
-*literally* in the form of a function that turns a proof
-of P given as an argument into a proof of Q as a return
-value. In other words, you can then *apply* a proof of
-*P → Q* to a proof *(p : P)* and the return value will
-be a proof of *Q*. That such a proof-converter exists
-shows that P implies Q! Indeed, we *andCommutes* can be
-seen now as a simple function definition, albeit one that
-acts on proof objects, not ordinary data values such as
-strings and Booleans.
+So that's how you construct a proof of P → Q: provide a
+*function* that converts any proof of P into a proof of Q!
+That is it. And if you *have* a proof of *P → Q*, then you
+can *apply* that proof/function to a proof of *P* to get a
+proof of *Q*. That such a proof-converting function exists
+shows that P implies Q! Indeed, we can see *andCommutes* as
+a simple function, albeit one works on logical propositions
+and proof objects, not ordinary data values such as strings
+and Booleans. Here's an example.
+
+```lean
+def fiveIsTwoPlusThree : Prop := 5 = 2 + 3   -- a proposition
+def p : fiveIsTwoPlusThree := rfl            -- a proof of it
+
+def threeIsFiveMinusTwo : Prop := 3 = 5 - 2   -- another proposition
+def q : threeIsFiveMinusTwo := rfl            -- a proof of it
+
+def PimpQ : Prop := fiveIsTwoPlusThree → threeIsFiveMinusTwo  -- conjunction
+def pimpq : PimpQ := fun pfP => q
+```
 
 ### Iff (↔)
 
-The *Iff (↔)* logical connective. P ↔ Q simple means
-(P → Q) ∧ (Q → P). To prove P ↔ Q you thus need to have
-both a proof of P → Q and a proof of Q → P. That's it.
-Moreover, if you have a proof of P ↔ Q then from it you
-can always extract a proof P → Q and a proof of Q → P.
+The *Iff (↔)* logical connective. P ↔ Q means that the
+implication holds in both directions. We can express
+this formally as (P → Q) ∧ (Q → P). P ↔ Q is equivalent
+to (P → Q) ∧ (Q → P). Given two proofs, *pq : P → Q* and
+*qp : Q → P*, *Iff.intro pq qp* constructs a proof of
+*P ↔ Q*. In the other direction, if one assumed one has
+a proof, (h : P ↔ Q), then (akin to And.left and And.right)
+*h.mp : P → Q* and *h.mpr : Q → P*. Here *mp* is shorthand
+for *modus ponens*, from the deductive logic of Aristotle.
+
+Check it out. We'll assume we have proofs of both P → Q
+and Q → P and we'll build a proof of P ↔ Q, then from
+this proof we'll extract its left and right components,
+which will be proofs of P → Q and Q → P in that order.
 
 ```lean
-end reasoning
+axiom ifpq : P → Q
+axiom ifqp : Q → P
+
+#check Iff.intro ifpq ifqp  -- yay, let's label that
+
+def piffq : P ↔ Q := Iff.intro ifpq ifqp
+
+#check piffq.mp   -- expect P → Q
+#check piffq.mpr  -- expect Q → P
 ```

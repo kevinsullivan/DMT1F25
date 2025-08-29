@@ -18,3 +18,5 @@ packages on your computer. Here's what to do.
 - It will take a while to build the "container" that's needed; go have lunch
 - When the container finishes building, opening any Lean file will start the Lean setup
 - Answer yes to download Lean. When asked if you want to confirm downloads, yes is a good answer.
+
+Now that you've set up your environment, you can find the class materials in the DMT1 directory. Reading these materials on our web page is one thing, but using Lean to step through and work with the reasoning is essential. Start with L00_deductiveReasoning/axiomsAndInference, and move on to the file called theorems.

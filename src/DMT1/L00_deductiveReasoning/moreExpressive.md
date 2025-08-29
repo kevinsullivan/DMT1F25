@@ -141,7 +141,7 @@ then invariables Q ∧ P must also be true, because
 from that proof of P ∧ Q one can construct a proof
 of Q ∧ P.
 
-## ∧ is Associative
+## Conjecture: ∧ is Associative
 
 One might similarly expect, based on intuition,
 that if P, Q, and R are any propositions, then if
