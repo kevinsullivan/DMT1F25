@@ -12,6 +12,8 @@ axiom Q : Prop
 axiom R : Prop
 
 #check P
+#check 5
+#check "Hello, World!"
 -- #check Z
 ```
 
@@ -83,7 +85,7 @@ As an example, consider this. So far we have:
 - because they are, so is P ∧ Q
 - *p* and *q* are proofs of P, Q
 - And.intro is a function
-  - in: (P Q : Prop) (p : Q) (q : Q)
+  - in: (P Q : Prop) (p : P) (q : Q)
   - out: (And.intro p q) : P ∧ Q
 - notation: for And.intro p q, ⟨ p, q ⟩
 
@@ -145,14 +147,14 @@ showing Q ∧ P is true. In short P ∧ Q → Q ∧ P (and it works
 in the other direction, too.)
 
 ```lean
-theorem andCommutes : P ∧ Q → Q ∧ P :=
+theorem andIsCommutative : P ∧ Q → Q ∧ P :=
   fun (h : P ∧ Q) =>    -- given a proof of P and Q
     And.intro           -- construct a proof from
       (And.right h)     -- (q : Q)
       (And.left h)      -- (p: P), in that order, voila!
 
 -- Here it is using shorthand notation
-theorem andCommutes' : P ∧ Q → Q ∧ P :=
+theorem andIsCommutative' : P ∧ Q → Q ∧ P :=
   fun (h : P ∧ Q) =>    -- assume we're given proof h
     ⟨ h.right, h.left ⟩ -- construct/return the result
 ```
@@ -168,7 +170,7 @@ construct proofs, but be aware of the so-called
 eventually want to use.
 
 ```lean
-theorem andCommutes'' : P ∧ Q → Q ∧ P :=
+theorem andIsCommutative'' : P ∧ Q → Q ∧ P :=
 by                      -- toggles to tactic mode
   intro h               -- introduce h as argument
   let p := And.left h   -- from h extract (p : P)
@@ -194,18 +196,54 @@ in the reverse direction.
 
 ```lean
 theorem andAssoc : P ∧ Q ∧ R ↔ (P ∧ Q) ∧ R :=
-by
   -- to prove ↔, prove both directions
-  apply Iff.intro _ _
-  { -- forward: P ∧ Q ∧ R → (P ∧ Q) ∧ R
-    intro h                   -- assumption
-    let p := h.left           -- get smaller proofs
-    let q := h.right.left
-    let r := h.right.right
-    let pq := And.intro p q   -- assumble and retirn
-    exact (And.intro pq r)    -- the final proof object
-  }
-  { -- reverse: (P ∧ Q) ∧ R → P ∧ Q ∧ R
+  Iff.intro
+  (
+    fun
+    (h : P ∧ Q ∧ R) =>
+    (
+      _
+    )
+  )
+  (
+    fun
+    (h : (P ∧ Q) ∧ R) =>
+    (
+      _
+    )
+  )
+  -- { -- forward: P ∧ Q ∧ R → (P ∧ Q) ∧ R
+  --   intro h                   -- assumption
+  --   let p := h.left           -- get smaller proofs
+  --   let q := h.right.left
+  --   let r := h.right.right
+  --   let pq := And.intro p q   -- assumble and retirn
+  --   exact (And.intro pq r)    -- the final proof object
+  -- }
+  -- { -- reverse: (P ∧ Q) ∧ R → P ∧ Q ∧ R
+  --   -- the same basic approach applies here
+  --   intro h
+  --   let p := h.left.left
+  --   let q := h.left.right
+  --   let r := h.right
+  --   let qr := And.intro q r
+  --   exact (And.intro p qr)
+  -- }
+
+
+
+theorem andAssoc' : P ∧ Q ∧ R ↔ (P ∧ Q) ∧ R :=
+  -- to prove ↔, prove both directions
+  Iff.intro
+    ( by -- forward: P ∧ Q ∧ R → (P ∧ Q) ∧ R
+      intro h                   -- assumption
+      let p := h.left           -- get smaller proofs
+      let q := h.right.left
+      let r := h.right.right
+      let pq := And.intro p q   -- assumble and retirn
+      exact (And.intro pq r)    -- the final proof object
+    )
+    ( by -- reverse: (P ∧ Q) ∧ R → P ∧ Q ∧ R
     -- the same basic approach applies here
     intro h
     let p := h.left.left
@@ -213,7 +251,7 @@ by
     let r := h.right
     let qr := And.intro q r
     exact (And.intro p qr)
-  }
+    )
 ```
 
 ## Wrap Up: New Ideas
