@@ -105,22 +105,29 @@ theorem proofAndCommutes' :
         ⟨ h.right, h.left ⟩ -- construct/return the result
 ```
 
-There's another whole language in Lean for
-writing exactly the same kind of content, but
-using higher levels of abstraction provided by
-the kind people who have programmed the *tactics*
-to automate many parts of proof construction.
-For now we'll continue to use bare programming
-construct proofs, but be aware of the so-called
-*tactic language* as an alternative that you will
-eventually want to use.
+We've done nothing here but write raw Lean code
+to prove our conjecture. Lean does provide another
+way to construct proofs: by using programs, called
+*tactics*, that automate certain proof tasks. Here's
+what the same construction looks like in Lean using
+*tactic mode*.
+
+We'll show the same constructions in both ways,
+but while learning all, and to use all, of the
+inference rules of predicate logic we'll continue
+to use raw programming for the most part. For now,
+be aware aware of *tactic mode* (the keyword to
+get into it is *by*), as a capability that is good
+to learn and that'll definitely prefer to use as
+you get further along.
 
 ```lean
 theorem proofAndCommutes'' :
   ∀ (P Q : Prop),
     P ∧ Q → Q ∧ P :=
   by                      -- toggles to tactic mode
-    intro P Q h               -- introduce h as argument
+    intro P Q h           -- assume P, Q, h as arguments
+                          -- self-test: what is h?
     let p := And.left h   -- from h extract (p : P)
     let q := And.right h  -- from h extract (q : Q)
     exact  ⟨ q, p ⟩       -- return ⟨ q, p ⟩ : Q ∧ P
@@ -128,11 +135,68 @@ theorem proofAndCommutes'' :
 
 There are quite a few ways to express the same
 function definition in Lean. Here's my favorite
-kind in most cases.
+kind in most cases, with the types of all the
+variables written out for explanatory clarity.
 
 ```lean
 def proofAndCommutes''' : ∀ (P Q : Prop),  P ∧ Q → Q ∧ P
-| P, Q, ⟨ p, q ⟩ => ⟨ q, p ⟩
+| (P : Prop), (Q : Prop), ⟨ (p : P), (q : Q) ⟩ => ⟨ q, p ⟩
+```
+
+As no use is made of *P* or *Q* on the right side,
+these names don't even need to be assigned on the
+left, so this is all one really has to write.
+
+```lean
+def proofAndCommutes'''' : ∀ (P Q : Prop),  P ∧ Q → Q ∧ P
+| _, _, ⟨ p , q ⟩ => ⟨ q, p ⟩
+```
+
+Finally, for now, is one last lovely possibility: to
+move argument declarations to the left of the colon.
+Doing this maken them bound throughout the rest of the
+definition, with no need or possibilty to match on them.
+
+```lean
+def yay (P Q : Prop) : P ∧ Q → Q ∧ P
+| ⟨ p , q ⟩ => ⟨ q, p ⟩
+```
+
+This really now looks like a function definition!
+Indeed, *yay* is a function in Lean as defined and
+can be used as such. If you apply *yay* to any two
+propositions, what you get back is a proof of the
+proposition, *P ∧ Q → Q ∧ P* but with your specific
+propositions plugged in for *P* and *Q*. This proof
+in turn is itself a function that, if given a proof
+of *P ∧ Q* returns a proof of *Q ∧ P.*
+
+```lean
+axiom DogRed : Prop
+axiom KittyBlack : Prop
+axiom dr : DogRed
+axiom kb : KittyBlack
+def DrAndKb : DogRed ∧ KittyBlack := ⟨ dr, kb ⟩
+#check yay DogRed KittyBlack DrAndKb -- KittyBlack ∧ DogRed!
+```
+
+And while we're on the topic, a final cherry on top.
+You might having noticed that from the type of the
+third argument, a proof of *P ∧ Q*, Lean might figure
+out what the propositions *P* and *Q* are without being
+told explicitly. That is actually true. Lean can often
+figure out such values from context. When arguments can
+be inferred from context, we can enclose them in curly
+braces rather than parentheses where they are defined,
+and then it is no longer necessary to provide them when
+one applies the function to transform a proof of *P ∧ Q*
+into one of *Q ∧ P*.
+
+```lean
+def yaySquared { P Q : Prop } : P ∧ Q → Q ∧ P
+| ⟨ p , q ⟩ => ⟨ q, p ⟩
+
+#check yaySquared DrAndKb  --  KittyBlack ∧ DogRed!
 ```
 
 What we just proved beyond any doubt is that
