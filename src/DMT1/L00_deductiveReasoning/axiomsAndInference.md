@@ -6,118 +6,119 @@ namespace DMT1.L00_reasoning
 ## Propositions
 
 Assume that P, Q, and R are arbitrary propositions.
-Another name for an assumption accepted with proof is
-an *axiom*. This is correct basic lingo in mathematics.
-We can express axioms in Lean using the *axiom* keyword.
+Another name for an assumption accepted without proof
+is an *axiom*. This is mathematically correct lingo.
+
+We can express axioms in the logic of Lean using
+the *axiom* keyword. Here we *stipulate* (state as
+an axioms to be accepted without further evidence)
+that P, Q, and R are arbitrary (any) propositions.
 ```lean
 axiom P : Prop      -- assume P is a proposition
 axiom Q : Prop      -- assume Q is a proposition
 axiom R : Prop      -- assume R is a proposition
 
-#check P            -- ask Lean what type of thing is P?
-#check 5            -- for data, too: 5 is a Nat
-#check "Hello!"     -- for any type of data
+-- Use the #check command to check for yourself!
+#check P            -- a proposition!
+#check 5            -- a natural number!
+#check "Hello!"     -- a string
 ```
 
+## Proposition Builders: The Case of *And*
 With P, Q, and R accepted axiomatically as propositions,
-we can form larger ones by combining these existing ones
-using *And* as a proposition building function, or, in
-logical lingo, a connective. *And* takes two propositions
-as arguments and yields the conjunction of the two, itself
-a proposition.
+we can form exponentially growing larger propositions
+by the iterated (repeated) application of *And.intro* to
+increasingly large sub-propositions as arguments, starting
+with the elementary propositions we just assumed we will
+be given. All we need now is to be able to give short
+names to large expressions. So here we go.
+
+In Lean, we can give names to arbitrary terms and then
+use those names anywhere we *mean* those terms. Here we
+bind the identifier (name), *n*, to the natural number,
+five, usually written as *5* in Lean. Evaluating the
+expression, *n* then reduces to the value it's bound to,
+namely, *5*.
+
 
 ```lean
-#check And P Q
+def n : Nat := 5    -- n is a Nat, with 5 as a witness
+#eval n             -- n evaluates to *5*
+#reduce n           -- reduce works too
+#eval n + 5         -- all kinds of expressions reduce
 ```
 
-In everyday logical writing, instead of writing *And* in
-front of its its two arguments, as in *And P Q* we use ∧
-as a shorter *infix* notation for *And* and write *P ∧ Q*.
+
+In Lean, propositions are terns (objects, values), too,
+so we can give propositions names, too. Here, we bind the
+name *PandQ* to the proposition, P ∧ Q, as its value. We
+then use #reduce to evaluate *PandQ* to it's meaning, with
+a mysterious bit of syntax intructs Lean to reduce names
+for propositions into the propositions they name. Later
+we'll see that propositions are types in Lean, at which
+point the inscrutibility of this little snippet of code
+will resolve.
 
 ```lean
-#check P ∧ Q
-```
-
-In Lean, propositions are objects, like ordinary values,
-to which we can give names. Here, to the name *PandQ* that
-we just made up, we can bind the proposition, P ∧ Q as a
-value.
-
-```lean
-def PandQ := And P Q
+def PandQ : Prop := P ∧ Q
 #check PandQ
 #reduce (types := true) PandQ
 ```
 
 
-### Proofs of Propositions
-
 We've already discussed proofs. Let's now assume that we have
-a few and see what we can do with them.
-
-Next assume that we have proof objects, p, q, and r:
-proofs the propositions, P, Q, and R, respectively.
+a few and see what we can do with them. In particular, let's
+assume that we have proofs (proof objects), p, q, and r, proving
+P, Q, and R, respectively. Here's how we now say that *formally*.
 
 ```lean
 axiom p : P
 axiom q : Q
 axiom r : R
 
-#check P
-#check p
-```
-
-### Logical Connectives: The Case of And (∧)
-
-We've seen that from a few elementary
-propositions we can form an endless realm
-of compound propositions. Of course we want
-to be able to prove them, too (when they're
-true).
-
-Just as logical *connectives* compose given
-propositions into larger propositions, so we
-also have "little programs" for composing proofs
-of given propositions into proofs of larger ones
-made from them.
-
-As an example, consider this. So far we have:
-
-- *P* and *Q* are propositions
-- because they are, so is P ∧ Q
-- *p* and *q* are proofs of P, Q
-- And.intro is a function
-  - in: (P Q : Prop) (p : P) (q : Q)
-  - out: (And.intro p q) : P ∧ Q
-- notation: for And.intro p q, ⟨ p, q ⟩
+-- All is as expected
+#check P    -- a proposition
+#check p    -- a proof of it
 
 
-
-```lean
--- Two ways of writing the same concept
+-- Construct proof of P ∧ Q using And.intro
 def pq :    P ∧ Q    :=  And.intro p q
 def pq' :   P ∧ Q    :=  ⟨ p, q ⟩
 
-
--- nested proofs in this case for nested propositions
+-- Construct nested proofs of nested propositions
 def p_qr :  P ∧ (Q ∧ R)  :=  And.intro p (And.intro q r)
 def p_qr' :  P ∧ (Q ∧ R)  :=  ⟨ p, ⟨ q, r ⟩ ⟩
 
--- nesting in the other order
+-- Here with the nesting in the other order
 def pq_r :  (P ∧ Q) ∧ R  :=  And.intro (And.intro p q) r
 def pq_r' :  (P ∧ Q) ∧ R  :=  ⟨ ⟨ p, q ⟩, r ⟩
+
+-- Just 6 applications of ∧ gets us 64 Ps!
+#reduce (types := true)
+  let C0 := P ∧ P
+  let C1 := C0 ∧ C0
+  let C2 := C1 ∧ C1
+  let C3 := C2 ∧ C2
+  let C4 := C3 ∧ C3
+  let C5 := C4 ∧ C4
+  C5
 ```
 
-### Deconstructing Proof Objects
+## Proof Destructure-ers: aka Eliminators
 
-And just as we have ways of using proofs of smaller
-propositions in the construction of proofs of larger
-propositions composed from the smaller ones, so we
-have ways to take apart larger proofs into component
-elements. For example, from a proof, ⟨ p, q ⟩ of P ∧ Q
-we should be able to "logically deduce, haha" a proof,
-(p : P). Yeah, it's just the first element of the pair
-of proofs that proves P ∧ Q.
+Just as we have ways of composing proofs of smaller
+propositions into proofs of larger ones, so we have
+way to extract information from "larger" proofs that
+we can assume we have or will be given. For example,
+from a proof, ⟨ p, q ⟩ of P ∧ Q, it is easy to see
+that we should be able to extract a proof (it's just
+*p*) of *P*. What this means is that if P and Q are
+any propositions whatsoever, P ∧ Q → P, and P ∧ Q → Q.
+These are exactly the elimination rules for *And*.
+In Lean, if one has a proof h, of the form *P ∧ Q*,
+the *.left* is a proof of *P*, and *h.right* is one
+for *Q*. You can chain *.left*  and *.right* function
+applications to navigate to nested sub-proofs.
 
 ```lean
 #check pq.left
