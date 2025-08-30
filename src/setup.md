@@ -9,7 +9,7 @@ packages on your computer. Here's what to do.
 - If you don't already have *git* [install it](https://git-scm.com/downloads)
 - If you don't already have an account on [GitHub.com](https://GitHub.com) create one
 - If you don't already have [VSCode](https://code.visualstudio.com/download), install it
-- Go to the [class GitHub repo](http://GitHub.com/kevinsullivan/Instructor)
+- Go to the [class GitHub repo](http://GitHub.com/kevinsullivan/DMT1F25)
 - *Fork* this repo to make a new copy of it in your GitHub account
 - Go to *your* GitHub account; get the URL of your repo; and clone it on your computer
 - Open VSCode then use File > Open to open the new *folder/directory* on your computer
