@@ -1,7 +1,7 @@
 # Getting Started
 
 The book (course notes) for this class are written in Lean 4. It is available
-[online here](https://github.com/kevinsullivan/Instructor). You should get set
+[online here](https://github.com/kevinsullivan/DMT1F25). You should get set
 up right away to work with all of this material (which I will frequently update)
 using Lean 4 in the VSCode IDE. To do so you'll have to install a few software
 packages on your computer. Here's what to do.
