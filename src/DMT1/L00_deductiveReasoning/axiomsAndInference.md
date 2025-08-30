@@ -118,7 +118,7 @@ These are exactly the elimination rules for *And*.
 In Lean, if one has a proof h, of the form *P ∧ Q*,
 the *.left* is a proof of *P*, and *h.right* is one
 for *Q*. You can chain *.left*  and *.right* function
-applications to navigate to nested sub-proofs.
+applications to navigate to nested sub-proofs.~
 
 ```lean
 #check pq.left
