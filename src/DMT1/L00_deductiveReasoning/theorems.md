@@ -44,7 +44,7 @@ we label as *andCommutes*.
 def andCommutes : Prop :=
   ∀ (P Q : Prop),       -- for *all* propositions, P, Q
     (P ∧ Q → Q ∧ P) ∧   -- if P∧Q is true then Q∧P is true
-    (P ∧ Q → Q ∧ P)    -- if Q∧P is true then P∧Q is true
+    (Q ∧ P → P ∧ Q)    -- if Q∧P is true then P∧Q is true
 ```
 
 At this point all that we have is a proposition. You can
