@@ -1,4 +1,6 @@
-# Expressing Richer Properties
+# Expressing Richer Ideas
+
+<!-- toc -->
 
 To formally represent richer, more interesting, and
 practically important ideas, we need more than just
