@@ -61,7 +61,7 @@
 \begin{tikzpicture}[node distance=2.2cm and 2.5cm]
 
 % --- AESTHETIC REFINEMENT: Define a single variable for the main arc's width ---
-\def\outset{8.0}
+\newcommand{\outset}{8.0} % Using \newcommand for safety
 
 % --- NODE DEFINITIONS WITH FINAL STYLES ---
 
@@ -145,7 +145,6 @@
     \begin{tabular}{cl}
     \multicolumn{2}{c}{\textbf{Key}} \\[1.5ex]
     \tikz{\node[connective_node, scale=0.6] {And};} & connective \\[1.5ex]
-    % --- MODIFIED LINES ---
     \tikz{\node[intro_rule_node, scale=0.6] {intro};} & introduction \\[1.5ex]
     \tikz{\node[elim_rule_node, scale=0.6] {elim};} & elimination \\[1.5ex]
     \tikz{\node[proposition_node, scale=0.6] {Prop};} & proposition \\[1.5ex]
@@ -157,13 +156,13 @@
 };
 
 \end{tikzpicture}
-% --- CAPTION REFINEMENT: Corrected typo ---
+% --- CAPTION REFINEMENT: Corrected typos and grammar ---
 \caption{The algebra of logical conjunction. The And function takes two propositions, call them $P$ and $Q$, 
 and yields the proposition that is their logical conjunction, $P \land Q$. The $And.intro$ function takes
-two proofs $p$ of $P$ and of $q$ of $Q$ and returns a proof, $p, q>$ of their conjunction, The $And.left$
-function takes a  proof, $<p, q>$ of $P \land Q$, and returns the proof, $(p : P)$, while $And.right$ returns 
-$q : Q$.the proof. All of these proof handling functions implicitly take the types P and Q themselves as 
-implicit arguments. They are typically not provided explicitly when these funcitons are applied to their 
+two proofs, $p$ of $P$ and $q$ of $Q$, and returns a proof, $\langle p, q \rangle$, of their conjunction. The $And.left$
+function takes a proof, $\langle p, q \rangle$ of $P \land Q$, and returns the proof $(p : P)$, while $And.right$ returns 
+the proof $(q : Q)$. All of these proof handling functions implicitly take the types P and Q themselves as 
+implicit arguments. They are typically not provided explicitly when these functions are applied to their 
 arguments, but are inferred automatically from the types of these arguments; and we've elided them from
 this diagram.}
 \label{fig:tikz_diagram_definitive}
