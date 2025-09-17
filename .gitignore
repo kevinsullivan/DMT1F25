@@ -6,3 +6,9 @@ target/
 *.aux
 *.dvi
 *.log
+.dotnet/
+.npm/
+.vscode-server/
+.cache/
+.redhat
+.ssh

@@ -77,6 +77,7 @@ RUN apt-get update --fix-missing && \
     locale-gen en_US.UTF-8 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Run GitHub actions locally
 RUN curl -s https://raw.githubusercontent.com/nektos/act/master/install.sh | bash
 
 # RUN ln -sf /usr/share/texmf/fonts/opentype /usr/share/fonts/truetype/texlive-opentype || true
@@ -136,9 +137,28 @@ RUN cargo install mdbook-mermaid
 RUN cargo install mdbook-toc 
 RUN cargo install mdbook-pandoc
 
+# uv Python environment manager
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
+
+# --- Some global stuff
 USER root
-# Grab the OTF bundle from CTAN, install, and refresh Fontconfig
+
+# --- Global Python venv with z3-solver (system-wide default) ---
+ARG Z3_SOLVER_VERSION=4.12.4.0
+
+# Create a global venv and make it the default Python for all users
+RUN python3 -m venv /opt/py \
+    && /opt/py/bin/python -m pip install --upgrade pip \
+    && /opt/py/bin/pip install --no-cache-dir z3-solver==${Z3_SOLVER_VERSION}
+
+# Make venv the default for shells and PATH
+ENV VIRTUAL_ENV=/opt/py
+ENV PATH="/opt/py/bin:${PATH}"
+RUN printf '\n# Auto-activate global Python venv\n[ -d /opt/py ] && . /opt/py/bin/activate\n' >> /etc/bash.bashrc
+
+
+# Grab the OTF bundle from CTAN, install. Refresh Fontconfig
 ARG STIX2_URL=https://mirrors.ctan.org/fonts/stix2-otf.zip
 RUN set -eux; \
     mkdir -p /usr/local/share/fonts/opentype/stix2; \
@@ -148,7 +168,10 @@ RUN set -eux; \
     fc-cache -f -v; \
     rm -rf /tmp/stix2 /tmp/stix2.zip
 
+# --- The rest in user mode
 USER dev
+
+# Output template for LaTeX docs from this project
 RUN mkdir -p /home/dev/.pandoc/templates && \
     echo '\documentclass{book}' > /home/dev/.pandoc/templates/stix-math.latex && \
     echo '' >> /home/dev/.pandoc/templates/stix-math.latex && \
