@@ -168,6 +168,9 @@ RUN set -eux; \
     fc-cache -f -v; \
     rm -rf /tmp/stix2 /tmp/stix2.zip
 
+RUN apt-get update --fix-missing && \
+    apt-get install --no-install-recommends --assume-yes openjdk-21-jre
+
 # --- The rest in user mode
 USER dev
 
