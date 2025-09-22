@@ -1,4 +1,4 @@
-# Deductive Reasoning : The Case of *And*
+# Deductive Reasoning : *And*
 
 <!-- toc -->
 
@@ -73,6 +73,9 @@ def PandQ3 : Prop := PandQ2 ∧ PandQ2
 def PandQ4 : Prop := PandQ3 ∧ PandQ3
 def PandQ5 : Prop := PandQ4 ∧ PandQ4
 
+#eval 3 + 5
+#reduce 3 + 5
+
 #reduce (types := true) PandQ5
 ```
 
@@ -93,6 +96,15 @@ axiom r : R
 -- All is as expected
 #check P    -- a proposition
 #check p    -- a proof of it
+
+
+#check 5
+#check Nat
+#check p
+#check P
+#check Prop
+#check Type
+#check Type 1
 ```
 
 
@@ -115,8 +127,18 @@ As an example, consider this. So far we have:
   - out: (And.intro p q) : P ∧ Q
 - notation: for And.intro p q, ⟨ p, q ⟩
 
-
 ```lean
+structure Point where
+(T : Type)
+(x : T)
+(y : T)
+
+def pt : Point := ⟨Bool, true, false⟩
+def pt2 : Point := ⟨String, "true", "false"⟩
+
+#check Point
+
+
 -- Two ways of writing the same concept
 def pq :    P ∧ Q    :=  And.intro p q
 def pq' :   P ∧ Q    :=  ⟨ p, q ⟩
@@ -167,6 +189,9 @@ applications to navigate to nested sub-proofs.~
 #check pq_r.left
 #check pq_r.left.left
 #check pq_r.left.right
+```
 
+![No caption](./assets/diagrams/and.png)
+```lean
 end DMT1.L00_reasoning
 ```

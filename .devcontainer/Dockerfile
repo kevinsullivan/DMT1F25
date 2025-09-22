@@ -54,8 +54,10 @@ RUN apt-get update --fix-missing && \
     lsb-release \
     nodejs \
     npm \
+    openjdk-21-jre \
     pandoc  \
     pkg-config \
+    poppler-utils \
     python3-dev \
     python3-pip \
     python3-venv \
@@ -167,9 +169,6 @@ RUN set -eux; \
     find /tmp/stix2 -type f -name 'STIXTwo*.otf' -exec mv -t /usr/local/share/fonts/opentype/stix2 {} +; \
     fc-cache -f -v; \
     rm -rf /tmp/stix2 /tmp/stix2.zip
-
-RUN apt-get update --fix-missing && \
-    apt-get install --no-install-recommends --assume-yes openjdk-21-jre
 
 # --- The rest in user mode
 USER dev

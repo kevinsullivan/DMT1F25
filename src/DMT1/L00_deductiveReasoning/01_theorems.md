@@ -1,5 +1,7 @@
 # Theorems
 
+<!-- toc -->
+
 We now have the inference rules, as axioms, that define
 exactly how proofs of conjunctions (P ∧ Q propositions)
 behave: how you can produce them, and how you can use ones

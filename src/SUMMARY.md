@@ -3,9 +3,10 @@
 
 - [Reasoning](./reasoning.md)
 - [Deductive Reasoning]()
-  - [Axioms and Inference Rules](./DMT1/L00_deductiveReasoning/axiomsAndInference.md)
-  - [Axioms by Interence to Theorems](./DMT1/L00_deductiveReasoning/theorems.md)
-  - [Expressing Richer Properties](./DMT1/L00_deductiveReasoning/preview.md)
+  - [And](./DMT1/L00_deductiveReasoning/00_and.md)
+  - [Theorems](./DMT1/L00_deductiveReasoning/01_theorems.md)
+  - [Implies](./DMT1/L00_deductiveReasoning/02_implies.md)
+  - [Functions](./DMT1/L00_deductiveReasoning/03_functions.md)
 
 ---
 
