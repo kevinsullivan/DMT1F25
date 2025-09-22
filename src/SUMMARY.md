@@ -4,8 +4,8 @@
 - [Reasoning](./reasoning.md)
 - [Deductive Reasoning]()
   - [And](./DMT1/L00_deductiveReasoning/00_and.md)
-  - [Implies](./DMT1/L00_deductiveReasoning/02_implies.md)
-  - [Functions](./DMT1/L00_deductiveReasoning/03_functions.md)
+  - [Implies](./DMT1/L00_deductiveReasoning/01_implies.md)
+  - [Functions](./DMT1/L00_deductiveReasoning/02_functions.md)
 
 ---
 
