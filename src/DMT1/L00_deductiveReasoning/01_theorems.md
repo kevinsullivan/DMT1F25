@@ -1,4 +1,4 @@
-# Theorems
+## Theorems
 
 <!-- toc -->
 
@@ -29,7 +29,7 @@ of taking these particular inference rules as axioms.* To
 show that *this* claim (proposition) us true, we will of
 course construct a proof of it. Which. Lean. Will. Check!
 
-## Conjecture : ∧ is Commutative
+### Conjecture : ∧ is Commutative
 
 In mathematical discourse the word, *conjecture*, refers
 to a proposition that one has hypothesized as being true
@@ -63,7 +63,7 @@ to proofs that we seek. That's what we'll see examples of
 now, with a few bits left undone for you to work out on your
 own.
 
-## Proofs: ∧ is Commutative
+### Proofs: ∧ is Commutative
 
 We have conjectured that *And is commutative*. When we say
 that a binary operation, such as ∧, is commutative, or just
@@ -207,7 +207,7 @@ then invariables Q ∧ P must also be true, because
 from that proof of P ∧ Q one can construct a proof
 of Q ∧ P.
 
-## ∧ is Associative
+### ∧ is Associative
 
 One might similarly expect, based on intuition,
 that if P, Q, and R are any propositions, then if
