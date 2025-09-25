@@ -7,6 +7,7 @@
   - [Implies](./DMT1/L00_deductiveReasoning/02_implies.md)
   - [Functions](./DMT1/L00_deductiveReasoning/03_functions.md)
   - [Equivalence](./DMT1/L00_deductiveReasoning/04_iff.md)
+  - [Or](./DMT1/L00_deductiveReasoning/05_or.md)
 ---
 
 [Set Up for This Course](setup.md)
