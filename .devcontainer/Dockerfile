@@ -44,12 +44,6 @@ RUN apt-get update --fix-missing && \
     libfontconfig1-dev \
     fontconfig \
     libexpat1-dev \
-    # fonts-dejavu \
-    # fonts-dejavu-core \
-    # fonts-dejavu-extra \
-    # fonts-noto \
-    # fonts-noto-cjk \
-    # fonts-noto-emoji \
     locales \
     lsb-release \
     nodejs \
