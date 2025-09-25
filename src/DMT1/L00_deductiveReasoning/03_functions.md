@@ -555,6 +555,8 @@ def isEvenLengthString := compose String.length isEven
 ```lean
 ## Function Definition by Case Analysis
 
+NOT REQUIRED READING YET
+
 One key capability for defining functions that
 we haven't seen yet is analyzing incoming argument
 values of a given type to decide how to construct
