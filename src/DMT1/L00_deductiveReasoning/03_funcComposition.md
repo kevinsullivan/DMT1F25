@@ -142,4 +142,4 @@ But now think of it more abstractly as just
 *smelt after crush*, or in standard mathematical
 notation, *smelt ∘ crush*. It just turns rock into
 metal, and you can forget about how it works on the
-inside. Heck, just call it *produce!*
+inside. Heck, just call it *produce*.
