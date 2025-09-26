@@ -193,7 +193,7 @@ inference rule of Aristotle that came be
 known as modus ponens: if P implies Q and
 P is true then Q must be true as well.
 
-## Partial Evaluation and Associativity
+## Partial Evaluation
 
 Two key facts:
 - the → type builder is right-associative
