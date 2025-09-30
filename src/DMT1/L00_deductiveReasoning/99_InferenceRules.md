@@ -62,4 +62,3 @@ understand →, you now understand ∀ but for syntactic details.
 
 - (refl)    `rfl` / `Eq.refl  : a = a`
 - (rec)     `Eq.rec    : {motive : α → Sort u} → a = b → motive a → motive b`
-
