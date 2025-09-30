@@ -11,8 +11,9 @@
 
 ---
 
-[Inference Rules](./DMT1/L00_deductiveReasoning/99_inferenceRules2.md)
+[Inference Rule Cheat Sheet](./DMT1/L00_deductiveReasoning/99_inferenceRules2.md)
 [Curry Howard](./DMT1/L00_deductiveReasoning/99_curryHoward.md)
+[True vs. Valid](./DMT1/L00_deductiveReasoning/99_validity.md)
 [Function Composition](./DMT1/L00_deductiveReasoning/03_funcComposition.md)
 
 ---
