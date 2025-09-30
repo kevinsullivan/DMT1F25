@@ -81,11 +81,25 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }} # overrides any .nvmrc/.node-version
 
-      # Install system Chromium so Puppeteer skips the big download
-      - name: Install system Chromium
+      # NEW: Cache APT artifacts used to install Chromium
+      - name: Restore APT cache (Chromium debs)
+        uses: actions/cache@v4
+        with:
+          path: apt-cache
+          key: apt-chromium-${{ runner.os }}-v1
+          restore-keys: |
+            apt-chromium-${{ runner.os }}-
+
+      # NEW: Install system Chromium using the cached APT dirs
+      - name: Install system Chromium (cached)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser || sudo apt-get install -y chromium
+          mkdir -p apt-cache/archives apt-cache/lists/partial
+          sudo apt-get -o Dir::Cache::archives="$PWD/apt-cache/archives" \
+                       -o Dir::State::lists="$PWD/apt-cache/lists" update
+          sudo apt-get -o Dir::Cache::archives="$PWD/apt-cache/archives" \
+                       -o Dir::State::lists="$PWD/apt-cache/lists" install -y chromium-browser || \
+          sudo apt-get -o Dir::Cache::archives="$PWD/apt-cache/archives" \
+                       -o Dir::State::lists="$PWD/apt-cache/lists" install -y chromium
 
       - name: Install Mermaid CLI (no Chromium download)
         env:
