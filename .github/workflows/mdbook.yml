@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Cache Rust toolchain and Cargo registry
+      # Cache Rust toolchain and Cargo registry (speeds cargo install metadata)
       - name: Cache Rust toolchain
         uses: actions/cache@v4
         with:
@@ -40,7 +40,7 @@ jobs:
           restore-keys: |
             rust-toolchain-${{ runner.os }}-
 
-      # Cache Cargo binaries (mdBook and preprocessors)
+      # Cache Cargo binaries (mdBook and preprocessors) — this caches the actual installed tools
       - name: Cache Cargo binaries
         uses: actions/cache@v4
         id: cache-cargo-binaries
@@ -66,7 +66,7 @@ jobs:
           "$HOME/.cargo/bin/rustup" update stable
           "$HOME/.cargo/bin/rustup" default stable
 
-          # Install mdBook and preprocessors
+          # Install mdBook and preprocessors (pinned versions)
           "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_VERSION}" mdbook --locked
           "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_TOC_VERSION}" mdbook-toc --locked
           "$HOME/.cargo/bin/cargo" install --version "${MDBOOK_IMAGE_SIZE_VERSION}" mdbook-image-size --locked
@@ -81,7 +81,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }} # overrides any .nvmrc/.node-version
 
-      # NEW: Cache APT artifacts used to install Chromium
+      # Cache APT artifacts used to install Chromium
       - name: Restore APT cache (Chromium debs)
         uses: actions/cache@v4
         with:
@@ -90,7 +90,7 @@ jobs:
           restore-keys: |
             apt-chromium-${{ runner.os }}-
 
-      # NEW: Install system Chromium using the cached APT dirs
+      # Install system Chromium using the cached APT dirs
       - name: Install system Chromium (cached)
         run: |
           mkdir -p apt-cache/archives apt-cache/lists/partial
@@ -113,7 +113,7 @@ jobs:
           if command -v chromium-browser >/dev/null 2>&1; then echo "PUPPETEER_EXECUTABLE_PATH=$(command -v chromium-browser)" >> $GITHUB_ENV; fi
           if command -v chromium >/dev/null 2>&1; then echo "PUPPETEER_EXECUTABLE_PATH=$(command -v chromium)" >> $GITHUB_ENV; fi
 
-      # Cache mdBook build dependencies
+      # Cache mdBook build dependencies (optional)
       - name: Cache mdBook build
         uses: actions/cache@v4
         with:
@@ -138,6 +138,12 @@ jobs:
           fi
           mmdc --version || echo "⚠️ mermaid-cli not available"
           echo "✅ Tool verification complete"
+
+      # Confirm cached tools (visible signal of cache effectiveness)
+      - name: Confirm cached tools
+        run: |
+          echo "mdBook version: $(mdbook --version)"
+          echo "Chromium version: $(chromium-browser --version || chromium --version || echo 'not found')"
 
       # Normalize Markdown to NFC to avoid Unicode issues on runner
       - name: Normalize Markdown files to NFC
