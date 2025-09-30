@@ -81,11 +81,6 @@ jobs:
         with:
           node-version: "18.19.1" # overrides any .nvmrc/.node-version
 
-      - name: Install Mermaid CLI
-        run: |
-          npm i -g @mermaid-js/mermaid-cli
-          echo "PATH=$(npm bin -g):$PATH" >> $GITHUB_ENV
-
       # Cache mdBook build dependencies
       - name: Cache mdBook build
         uses: actions/cache@v4
@@ -104,11 +99,7 @@ jobs:
           mdbook --version
           mdbook-toc --version || echo "⚠️ mdbook-toc not available"
           mdbook-mermaid --version || echo "⚠️ mdbook-mermaid not available"
-          if command -v mdbook-image-size >/dev/null 2>&1; then
-            mdbook-image-size --help | head -n 1
-          else
-            echo "⚠️ mdbook-image-size not available"
-          fi
+          mdbook-image-size --version || echo "⚠️ mdbook-image-size not available"
           mmdc --version || echo "⚠️ mermaid-cli not available"
           echo "✅ Tool verification complete"
 
@@ -141,6 +132,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
