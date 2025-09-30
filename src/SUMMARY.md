@@ -11,9 +11,9 @@
 
 ---
 
-[Function Composition](./DMT1/L00_deductiveReasoning/03_funcComposition.md)
 [Inference Rules](./DMT1/L00_deductiveReasoning/99_inferenceRules.md)
 [Curry Howard](./DMT1/L00_deductiveReasoning/99_curryHoward.md)
+[Function Composition](./DMT1/L00_deductiveReasoning/03_funcComposition.md)
 
 ---
 
