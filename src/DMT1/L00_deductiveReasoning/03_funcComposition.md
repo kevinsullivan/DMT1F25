@@ -1,5 +1,7 @@
 # Help on Function Composition
 
+<!-- toc -->
+
 This file is meant to provide helpful concrete
 examples of how all the abstract material we're
 covering might be used in real world analysis.
