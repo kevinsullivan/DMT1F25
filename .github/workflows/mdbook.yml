@@ -81,10 +81,23 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }} # overrides any .nvmrc/.node-version
 
-      - name: Install Mermaid CLI
+      # Install system Chromium so Puppeteer skips the big download
+      - name: Install system Chromium
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser || sudo apt-get install -y chromium
+
+      - name: Install Mermaid CLI (no Chromium download)
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: "true"
         run: |
           npm i -g @mermaid-js/mermaid-cli
           echo "$(npm bin -g)" >> $GITHUB_PATH
+
+      - name: Configure Puppeteer to use system Chromium
+        run: |
+          if command -v chromium-browser >/dev/null 2>&1; then echo "PUPPETEER_EXECUTABLE_PATH=$(command -v chromium-browser)" >> $GITHUB_ENV; fi
+          if command -v chromium >/dev/null 2>&1; then echo "PUPPETEER_EXECUTABLE_PATH=$(command -v chromium)" >> $GITHUB_ENV; fi
 
       # Cache mdBook build dependencies
       - name: Cache mdBook build
@@ -111,6 +124,27 @@ jobs:
           fi
           mmdc --version || echo "⚠️ mermaid-cli not available"
           echo "✅ Tool verification complete"
+
+      # Normalize Markdown to NFC to avoid Unicode issues on runner
+      - name: Normalize Markdown files to NFC
+        run: |
+          python3 - << 'PY'
+          import os, unicodedata
+          for root, _, files in os.walk("src"):
+              for f in files:
+                  if f.endswith(".md"):
+                      p = os.path.join(root, f)
+                      with open(p, 'rb') as fh:
+                          b = fh.read()
+                      try:
+                          s = b.decode('utf-8')
+                      except UnicodeDecodeError:
+                          continue
+                      n = unicodedata.normalize('NFC', s)
+                      if n != s:
+                          with open(p, 'w', encoding='utf-8', newline='\n') as out:
+                              out.write(n)
+          PY
 
       # Pages setup & build
       - name: Setup Pages
