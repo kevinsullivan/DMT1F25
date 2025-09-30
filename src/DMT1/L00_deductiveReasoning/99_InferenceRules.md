@@ -9,6 +9,7 @@ known as the Curry Howard Correspondence, as you know).
 
 <!-- toc -->
 
+
 ## ⊤ (True)
 
 - (⊤ intro) `True.intro : True`
