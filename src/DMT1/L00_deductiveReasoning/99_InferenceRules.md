@@ -1,5 +1,7 @@
 # Predicate Logic Inherence Rules in Lean
 
+<!-- toc -->
+
 Below are the *canonical introductions/eliminations*
 (constructors and extractors) Lean provides for each
 connective/type in predicate logic (as it's embedded
