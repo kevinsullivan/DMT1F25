@@ -7,11 +7,83 @@
 namespace ImplicationInference
 ```
 
-In everyday logic the `→` connective represents a conditional statement,
-asserting that if some proposition, call it *P*, is true, then some other
-proposition, *Q*, must be true as well. We call this an *implication* and
-write it as `P → Q`. his section explains this form of logical proposition,
-its inference rules, and includes examples of theorems provable from the rules.
+## Syntax
+
+Suppose `P` and `Q` are any propositions. Then `P → Q`
+is a proposition, too. As a proposition, `P → Q` can be
+said to be an implication, in particular. Another way
+to pronounce `P → Q` is *P implies Q*; but that gives
+no additional hints as to intended meaning.
+
+## Semantics
+
+### Truth Theoretic
+
+In *truth*-theoretic language, `P → Q` is the proposition,
+*if `P` is true then `Q` is true.* There are a total of
+four possible combinations of the truth values of these
+two propositions. Let's call each combination of truth
+values, one for `P` and one for `Q`, a *world*. In which
+of these worlds is `P → Q` true? All except for the one
+where `P` is true and `Q` is false.  That's the single of
+the four possible worlds in which `P → Q` is false. If
+we read the intended meaning, with true for P and false
+for Q, it's *if true is true then false is true*. Well,
+true is true, but false is most certainly not true, so
+the proposition, `P → Q` is falsified in this case. As
+there is even one such counterexample to `P → Q` (where
+`P` is true and `Q` is false, to reinforce the concept),
+then the proposition is not *always* true, and so is not
+a theorem. It is not always a valid reasoning principle!
+
+### Proof-Theoretic
+
+In *proof-theoretic* language, `P → Q` can still be read
+truth-theoretically, as *if `P` is true then `Q` is true*.
+What's different is that any such *truth judgment* must be
+certified by the provision of an actual *proof* object, in
+Lean having the proposition that it proves as its *type*.
+
+The truth theoretical reading of `P → Q`, *if `P` is true
+then `Q` is true,* still works but now `P → Q` can also be
+read the proposition *if one is given a proof, *(p : P)*,
+then one can always derive a proof, *(q : Q)*.
+
+What would it mean that `P → Q` is true constructive?
+Let's map it. To start, *`if P is true then Q is true)`.
+Next, if there is a proof (p : P) that certies P valid
+then there is a proof that certifies Q valid (true in
+all worlds). That's how to read *P → Q* in constructive
+(proof-centric) predicate logic.
+
+So what could prove that? The answer is that any total
+function applying to proofs of P and returning proofs of
+Q would do. In other words, any function that can take
+any proof of P as an actual parameter and that can then
+return some proof of Q would do! Because whenever one
+knows P to be true because, as generally required, one
+has a proof of it, then one can prove that Q is true by
+deriving a proof of it. The derivation is accomplished
+by applying said function to any such proof of P. The
+upshot: to prove *P implies Q*, formally *P → Q*, give
+any function definition, as a lambda abstraction, of
+type *P → Q*. This is the sense in which a function of
+this type can and *should* be understood as very strong
+proof. It's iron-clad, really.
+
+The cost of moving from classical predicate logic to
+higher-order predicate logic in Lean is that you really
+have to write these proof constructing and transforming
+programs, because they are the proofs you'll need to
+support *truth* judgments about any propositions in
+your discourse.
+
+For the computer science student, all of this stuff is
+really incredible, because it turns what for millenia
+has been a deeply intellectual but entirely written and
+manual discpline -- deductive reasoning from axioms --
+into an analog that's now computationally superpowered.
+Welcome to the world of *computational reasoning*.
 
 ## Example: Reactor Safety
 
@@ -242,11 +314,11 @@ Derived theorems:
 - refl : P → P
 - trans : (P → Q) → (Q → R) → (P → R)
 
-Key idea: We can *apply* general theorems, once we have them,
-to derive proofs of special cases. This is the huge power of
-mathematics. We construct enormous libraries of highly general
-theorems, then we can apply them all over the place without
-having to re-prove them for each particular special case.
+Big ideas:
+
+- Far better for computer scientists to learn automatable deductive reasoning
+- Total *functions* of type P → Q prove *implications* P → Q by transforming p:P's to q:Q's
+- *Generalized* theorems can be *applied* to particulars to derive *specialized* conclusions
 
 ```lean
 end ImplicationInference

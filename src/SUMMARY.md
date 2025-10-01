@@ -18,5 +18,8 @@
 
 ---
 
+[Current Homework](./DMT1/Homework/05_throughOr.md)
+---
+
 [Learning Resources](resources.md)
 [Set Up for This Course](setup.md)
