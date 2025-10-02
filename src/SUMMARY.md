@@ -8,6 +8,8 @@
   - [Functions](./DMT1/L00_deductiveReasoning/03_functions.md)
   - [Equivalence](./DMT1/L00_deductiveReasoning/04_iff.md)
   - [Or](./DMT1/L00_deductiveReasoning/05_or.md)
+  - [False](./DMT1/L00_deductiveReasoning/06_false.md)
+  - [Negation](./DMT1/L00_deductiveReasoning/07_negation.md)
 
 ---
 
