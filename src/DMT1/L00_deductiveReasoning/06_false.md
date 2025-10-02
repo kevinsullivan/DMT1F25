@@ -158,7 +158,7 @@ be no function from any inhabited type to Empty.
 The correspondence is watertight. Deductive reasoning in
 our logic is fundamentally computational. One might then
 conjecture that there's a computational version of exFalso?
-There's a function from False to any Type whatsoever?
+There's a function from Empty to any Type whatsoever?
 
 ```lean
 def emptyElim (α : Type): Empty → α :=
