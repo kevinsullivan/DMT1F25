@@ -3,6 +3,7 @@
 
 - [Reasoning](./reasoning.md)
 - [Deductive Reasoning]()
+  - [True](./DMT1/L00_deductiveReasoning/00_true.md)
   - [And](./DMT1/L00_deductiveReasoning/01_and.md)
   - [Implies](./DMT1/L00_deductiveReasoning/02_implies2.md)
   - [Functions](./DMT1/L00_deductiveReasoning/03_functions.md)
