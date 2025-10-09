@@ -11,6 +11,7 @@
   - [Or](./DMT1/L00_deductiveReasoning/05_or.md)
   - [False](./DMT1/L00_deductiveReasoning/06_false.md)
   - [Negation](./DMT1/L00_deductiveReasoning/07_negation.md)
+  - [Classical](./DMT1/L00_deductiveReasoning/08_classical.md)
 
 ---
 
