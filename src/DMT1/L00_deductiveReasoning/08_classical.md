@@ -178,31 +178,63 @@ This material has been state hundreds if not
 thousands of times in the digital record, or
 more. Than you to the many original sources.
 
-Robotic response. It's plenty good enough!
-Quote:
+The Robotic response is what I would have
+written. No outsourcing of thinking. I knew
+exactly what I wanted and was able to express'
+it fluently. Expertise still matters. In my
+view, it matters even more.
+
+GPT Response:
 
 The Banach-Tarski Paradox is perhaps the
 most gloriously monstrous example!
 
-The Statement: You can take a solid 3D ball, decompose it into finitely many pieces (typically 5), and reassemble those pieces using only rotations and translations into two solid balls, each the same size as the original.
+The Statement: You can take a solid 3D ball, decompose it into finitely many pieces, and then reassemble those pieces using only rotations and translations into two solid balls, each the same size as the original.
 
-This seems to violate conservation of volume in the most egregious way possible—you're literally doubling matter through pure rearrangement!
+This seems to violate conservation of volume in the most egregious way possible—you're literally doubling matter through pure rearrangement! But
+it's a theorem if you accept the so-called
+Axiom of Choice in your logic. That axiom says
+roughly that if you've got an infinite list
+of sets that you can form a new set with one
+member from each set in that infinite list even
+if you don't have a method for *choosing* one
+specific element from any one of those sets.
 
-The Non-Constructive Culprit: This result fundamentally relies on the Axiom of Choice (AC), particularly in constructing the bizarre decomposition. The pieces involved are non-measurable sets—they're so pathological that you can't assign them a meaningful volume. The proof uses AC to:
+Seems totally reasonable. But if you accept it
+you also have to accept that logical monter, the  Banach Tarski "paradox." Most mathematicians accept the axiom of choice and other such assumptions.
 
-    Create a dense, paradoxical subset of the sphere's surface
-    Build these unmeasurable pieces that can be rotated and rearranged in contradictory ways
+The Non-Constructive Culprit: This result relies on the so-called *Axiom of Choice* (AC), particularly in constructing the truly bizarre decompositions. The pieces are *non-measurable sets* of points in 3D space. They're so pathological that you can't assign them a meaningful volume. They don't have integrals in the usual sense.
 
-Why It's Monstrous:
+The proof uses AC to:
 
-    The pieces have no volume in any meaningful sense
-    You cannot actually describe or construct these pieces explicitly
-    It's purely an existence proof—AC guarantees such decompositions exist, but provides no algorithm to find them
-    It completely breaks our physical intuitions about matter and space
+- Create subset of the sphere's surface
+- Build these unmeasurable pieces that can be rotated and rearranged in contradictory ways
 
-The Constructivist Objection: Mathematicians who reject AC (like constructivists and some intuitionists) don't accept this paradox. Without AC, you can actually prove that such "paradoxical decompositions" are impossible for measurable sets. They'd argue: "If you can't construct these pieces explicitly, why should we believe they exist?"
+It's a monstrous theorem because:
 
-This is the perfect example of non-constructive mathematics producing something that feels more like a mathematical horror story than a theorem!
+- The pieces have no volume in any meaningful sense.
+- You cannot actually describe or construct them in the real world
+- It's purely an existence proof: AC guarantees such decompositions exist, but provides no algorithm to find them
+
+## The Constructivist Objected
+
+Mathematicians who reject AC (like constructivists and some intuitionists) don't accept this paradox and therefore reject the axiom of choice. Without it, you can actually prove that such "paradoxical decompositions are impossible for measurable sets. They'd argue: "If you can't construct these pieces explicitly, why should we believe they exist?"
+
+In the constructive logic of Lean and other such
+proof assistants, the core logic comes with zero
+non-constructive axioms. If you want to assume
+them, you easily can. Just declare them as axioms
+and have a good time.
+
+As you might suspect, however, there are tradeoffs.
+Accepting more axioms could make more propositions]provable; but in practice not carrying around proofs
+that explain *why* propositions are true, there's a
+lot you can't do. Being able to generate code that
+is *proven correct* for all inputs, even when their number is infinite is one good case. Proofs contain
+code and code can contain and handle proofs. More on
+this later, perhaps.
+
+END OF (lightly edited) GPT RESPONSE.
 
 
 
