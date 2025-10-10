@@ -1,13 +1,9 @@
-name = "DMT1"
+name = "Student"
 version = "2.0.0"
-defaultTargets = ["DMT1"]
+defaultTargets = ["Student"]
 
 [[lean_lib]]
-name = "DMT1"
-
-# [[lean_exe]]
-# name = "dmt1"
-# root = "Main"
+name = "Student"
 
 [[require]]
 name = "mathlib"
