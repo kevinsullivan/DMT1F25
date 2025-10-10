@@ -1,3 +1,4 @@
+/- @@@
 
 # Classical vs Constructive Disjunction
 
@@ -48,18 +49,18 @@ to prove *{P : Prop} : P ∨ ¬P* similarly. Ok
 so let's try.
 
 Let *P* be any proposition.
+@@@ -/
 
 
-```lean
 axiom P : Prop
-```
 
+/- @@@
 Now prove P ∨ ¬P.
+@@@ -/
 
-```lean
 example : P ∨ ¬P :=
-```
 
+/- @@@
 Given only this assumption, can we prove
 *P ∨ ¬P*? The rub is in the difference between
 accepting *P ∨ ¬P* as an *axiom* (always true),
@@ -78,16 +79,16 @@ Or.inr. Or.inl requires a proof of P, but
 we don't have one. Or.inr requires a proof
 of Q but we don't have one. Let's go left
 one more step. Then that's it. Stuck!
+@@@ -/
 
-```lean
   Or.inl
   (
     -- P is some Prop. We have no proof of it.
     -- That's the end of the line; quit
     _
   )
-```
 
+/- @@@
 ### The Law (Axiom) of the Excluded Middle
 
 A crucial property of classical logic is that
@@ -130,12 +131,12 @@ If you  want classical reasoning, just
 use *Classical.em*. If you *open* the
 *Classical* namespace, you can just write
 *em P*.
+@@@ -/
 
-```lean
 #check Classical.em P
 -- a proof of P ∨ ¬P for free!
-```
 
+/- @@@
 ## Why Reject Some Axioms
 
 There are innumerable variant logics that
@@ -239,9 +240,11 @@ code and code can contain and handle proofs. More on
 this later, perhaps.
 
 END OF (lightly edited) GPT RESPONSE.
+@@@ -/
 
 
 
+/- @@@
 ## Not All DeMorgan Laws Are THeorems Constructively
 As another example of a theorem in Boolean algebra,
 propositional logic, and classical predicate logic,
@@ -273,8 +276,8 @@ valid because both directions are constructively
 valid.
 
 ### Forward Direction
+@@@ -/
 
-```lean
 theorem demorgan_or_to_and {P Q : Prop} : ¬(P ∨ Q) → (¬P ∧ ¬Q) :=
   (
     fun (nporq : ¬(P ∨ Q)) =>
@@ -295,11 +298,11 @@ theorem demorgan_or_to_and {P Q : Prop} : ¬(P ∨ Q) → (¬P ∧ ¬Q) :=
     )
   )
 --  fun h => ⟨fun hp => h (Or.inl hp), fun hq => h (Or.inr hq)⟩
-```
 
+/- @@@
 ### Reverse Directin
+@@@-/
 
-```lean
 theorem demorgan_and_to_or {P Q : Prop} : (¬P ∧ ¬Q) → ¬(P ∨ Q) :=
 (
   fun h =>
@@ -315,10 +318,10 @@ theorem demorgan_and_to_or {P Q : Prop} : (¬P ∧ ¬Q) → ¬(P ∨ Q) :=
   )
 )
 --  fun ⟨hnp, hnq⟩ hpq => hpq.elim hnp hnq
-```
 
+/- @@@
 ### Equivalence: ¬(P ∨ Q) ↔ (¬P ∧ ¬Q)
-```lean
+@@@ -/
 theorem demorgan_or_iff {P Q : Prop} : ¬(P ∨ Q) ↔ (¬P ∧ ¬Q) :=
 (
   Iff.intro
@@ -326,15 +329,15 @@ theorem demorgan_or_iff {P Q : Prop} : ¬(P ∨ Q) ↔ (¬P ∧ ¬Q) :=
     demorgan_and_to_or
 )
 --  ⟨demorgan_or_to_and, demorgan_and_to_or⟩
-```
 
+/-@@@
 ## #2: The Hard DeMorgan Law
 
 ¬(P ∧ Q) vs (¬P ∨ ¬Q)
 
 ### Forward Direction
 
-```lean
+@@@ -/
 theorem demorgan_or_neg_to_neg_and {P Q : Prop} : (¬P ∨ ¬Q) → ¬(P ∧ Q) :=
 (
   fun h =>
@@ -359,7 +362,7 @@ theorem demorgan_or_neg_to_neg_and {P Q : Prop} : (¬P ∨ ¬Q) → ¬(P ∧ Q) 
 --  fun h ⟨hp, hq⟩ => h.elim (fun hnp => hnp hp) (fun hnq => hnq hq)
 
 
-theorem not_a_theorem { P Q : Prop } : ¬(P ∧ Q) → (¬P ∨ ¬Q) :=
+theorem reverse_not_a_theorem { P Q : Prop } : ¬(P ∧ Q) → (¬P ∨ ¬Q) :=
 fun h =>
 (
   Or.inl
@@ -368,18 +371,10 @@ fun h =>
   )
 )
 
-theorem negElim {P : Prop} : ¬¬P → P :=
-(
-  fun h =>
-  (
-    _             -- A (symmetrical) one's no better!
-  )
-)
-```
+/- @@@
 
+## The "Hard" DeMorgan Law: ¬(P ∧ Q) vs (¬P ∨ ¬Q) @@@
 
-
-```lean
 One direction is constructively valid. The other direction is not. In constructive predicate logic¬(P ∧ Q) → (¬P ∨ ¬Q) is not a theorem. We cannot deduce its truth from the axioms of the logic we've now been learning for most of the semester.
 
 ## Why It Fails Constructively
@@ -389,11 +384,39 @@ To prove ¬(P ∧ Q) → (¬P ∨ ¬Q) constructively, we would need to decide w
 - P is false (left disjunct), or
 - Q is false (right disjunct), or
 - both are false
-```
 
+@@@ -/
 
-```lean
-## Excluded Middle Implies Remaining DeMorgan
+/- @@@
+## Excluded Middle Implies `reverse_not_a_theorem`
 
 Homework: Formalize and prove that statement in Lean.
-```
+@@@ -/
+
+/- @@@
+## Negation Elim Not a Constructive Axiom
+
+Negation elim is to be understood as what one might
+double negation elimination, namely *¬¬P → P*. If it is
+not not an emergency then it is an emergency.  This
+inference rule is reflected in Boolean algebra where
+*!!b = b* for any Boolean value of *b*.
+
+But is it constructively valid? One bit more intiotion
+comes from reading the formal proposition as saying that
+if you know that P is not false then you know that P is
+true. Classically that is correct. Constructively? Let's
+try to prove it.
+@@@ -/
+
+theorem negElim {P : Prop} : ¬¬P → P :=
+(
+  -- assume proof (h : ¬¬P)
+  fun h =>
+  -- derive and return a proof of P
+  (
+    -- but h is just a function from ¬P to False
+    -- there's no proof of P hidden anywere inside
+    _ -- we can make no further progress
+  )
+)
