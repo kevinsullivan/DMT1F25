@@ -1,14 +1,20 @@
+# Class Notes on Exists
+
+This file contains rough class notes on existential
+quantification, particularly on elimination. The first
+section is review emphasizing predicates. The comes
+the material on Exists per se.
+
+
 
 ```lean
--- Equality (Eq.elim, rw tactic)
-
-
+-- Prove transitivity of Equality, uses rw tactic
 example {n m k : Nat} : (n = m) → (m = k) → (n = k) :=
 fun hnm hmk => by
   rw [hnm]
   rw [hmk]
 
-
+-- Again, uses intro tactic
 example {n m k : Nat} : (n = m) → (m = k) → (n = k) :=
 by
   intro hnm hmk
@@ -16,33 +22,7 @@ by
 ```
 
 
-Develop your capacity to make complete sense
-of logical expressions. Here we have the elim
-inference rule for equality.
-
-
-``` lean
-Eq.subst.{u}
-  {α : Sort u}
-  {motive : α → Prop}
-  {a b : α}
-  (h₁ : a = b)
-  (h₂ : motive a) :
-  motive b
-```
-
-If we have objects of some kind
-and a property of objects of that
-kind (call it `motive`), then if
-we also have two objects, a proof
-that they're equal, and a proof
-that the first has that property,
-then we can validly deduce that
-the second one has that property,
-too. (After all, they're the same
-object!)
-
-As two final examples, we'll re-prove
+As two more examples, we'll re-prove
 the theorem that equality is transitive
 using the rewrite right-to-left tactic,
 *rw [← ]*, and then using rw to change
@@ -89,8 +69,10 @@ by
   exact hpa
   -- assumption
   -- trivial
+```
 
-
+### Axioms and Theorems for Eq
+```lean
 -- Axioms for equality
 #check Eq.refl
 #check Eq.subst
@@ -102,20 +84,29 @@ by
 
 example (α : Type) (a b c : α) (h₁ : a = b) (h₂ : b = c) : (c = a) :=
 Eq.symm (Eq.trans h₁ h₂)     -- Use the Lean-given theorems (functions!) to finish this proof
+```
 
+### Predicates
 
--- predicates
+A predicate is a function from objects of argument
+types to propositions. We can define predicates as
+ordinary functions that return propositions.
 
--- as a function returning Prop
+```lean
 def IsEven (n : Nat) := n % 2 = 0
+```
 
--- as a family of propositions, one for each (n : Nat)
--- with rules for proving any propositions of this type
+We can also define predicates as inductive types,
+allowing us to define exactly what counts as a proof.
+```lean
 inductive IsEv : Nat → Prop where
+-- the term ev0 is is defined to be a value/proof of (IsEv 0)
 | ev0 : IsEv 0
+-- applying evNPlus2 to any n and a proof n is even is a proof n+2 is even
 | evNPlus2 (n : Nat) (h : IsEv n) :  IsEv (n + 2)
 open IsEv
 
+-- A proof that 6 is even is built from 4 and a proof that 4 is even
 example : IsEv 6 :=
 (
   evNPlus2
@@ -126,15 +117,15 @@ example : IsEv 6 :=
       (
         evNPlus2
         _
-        ev0
+        ev0       -- with the recursion ending at this basic term
       )
     )
 )
 
--- Exists
-
+-- Exists.intro: prove ∃ x, P x with a pair: a specific x  and a proof of P x
 example : ∃ (n : Nat), IsEv n := Exists.intro 0 ev0 -- you finish it
 
+-- Elimination is interesting
 #check Exists.elim
 
 /-

@@ -12,7 +12,13 @@
   - [False](./DMT1/L00_deductiveReasoning/L06_false.md)
   - [Negation](./DMT1/L00_deductiveReasoning/L07_negation.md)
   - [Classical](./DMT1/L00_deductiveReasoning/L08_classical.md)
-
+  - [Curry Howard](./DMT1/L00_deductiveReasoning/L09_curryHoward.md)
+  - [Equality](./DMT1/L00_deductiveReasoning/L10_equality.md)
+  - [Exists](./DMT1/L00_deductiveReasoning/L11_exists.md)
+  - [Induction](./DMT1/L00_deductiveReasoning/L12_induction.md)
+  - [Sets](./DMT1/L00_deductiveReasoning/L13_sets.md)
+  - [Relations](./DMT1/L00_deductiveReasoning/L14_relations.md)
+  
 ---
 
 [Inference Rule Cheat Sheet](./DMT1/L00_deductiveReasoning/L99_inferenceRules2.md)

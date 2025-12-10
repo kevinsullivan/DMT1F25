@@ -1,30 +1,22 @@
 ```lean
 import Mathlib.Data.Set.Basic
+```
 
--- Sets in type theory are homogeneous: all elements of the same type
--- These are *types* of sets
+This file contains rough lecture notes from our classes
+on sets and set operation. It's not comprehensive. See the
+top-level chapter, L08_setsRelationsFunctions/C01_sets.lean
+for comprehensive coverage.
+
+```lean
+-- Sets in type theory are homogeneous: all elements of the
+-- same type. These are *types* of sets. Set is *polymorphic*.
 
 #check Set Nat
 #check Set Bool
 #check Set String
 #check Set Type
 #check Set Prop
-
-
--- The set of all natural numbers
-def allNats : Set Nat := Set.univ
--- The empty set of natural numbers
-def noNats : Set Nat := ∅
-
--- The set containing 1, 2, and 3 using *display notation*
-def fewNats' : Set Nat := { 1, 2, 3 }
--- The set containing 2, 3, 4 using *comprehension notation*
-def fewNats : Set Nat := { n : Nat | n = 2 ∨ n = 3 ∨ n = 4}
-
-def isEven : Nat → Prop := fun n => n%2 = 0
-def theEvens : Set Nat := fun n => isEven n
 ```
-
 
 
 In Lean sets are specified and represented by predicates.
@@ -54,8 +46,20 @@ where (fewNats' n) is the proposition n = 1 ∨ n = 2 ∨ n = 3. As
 such (newNats' 5) is the proposition 5 = 1 ∨ 5 = 2 ∨ 5 = 3. It's
 not true, and in fact its negation is true, as we now show.
 
-
 ```lean
+-- The set of all natural numbers
+def allNats : Set Nat := Set.univ
+-- The empty set of natural numbers
+def noNats : Set Nat := ∅
+
+-- The set containing 1, 2, and 3 using *display notation*
+def fewNats' : Set Nat := { 1, 2, 3 }
+-- The set containing 2, 3, 4 using *comprehension notation*
+def fewNats : Set Nat := { n : Nat | n = 2 ∨ n = 3 ∨ n = 4}
+
+def isEven : Nat → Prop := fun n => n%2 = 0
+def theEvens : Set Nat := fun n => isEven n
+
 #reduce fewNats'
 
 example : fewNats' 3 := by
