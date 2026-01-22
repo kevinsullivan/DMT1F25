@@ -1,5 +1,6 @@
 ```lean
 import Mathlib.Data.Set.Basic
+
 namespace DMT1.L08_setsRelationsFunctions.sets
 ```
 
@@ -127,13 +128,20 @@ implementation detail which should not be relied on. Instead,
 between sets and predicates.
 
 Example: Can't directly treat Prop as Set
+
 ```lean
+-- Here's a proposition
 def aNatProp : Nat → Prop := λ n => True
+
+-- It's not declared as a set, so set notation not available
 -- #check 1 ∈ aNatProp       -- won't work
 
+-- The *setOf* function takes a Prop and "lifts" it to being a Set
 def s : Set Nat := setOf aNatProp   -- can coerce prop to set
 #check 1 ∈ s              -- gain set language and notations
 #check (s 1)              -- this "works" but is unpreferred
+
+-- One can always treat a set as merely a logical prediate
 def t : Nat → Prop := s   -- can treat set as prop
 ```
 
@@ -314,8 +322,9 @@ Or.inr
   )
 )
 
+-- EXERCISE
 example : ∃ (n : Nat), n ∈ small_set :=
-Exists.intro 0 (Or.inl rfl)
+  sorry
 ```
 
 
@@ -407,18 +416,19 @@ between operations in set theory, on one hand, and their specifications
 in the language of predicate logic (as implemented in Lean), on the other.
 
 
-| Name          | Notation  | Specification               | Logical Specification          |
+| Name          | Notation  | Specification               | Constructive Specification     |
 |---------------|-----------|-----------------------------|--------------------------------|
-| Set           | set α     | axioms of set theory        | (α → Prop)                     |
+| Set           | set α     | defined by set theory       | (α → Prop)                     |
 | membership    | x ∈ a     | a satisfies predicate       | (a x)                          |
 | intersection  | s ∩ t     | { a \| a ∈ s ∧ a ∈ t }      | fun a => (s a) ∧ (t a)         |
 | union         | s ∪ t     | { a \| a ∈ s ∨ a ∈ t }      | fun a => (s a) ∨ (t a)         |
 | complement    | sᶜ        | { a \| a ∉ s }              | fun a => ¬(s a)                |
-| difference    | s \ t     | { a \| a ∈ s ∧ a ∉ t }      | fun a => (s a) ∧ ¬(t a) )      |
+| difference    | s \ t     | { a \| a ∈ s ∧ a ∉ t }      | fun a => (s a) ∧ ¬(t a)        |
 | subset        | s ⊆ t     | ∀ a, a ∈ s → a ∈ t          | fun a => (s a) → (t a)         |
 | proper subset | s ⊊ t     | s ⊆ t ∧ ∃ w, w ∈ t ∧ w ∉ s  | ... ∧ ∃ w, (t w) ∧ ¬(s w)      |
 | product set   | s × t     | { (a,b) | a ∈ s ∧ b ∈ t }   | fun (a, b) => (s a) /\ (t b)   |
 | powerset      | 𝒫 s       | { t | t ⊆ s }               | fun t => ∀ ⦃a : ℕ⦄, t a → s a  |
+
 
 ```lean
 #reduce Set
@@ -789,18 +799,54 @@ example : 6 ∈ ev_set \ small_set := ⟨ rfl, λ h => nomatch h ⟩
 ### Powerset of Product
 
 This set is important because its elements, being subsets
-of the product set on sets s and t can be seen as representing
-the set of all binary relations on these two sets. An element
-of this set is isomorphic to and can be taken as specifying a
-binary relation from s to t.
+of the product set on sets a and b, and thus being aribtrary
+sets of pairs, can be seen as representing specific binary
+relations on relating some elements in a to corresponding
+ones in b.
 
-When mathematicians want to assume that, r is some binary
-relation on sets, s and t, one can therefore write either
-r ⊆ s × t, or r ∈ 𝒫 (s × t.)
+In ordinary mathematical language one will typically read
+something like this: let r be a binary relation on a and b.
+That is turn can be read as let r be a subset of the set of
+all ordered a-value/b-value pairs, i.e., let r ⊆ a × b.
+
+But now recognize that the *powerset* of (a × b) is the *set
+of all subsets of the set of all ordered pairs. An element
+of this set is thus a particular subset of all possible pairs.
+The set of all ordered pairs is just a × b. What r ⊆ a × b
+means then is that r just one element of the set of *all*
+subsets of (a × b). The set of all subsets of a × b is just
+the powerset of this set, 𝒫 (a × b). So r ∈ 𝒫 (a × b) means
+that r is some particular subset of ordered a-b pairs. We
+will now recognize that any such subset specifies one of
+many possible *relations* that *related* a and b objects in
+some particular way.
+
+Now let's see how these ideas play out in Lean. Here's the
+the logical membership predicate representing the concept
+of 𝒫 (Nat × Nat). It reduces to fun s t => t ⊆ s. In English,
+the powerset of s contains as its members all values t where
+t is any subset of s.
+
+A final note. The axiomatic foundation for mathematics that
+most working mathematians assume is set theory. Lean it type
+theory, a constructive foundation for mathematics. That means
+that Set is not a native concept in Lean. Rather, we specify
+and represent sets as predicates. Etc.
+
+-- In practice, we will often, and here we will, treat a type,
+-- α, as essentially defining a "set" of objects. We will then
+-- thing of a product type, Prod α β, or α × β, as representing
+-- a set of all ordered α-β pairs. We'll thus proceed to present
+-- standard mathematics but using type theory.
+
+
 
 ```lean
-#reduce @Set.powerset (Set.prod _ _)
--- fun s t => t ⊆ s
+#reduce @Set.powerset (Nat × Nat)
 
-end DMT.setsRelationsFunctions.sets
+-- Prove that { (0, 0) } ∈ 𝒫 ({ n : Nat | True} × {n : Nat | True })
+
+example : { (0, 0) }  ∈ @Set.powerset (Nat × Nat) := _
+
+end DMT1.L08_setsRelationsFunctions.sets
 ```

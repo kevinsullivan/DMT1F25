@@ -1,9 +1,9 @@
-name = "Student"
+name = "Alpha"
 version = "2.0.0"
-defaultTargets = ["Student"]
+defaultTargets = ["Alpha"]
 
 [[lean_lib]]
-name = "Student"
+name = "Alpha"
 
 [[require]]
 name = "mathlib"

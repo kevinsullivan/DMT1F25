@@ -1,9 +1,9 @@
 [book]
-title = "Reasoning and Computation"
+title = "Reasoning and Computation Book 1: Propositional Logic"
 authors = ["Kevin Sullivan"]
 language = "en"
 multilingual = false
-description = "Reasoning and Computation: Discrete Mathematics and Theory I in Lean 4"
+description = "Reasoning and Computation: Book 1: Propositional Logic"
 src = "src"
 
 [build]
