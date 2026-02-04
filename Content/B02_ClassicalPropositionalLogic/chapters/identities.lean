@@ -26,11 +26,12 @@ def implication     := (P ⇒ Q) ↔ (¬P ∨ Q)
 def exportation     := ((P ∧ Q) ⇒ R) ↔ (P ⇒ Q ⇒ R)
 def absurdity       := (P ⇒ Q) ∧ (P ⇒ ¬Q) ⇒ ¬P
 
--- DeMorgan's laws
+-- Distributive laws
 def distribAndOr    := (P ∧ (Q ∨ R)) ↔ ((P ∧ Q) ∨ (P ∧ R))
 def distribOrAnd    := (P ∨ (Q ∧ R)) ↔ ((P ∨ Q) ∧ (P ∨ R))
 
-def distribNotAnd   := ¬(P ∧ Q) ↔ (¬P ∨ ¬ Q)
-def distribNotOr    := ¬(P ∨ Q) ↔ (¬P ∧ ¬ Q)
+-- DeMorgan's laws
+def deMorganAnd     := ¬(P ∧ Q) ↔ (¬P ∨ ¬ Q)
+def deMorganOr      := ¬(P ∨ Q) ↔ (¬P ∧ ¬ Q)
 
 end Content.B02_ClassicalPropositionalLogic.chapters.identities

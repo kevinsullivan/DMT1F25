@@ -27,7 +27,7 @@ def binaryFromNat : Nat → Binary
 | 0     => [false]
 | 1     => [true]
 | n' + 2 =>
-  have : (shiftRight (n' + 2)) < (n' + 2) := by sorry
+  have : (shiftRight (n' + 2)) < (n' + 2) := by unfold shiftRight; omega
   (binaryFromNat (shiftRight (n' + 2))) ++ [(BitFromNat (rightBit (n' + 2)))]
 
 /-!

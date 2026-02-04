@@ -71,6 +71,6 @@ def findModel :  Expr → Option Interp
   let ms := findModels e
   match ms with
   | [] => none
-  | h::_ => h
+  | h::_ => some h
 
 end Content.B02_ClassicalPropositionalLogic.chapters.models

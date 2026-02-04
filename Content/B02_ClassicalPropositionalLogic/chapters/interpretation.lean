@@ -4,14 +4,12 @@
 <!-- toc -->
 @@@ -/
 
-import Content.B02_ClassicalPropositionalLogic.chapters.utilities
 import Content.B02_ClassicalPropositionalLogic.chapters.semantics
 
 namespace Content.B02_ClassicalPropositionalLogic.chapters.interpretation
 
 open Content.B02_ClassicalPropositionalLogic.chapters.syntax
 open Content.B02_ClassicalPropositionalLogic.chapters.semantics
-open Content.B02_ClassicalPropositionalLogic.chapters.utilities
 
 /- @@@
 An interpretation, *i*, in propositional logic is a function
@@ -27,21 +25,19 @@ from the same variable will thus be assigned the same value.
 
 Suppose for example that we want to evaluate an expression
 under an interpretation that assigns the value, *false*, to
-every variable, and thus to every variable expressions. We
-can define such an interpretation in one line
+every variable, and thus to every variable expression. We
+can define such an interpretation in one line.
 @@@ -/
 
-def allFalse : Var → Bool := fun v => false
+def allFalse : Var → Bool := fun _ => false
 
 /- @@@
 The lambda expression, *fun v => false*, which can also be
 written as *λ v => false*, denotes the function that takes
-any variable, *v* as an argument and that returns false. The
-yellow squiggly line under *v* is Lean warning that we don't
-use *v* in the definition of the return value. We can in any
-such case remove the argument name, *v*, replacing it with
-an underscore, *_*, to specify that we won't be using this
-value in the subsequent computation.
+any variable, *v* as an argument and that returns false. We
+use an underscore, *_*, in place of the argument name to
+indicate that we don't use the argument value in defining
+the return value.
 
 In any case, with this interpretation in hand, we can now
 evaluate an expression under it. We can use Lean's *reduce*
@@ -56,7 +52,7 @@ def e : Expr := {⟨0⟩}  -- expression on 0th variable
 #reduce ⟦(e ∧ ¬e)⟧ allFalse     -- expect false
 
 /- @@@
-We can also easily define the all-true interpretation,
+We can also easily define the all-true interpretation.
 @@@ -/
 
 def allTrue : Interp := λ _ => true   -- _ for don't care
@@ -100,11 +96,11 @@ the expression), it'd be a real chore to have to
 write exponential numbers of explicit definitions.
 
 To address this problem, we will define functions
-for building interpretation functions from simple
-specifications.
+that algorithmically construct interpretations from
+simple specifications.
 
 For example, we'd like to have a function that takes
-any expression, *e*,  and returns a list of all *2^n*
+any expression, *e*, and returns a list of all *2^n*
 of its possible interpretations. This will enable us
 to compute *truth tables* for expressions, where each
 interpretation corresponds to one row of a truth table
@@ -113,58 +109,32 @@ by applying *eval* to *e* and to the interpretation
 that the corresponding row of variable values in the
 truth table represents.
 
-The implementation involves some details. We break
-the presentation of our specification of this function
-into two parts: all the helpful functions, followed by
-the main function of interest. For those looking just
-to use this function, you may skip the next section on
-the underlying details and jump ahead to the definition
-of the "API" that this module provides for end users.
-
-## Helper Functions
-
-One key helper function in our implementation takes
-a *list* of Boolean values in positions with indices
-from *0* to *n-1* (for an expression, *e*, with *n*
-variable expressions), and returns an interpretation
-that maps the variable with index *0 ≤ k < n* to the
-Boolean value in the *k'th* position in the array of
-Boolean values.
-
-We'll build such a final interpretation iteratively,
-by starting with an interpretation, e.g., *allFalse*,
-then iteratively overriding the value that it assigns
-to the *k'th* variable, with k increasing from *0* to
-*n-1*. Variables with greater indices are irrelevant
-as they do not appear in *e*, and so default to the
-values of the interpretation provided as a starting
-point (e.g., allFalse).
+We build up to this capability through a series of
+smaller definitions.
 
 ### Overriding Variable-Value Assignments
 
-The key operation in all of this is overrideBValue, as
-defined next. It takes an interpretation function as an
-input  along with a variable and a value to be assigned
-to that variable, and returns a new interpretation that
-is just like the given one except that it now assigns
-the specified value to the specified variable. Study
-this function with some care. See that the returned
-function returns the new value for the variable being
-bound to a new value, otherwise the new function just
-calls the old function to return the value of any other
-variable.
+A useful operation on interpretations is *functional
+override*: given an interpretation, a variable, and a
+new Boolean value, return a new interpretation that is
+identical to the original except that it assigns the
+new value to the specified variable. Study this function
+with some care. The returned function checks whether the
+queried variable matches the overridden one (by index);
+if so it returns the new value, otherwise it delegates
+to the original interpretation.
 @@@ -/
 
- def overrideValue : Interp → Var → Bool → Interp
+def overrideValue : Interp → Var → Bool → Interp
 | i, v, b =>
-  λ (v' : Var) =>
-    if (v'.index == v.index)  -- if index is variables overridden
-        then b                -- return new value
-        else (i v')           -- else value under old interp
+  fun (v' : Var) =>
+    if (v'.index == v.index)
+        then b
+        else (i v')
 
 /- @@@
 Here's an example. Remember that *e* is a variable
-expression build on the variable *(Var.mk 0)* with
+expression built on the variable *(Var.mk 0)* with
 index 0. Here we start with *allFalse* and override
 it to assign *true* as the value of this variable.
 When we evaluate *e* on the resulting interpretation
@@ -174,40 +144,19 @@ we'll see that we get the value, true.
 def newInterp := overrideValue allFalse ⟨0⟩ true  -- override
 #reduce ⟦e⟧ newInterp                          -- expect true
 
-
 /- @@@
 ### Constructing an Interpretation from a List of Bools
 
-With this function value override function in hand, we
-can now define a function that takes a list of Bool values
-(using Lean's "parametrically polymorphic" List type) and
-that returns an interpretation as just described. It works
-by passing the number of variable values to be overridden
-(the length of the list of Bools) and that list to a helper
-function that takes the number of variable values  and this
-list and that uses recursion to iteratively override variable
-*k* with the corresponding list entry.
-
-Note that the helper function is defined by cases that match
-on two arguments. The first pattern matches when the list of
-Booleans to assign is empty, in which case this function just
-returns the *allFalse* interpretation. Otherwise, if the number
-of variables to bind is non-zero, and the list of values has
-*h* (for *head* of list) as its first value and *t* (for *tail*)
-as the rest of the list), then it overrides the value of the
-next variable with that value at the head of this list. It may
-be possible to improve this definition. If you do that, please
-send a pull request.
+Another useful construction takes a list of Boolean
+values and returns an interpretation that maps the
+variable with index *k* to the *k*'th element of
+the list, with variables beyond the list defaulting
+to false. The *getD* function ("get with default")
+returns the element at index *k* if it exists, or
+the provided default value (here, *false*) otherwise.
 @@@ -/
-def interpFromBools : List Bool → Interp
-  | l => boolListToInterp l.length l
-where boolListToInterp : (vars : Nat) → (vals : List Bool) → Interp
-  | _, [] => (λ _ => false)
-  | vars, h::t =>
-    let len := (h::t).length
-    overrideValue
-      (boolListToInterp vars t)
-      (Var.mk (vars - len)) h
+def interpFromBools (l : List Bool) : Interp :=
+  fun ⟨k⟩ => l.getD k false
 
 /- @@@
 Here's an example, where nextInterp assigns true to
@@ -219,118 +168,80 @@ def nextInterp : Interp := interpFromBools [true, false]
 #eval ⟦e⟧ nextInterp    -- expect e to evaluate to true
 
 /- @@@
-### Nth Interpretation for Expression With k Variables
+### Nth Interpretation for k Variables
 
-A key insight behind our design is that each row of a
-truth table (without the final column containing the
-value of the expression) represents an interpretation.
-Moreover, the Boolean values in each row can be made to
-correspond to the Boolean digits (bits) in the binary
-expansion of the row index.
+A useful observation is that each row of a truth table
+(without the final output column) represents an
+interpretation, and the Boolean values in each row
+correspond to the bits in the binary expansion of the
+row index.
 
 For example, if *e* includes two variable expressions,
 it will have four rows with indices from *0* to *3*,
-with binary expansions of 00, 01, 10, 11. The bits in
+with binary expansions 00, 01, 10, 11. The bits in
 each of these numerals are exactly the Boolean values
 to be assigned to each of the two variables by each of
 the respective interpretations.
 
-The following function uses these observations to take
-a row index and the number of variables in an expression
-and return an interpretation corresponding to that row.
-It works by obtaining a list of Booleans for the indexed
-row (computed by another helper function) and converting
-it to an interpretation as described above.
+We can exploit this correspondence to build the
+interpretation for any given row directly: for variable
+*k* in a row with *numVars* columns, the corresponding
+bit is obtained by dividing the row index by *2^(numVars
+- 1 - k)* and checking whether the result is odd.
 @@@ -/
 
-def interpFromRowNumVars : (nth: Nat) → (numVars: Nat) → Interp
-| index, vars =>
-  interpFromBools
-    (listBoolFromRowIndexForNumVars index vars)
-
+def interpFromRowNumVars (row : Nat) (numVars : Nat) : Interp :=
+  fun ⟨k⟩ =>
+    if k < numVars then
+      (row / (2 ^ (numVars - 1 - k))) % 2 != 0
+    else false
 
 /- @@@
-### All Interpretations for Expression With k Variables
+### All Interpretations for k Variables
 
-The next function takes a number of variables in an expression
-and returns a list of all 2^n interpretations for that number
-of variables. Be careful as the size of the constructed list
-is exponential in length in the number of variables.
+To generate all *2^n* interpretations for *n* variables,
+we use a recursive construction. The key insight is that
+the set of all interpretations for *n + 1* variables is
+obtained by taking each interpretation for *n* variables
+and forking it into two: one that binds variable *n* to
+false, and one that binds it to true. The base case (zero
+variables) is a single interpretation that maps every
+variable to false.
+
+This produces interpretations in *ascending* order (from
+all-false to all-true), the standard truth-table convention.
+Here, *map* applies the forking operation to each existing
+interpretation, producing a list of two-element lists, and
+*flatten* (List.flatten) flattens this into a single list.
+
+Be careful: the constructed list is exponential in the
+number of variables.
 @@@ -/
 
-def interpsFromNumVars (numVars : Nat) : List Interp :=
-  mk_interps_helper (2^numVars) numVars
-where mk_interps_helper : (rows : Nat) → (numvars : Nat) → List Interp
-  | 0,        _  => []
-  | (n' + 1), v  => (interpFromRowNumVars n' v)::(mk_interps_helper n' v)
-
-/- @@@
-### Printable Representation for Interpretation Functions
-
-Next we define two helper functions, available for use
-by clients of this module, for mapping an interpretation (which
-as a function is unprintable) to printable forms, namely to a
-list of 0/1 natural numbers reflecting the values assigned to
-the variables with corresponding indices.
-@@@ -/
-
-def bitListFromInterpHelper : (i : Interp) → (w : Nat) → List Bool
-| _, 0 => []
-| i, (w' + 1) => bitListFromInterpHelper i w' ++ [(i ⟨w'⟩)]  -- ++ is List.append
-
-#reduce bitListFromInterpHelper allFalse 3 -- expect [0, 0, 0]
-
-/- @@@
-This function takes any list of interpretations and returns
-a list of bit lists, one for each of the interpretation.
-@@@ -/
-def bitListsFromInterpsHelper : List Interp → Nat → List (List Bool)
-| [], _ => []
-| h::t, n => bitListFromInterpHelper h n::bitListsFromInterpsHelper t n
-
-/- @@@
-Lean knows how to print lists of natural numbers, and lists
-of lists of natural numbers, so these functions can be used
-to derive printable forms of interpretation and lists thereof.
-Remember that an interpretation in our design binds values to
-an infinite number of variables, of which only a finite initial
-sub-list of variable-to-value bindings is relevant. We provide
-the number of *relevant* variable bindings for which outputs
-should be generated as the second argument to this function.
-@@@ -/
-
-#reduce bitListsFromInterpsHelper (interpsFromNumVars 3) 3
-
-/- @@@
-You can ask for bindings for more variables than are relevant,
-and in this case, we'll get default values from the initial
-interpretation that was overriden with new values for all of
-the relevant (first *n*) variables. Here, we started with the
-*allFalse* interpretation, so the values beyond the three that
-we care about in this example will be false. These values are
-ignored during evaluation and so are irrelevant and should be
-considered as an implementation detail in our design.
-@@@ -/
-
-#reduce bitListsFromInterpsHelper (interpsFromNumVars 3) 5
+def interpsFromNumVars : Nat → List Interp
+  | 0     => [fun _ => false]
+  | n + 1 =>
+    ((interpsFromNumVars n).map fun i =>
+      [overrideValue i ⟨n⟩ false, overrideValue i ⟨n⟩ true]).flatten
 
 /- @@@
 ### Counting the Number of Variables in an Expression
 
-To compute a list of all interpretations for  given expression,
+To compute a list of all interpretations for a given expression,
 *e*, we just need to know the number of variable expressions in
 *e*. That number, in turn, is one more than the highest variable
-index value for an variable used in a variable expression in *e*.
+index value for any variable used in a variable expression in *e*.
 As examples, the answer for *P ∧ P* would be *1*; for *⊤* it'd be
 *0*, as there are no variable expressions in the expression, *⊤*.
 
 This function definition provides a nice example of case analysis
 on the structure of the expression argument, *e*. If it's a literal
-expression, the answer is *0*. If it's a variable expression built
-from the variable (Var) with index i, the answer is *i + 1*. For a
-unary operator expression, *(op e)*, it's the number of variables
-in *e*. And for a binary operator expression, *(op e1 e2)* it's
-the maximum of the number of variables in each of *e1* and *e2*.
+expression, there are no variables, so we return *none*. If it's a
+variable expression built from the variable (Var) with index i,
+the answer is *some i*. For a unary operator expression, *(op e)*,
+it's the result for *e*. And for a binary operator expression,
+*(op e1 e2)*, it's the maximum of the results for each of *e1*
+and *e2*.
 @@@ -/
 def numVarsFromExpr : Expr → Nat :=
   (fun e =>
@@ -351,7 +262,7 @@ maxVariableIndex : Expr → Option Nat
 /- @@@
 ## API: Get List of All Interpretations for Expression
 
-Given a Expr, *e*, return a list of all of its *2^n*
+Given an Expr, *e*, return a list of all of its *2^n*
 interpretations in *ascending* order (from all-false to
 all-true). This function works by computing a list of
 all interpretations for *n* variables where *n* is the
@@ -361,20 +272,52 @@ def interpsFromExpr : Expr → List Interp
 | e => interpsFromNumVars (numVarsFromExpr e)
 
 /- @@@
-In addition we provide public versions of the functions
-for deriving printable representations of interpretations.
+### Printable Representations of Interpretations
+
+Since an interpretation is a function (and thus unprintable),
+we provide helpers to convert interpretations to printable
+lists of Booleans. Given an interpretation and a width *n*,
+*bitListFromInterpHelper* returns a list of the Boolean values
+assigned to variables with indices *0* through *n-1*.
 @@@ -/
-def boolListFromInterp :=  bitListFromInterpHelper
-def boolListsFromInterps :=  bitListsFromInterpsHelper
+
+def bitListFromInterpHelper (i : Interp) (n : Nat) : List Bool :=
+  (List.range n).map (fun k => i ⟨k⟩)
+
+#reduce bitListFromInterpHelper allFalse 3 -- expect [false, false, false]
+
+/- @@@
+This function takes a list of interpretations and a width
+and returns a list of Boolean lists, one for each interpretation.
+@@@ -/
+def bitListsFromInterpsHelper (interps : List Interp) (n : Nat) : List (List Bool) :=
+  interps.map (fun i => bitListFromInterpHelper i n)
+
+/- @@@
+Lean knows how to print lists of Booleans, and lists
+of lists of Booleans, so these functions can be used
+to derive printable forms of interpretations and lists
+thereof. Remember that an interpretation in our design
+binds values to an infinite number of variables, of which
+only a finite initial sub-list of variable-to-value
+bindings is relevant. We provide the number of *relevant*
+variable bindings for which outputs should be generated
+as the second argument to this function.
+@@@ -/
+
+#reduce bitListsFromInterpsHelper (interpsFromNumVars 3) 3
+
+/- @@@
+You can ask for bindings for more variables than are relevant,
+and in this case, we'll get default values (false) beyond those
+that matter. These values are ignored during evaluation and so
+are irrelevant; they are an implementation detail in our design.
+@@@ -/
+
+#reduce bitListsFromInterpsHelper (interpsFromNumVars 3) 5
 
 -- Example
 def anExpr := ({⟨0⟩} ∧ {⟨1⟩} ∨ {⟨2⟩})  -- P ∧ Q ∨ R
-#reduce boolListsFromInterps (interpsFromExpr anExpr) 3
-
-
-/- @@@
-As a final note, if you improve this module's
-implementation, please send me a pull request!
-@@@ -/
+#reduce bitListsFromInterpsHelper (interpsFromExpr anExpr) 3
 
 end Content.B02_ClassicalPropositionalLogic.chapters.interpretation

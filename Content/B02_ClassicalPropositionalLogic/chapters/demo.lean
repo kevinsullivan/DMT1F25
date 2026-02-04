@@ -4,334 +4,286 @@ import Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
 import Content.B02_ClassicalPropositionalLogic.chapters.interpretation
 import Content.B02_ClassicalPropositionalLogic.chapters.semantics
 import Content.B02_ClassicalPropositionalLogic.chapters.syntax
-import Content.B02_ClassicalPropositionalLogic.chapters.utilities
-import Content.B02_ClassicalPropositionalLogic.chapters.validity
 
 namespace Content.B02_ClassicalPropositionalLogic.chapters.propLogic
 
 open Content.B02_ClassicalPropositionalLogic.chapters.syntax
-open Content.B02_ClassicalPropositionalLogic.chapters.semantics
 open Content.B02_ClassicalPropositionalLogic.chapters.interpretation
 open Content.B02_ClassicalPropositionalLogic.chapters.models
 open Content.B02_ClassicalPropositionalLogic.chapters.truthTable
 open Content.B02_ClassicalPropositionalLogic.chapters.properties
 open Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
 
-/-!
-# Syntax
+/- @@@
+# Propositional Logic: A Working Demonstration
 
-Suppose I want to write some propositional logic expressions
-using the variable expressions, P, Q, and R, and building up
-larger propositions using the propositional logic expression-
-constructing operators. Here's how you do it.
--/
+This file demonstrates what our propositional logic
+implementation can do. We'll build expressions using
+familiar logical connectives, then use automated tools
+to analyze their properties, find models, and discover
+counterexamples.
 
--- First define a distinct variable for each variable expression
+## Setting Up: Propositional Variables
+
+We start by defining propositional variables P, Q, and R.
+Each is built from a Var (with a numeric index) wrapped
+in a variable expression.
+@@@ -/
+
+-- Variables (the building blocks)
 def v₀ : Var := Var.mk 0    -- abstract syntax
-def v₁ : Var := ⟨1⟩             -- Lean notation for mk
+def v₁ : Var := ⟨1⟩         -- Lean's anonymous constructor
 def v₂ : Var := ⟨2⟩
 
-/-!
-Now you define the variable expressions you want to use. The
-first line is using abstract syntax. The next two use our own
-(non-standard) notation, desugaring to exactly that abstract
-syntax.
-
-These variables are already declared at this point. This is a
-small design glitch that could be cleaned up. We comment them
-out for now so as not to introduce conflicting definitions.
--/
-
-def P : Expr := Expr.var_expr v₀
-def Q : Expr := { v₁ }  -- our notation for var_expr constructor
+-- Variable expressions (what we use in formulas)
+def P : Expr := Expr.var_expr v₀   -- abstract syntax
+def Q : Expr := { v₁ }            -- our { } notation
 def R : Expr := { v₂ }
 
-/-
-Now that you have three variable expressions to work with,
-you can use logical expression "connectives" (operators) to
-build bigger expressions. Consider the expression, P ∧ Q,
-for example. First we'll write it using abstract syntax,
-then using concrete syntax.
--/
-
-/-!
-Here we show the equivalence of abstract and concrete syntax.
--/
-def P_and_Q_abstract : Expr :=
-  (Expr.bin_op_expr BinOp.and P Q)
-
-/-!
-Standard concrete infix notation for (Expr.bin_op_expr BinOp.and
-That is the actual desugared representation of ∧. Other propositional
-logic concrete notations (and the concepts they represent) reduce to
-these abstract syntax representations.
--/
-def P_and_Q_concrete := P ∧ Q
-#reduce P_and_Q_concrete
-/-!
-(bin_op_expr BinOp.and) -- this is ∧
-  (var_expr { index := 0 }) -- the first conjunct, P
-  (var_expr { index := 1 }) -- the second conjunct, Q
--/
-
-
-/-! SEMANTICS UNDER INTERPRETATIONS
-
-We can easily enumerate all possible interpretations.
-That's just the "input" side of a truth table. Notice
-that this part doesn't depend on the details of e (an
-expression) at all. The driving factor is the number
-of *variables* (columns). The number of rows is
-then 2^#columns. But there's more. What relationship
-do you see between the row indices and the row contents?
--/
-
-/-!
-            var
-           0   1
-  index  | P | Q | e
-    0    | 0 | 0 | _
-    1    | 0 | 1 | _
-    2    | 1 | 0 | _
-    3    | 1 | 1 | _
--/
-
-/-!
-Recall that we represent each interpretation (each row)
-as a function. That function takes a variable (its index)
-as an actual parameter, and returns the Boolean value for
-that variable *in that row* ("under that interpretation").
-
-But of course the value for that variable in that row is
-just the (0 for false / 1 for true) Boolean value in the
-*binary expansion* of the row index. Is everyone okay with
-base 2 arithmetic? So all of this can easily programmed.
-
-Here we compute the interpretation in row index 2 in the
-preceding example. Note that e's not involved except to
-the extent that it determines the number of variables in
-one.
--/
-
-def i := interpFromRowNumVars 2 2
-#check i
-
-/-!
-Applying i to a *variable*, with indices 0 or 1, should
-return the values in row 2, namely 1 and 0. Does it work?
-(Remember ⟨⟩ notation for applying structure constructor,
-so here ⟨0⟩ is (Var.mk 0), a "variable" in our lexicon.)
--/
-
-#eval! i ⟨0⟩    -- expect true
-#eval! i ⟨1⟩    -- expect false
-
-/-!
- It's exactly this trick that is used in the semantic
-evaluation function that defines for us an operational
-semantics for propositional logic. That means that we
-have a *function* for computing an expression's meaning
-given an interpretation, i, giving the semantic values
-of the variables in the expression.
--/
-
-def e := P_and_Q_concrete
-
-#eval! eval e i
-
-/-!
-Given the semantic meanings (Boolean functions) that
-we've given our syntactic operators, we see that the
-proposition/expression e evaluates to true under the
-interpretation, i. We will thus say that i is a model
-of e. It represents a world in which e is true.
--/
-
-/-!
-Convenience functions for working with our representations of interpretations
+/- @@@
+## Building Expressions
+
+We can now write propositional logic formulas using
+the standard connectives: ¬ (not), ∧ (and), ∨ (or),
+⇒ (implies), and ↔ (if and only if). Lean also gives
+us ⊤ (true) and ⊥ (false) as literal expressions.
+@@@ -/
+
+-- These are all expressions of type Expr
+#check (P ∧ Q)
+#check (P ∨ ¬Q)
+#check (P ⇒ Q)
+#check (P ↔ Q)
+
+/- @@@
+Behind the notation, these are trees built from our
+abstract syntax. We can see the desugared form:
+@@@ -/
+
+#reduce (P ∧ Q)
+/- @@@
+This prints:
+  (bin_op_expr BinOp.and)
+    (var_expr { index := 0 })
+    (var_expr { index := 1 })
+@@@ -/
+
+/- @@@
+## First Taste: What Can This System Do?
+
+Here's the payoff. Given any propositional logic expression,
+our system can automatically determine whether it's valid
+(true in every possible world), find models (worlds where
+it's true), and find counterexamples (worlds where it fails).
+@@@ -/
+
+-- Is "P or not P" valid? (The law of the excluded middle)
+#eval is_valid (P ∨ ¬P)           -- true
+
+-- Is "P implies Q" valid? (Not every implication is a law)
+#eval is_valid (P ⇒ Q)            -- false
+
+-- Which worlds make it false? Let's find out.
+-- Each list is an interpretation: [P-value, Q-value]
+#eval bitListsFromInterpsHelper
+        (findCounterexamples (P ⇒ Q)) 2
+-- [[true, false]]: the only counterexample has P true, Q false
+
+/- @@@
+## Truth Tables
+
+The *truthTableOutputs* function evaluates an expression
+under every interpretation, producing the output column
+of its truth table (in ascending order, from all-false
+to all-true).
+@@@ -/
+
+#eval truthTableOutputs P           -- [false, true]
+#eval truthTableOutputs (P ∧ Q)     -- [false, false, false, true]
+#eval truthTableOutputs (P ∨ Q)     -- [false, true, true, true]
+#eval truthTableOutputs (P ⇒ Q)     -- [true, true, false, true]
+
+/- @@@
+## Three Kinds of Expressions
+
+Every propositional expression falls into exactly one of
+three categories. These are the most important properties
+in propositional logic.
+
+**Valid**: true under every interpretation (a tautology).
+@@@ -/
+
+#eval is_valid (P ∨ ¬P)       -- true
+#eval is_sat   (P ∨ ¬P)       -- true (valid implies satisfiable)
+#eval is_unsat (P ∨ ¬P)       -- false
+
+/- @@@
+**Satisfiable but not valid**: true in some worlds, false
+in others. Most "interesting" propositions are like this.
+@@@ -/
+
+#eval is_valid (P ∧ Q)        -- false
+#eval is_sat   (P ∧ Q)        -- true
+#eval is_unsat (P ∧ Q)        -- false
+
+/- @@@
+**Unsatisfiable**: true in no world (a contradiction).
+@@@ -/
+
+#eval is_valid (P ∧ ¬P)       -- false
+#eval is_sat   (P ∧ ¬P)       -- false
+#eval is_unsat (P ∧ ¬P)       -- true
+
+/- @@@
+## Models and Counterexamples
+
+A *model* of an expression is an interpretation that makes
+it true. A *counterexample* is an interpretation that makes
+it false. Our system can find all of them.
+
+To read the output, recall that each list of Booleans gives
+the values assigned to variables in order: the first element
+is P, the second Q, the third R (if present).
+@@@ -/
 
-An interpretation, i, is a function. It's generally not
-helpful to print functions in Lean. If you want to see a
-string representation of an interpretation, we do have a
-function for that. You pass it the interpretation and how
-many columns you want to see. An interpretation function
-is technically defined as false for all column indices
-beyond those of interest in a given case.
--/
+-- P ∧ Q: only one model (both true)
+#eval bitListsFromInterpsHelper (findModels (P ∧ Q)) 2
+-- [[true, true]]
 
-#eval! bitListFromInterpHelper i 2
+-- P ∨ Q: three models (at least one true)
+#eval bitListsFromInterpsHelper (findModels (P ∨ Q)) 2
+-- [[false, true], [true, false], [true, true]]
 
-/-!
-We also provide a function for converting a list of Bool
-values into an interpretation.
--/
+-- P ↔ Q: two models (both same value)
+#eval bitListsFromInterpsHelper (findModels (P ↔ Q)) 2
+-- [[false, false], [true, true]]
 
-def i2 := interpFromBools [true, false, true]
-#eval! bitListFromInterpHelper i2 3
+-- A valid expression has no counterexamples
+#eval bitListsFromInterpsHelper (findCounterexamples (P ∨ ¬P)) 1
+-- [] (empty list)
 
-/-!
-And finally a way to get a printable list of multiple
-(typically all) interpretations.
--/
+-- An unsatisfiable expression has no models
+#eval bitListsFromInterpsHelper (findModels (P ∧ ¬P)) 1
+-- [] (empty list)
 
-/-!
-All interpretations
+/- @@@
+## Reasoning Patterns: Implication and Its Relatives
 
-Up to now we've been working with one interpretation, i.
-We can also easily obtain, and provide a function, for
-getting a list of *all* interpretations for an expression
-with "n" variables, for any number, n. This function first
-counts the number of variables in e and then constructs a
-list of interpretations, one for each index from 2^n-1 to 0.
--/
+In everyday reasoning, people often confuse an implication
+with its converse, inverse, or contrapositive. Our system
+can show us exactly which of these are equivalent and which
+are not.
+@@@ -/
 
-def all_interps_e := interpsFromExpr e
+def implication    := P ⇒ Q       -- if P then Q
+def converse       := Q ⇒ P       -- if Q then P
+def inverse        := ¬P ⇒ ¬Q     -- if not P then not Q
+def contrapositive := ¬Q ⇒ ¬P     -- if not Q then not P
 
 
+-- Compare their truth tables
+#eval truthTableOutputs implication      -- [true, true, false, true]
+#eval truthTableOutputs converse         -- [true, false, true, true]
+#eval truthTableOutputs inverse          -- [true, false, true, true]
+#eval truthTableOutputs contrapositive   -- [true, true, false, true]
 
-/-!
-TRUTH TABLES
+/- @@@
+Look carefully: implication and contrapositive have the
+same output column. So do converse and inverse. But the
+two pairs differ from each other.
 
-You already know you can get the results of evaluating an
-expression e for each interpretation in a given list of them.
--/
+We can verify these equivalences directly. Two expressions
+are logically equivalent when their biconditional is valid.
+@@@ -/
 
-#eval! truthTableOutputs e
+-- Implication ↔ contrapositive: equivalent
+#eval is_valid (implication ↔ contrapositive)   -- true
 
-/-
-We see that e (go back and see how we defined it) is actually
-valid. And now of course you can see how we check validity for
-any expression. We count the variables in it, we generate 2^n
+-- Converse ↔ inverse: equivalent
+#eval is_valid (converse ↔ inverse)             -- true
 
--/
+-- Implication ↔ converse: NOT equivalent
+#eval is_valid (implication ↔ converse)          -- false
 
-#eval! truthTableOutputs ¬e
+/- @@@
+### The Inverse Error
 
+"If it's raining, then the ground is wet."
+Does that mean "if it's NOT raining, then the ground
+is NOT wet"? Many people reason this way. This is
+called the *inverse error* (or *denying the antecedent*).
 
-/-!
-PROPERTIES OF EXPRESSIONS
+Let's ask: is it valid that an implication entails its
+inverse?
+@@@ -/
 
-As you know, validity just means that a proposition is true
-under every interpretation -- in all worlds -- making it into
-a general-purpose reasoning principle. The is_valid function
-takes an expression, computes its number of variable, gets a
-list of all interpretations
--/
+#eval is_valid ((P ⇒ Q) ⇒ (¬P ⇒ ¬Q))   -- false!
 
-#eval! is_valid e
-#eval! is_sat e
-#eval! is_unsat ¬e
+-- What's the counterexample?
+#eval bitListsFromInterpsHelper
+        (findCounterexamples ((P ⇒ Q) ⇒ (¬P ⇒ ¬Q))) 2
+-- [[false, true]]: P is false, Q is true
+-- The sprinkler is on! The ground is wet even though
+-- it's not raining.
 
+/- @@@
+But the contrapositive *is* always valid:
+@@@ -/
 
-/-!
-TRUTH TABLES (output vectors). The returned
-list is the semantic meaning of the single
-given expression under each interpretation,
-starting with all true and descending to all
-false. (We have a note to clean this up.)
--/
+#eval is_valid ((P ⇒ Q) ⇒ (¬Q ⇒ ¬P))   -- true
 
-#eval! (truthTableOutputs (P))
-#eval! (truthTableOutputs (P ∨ Q))
+/- @@@
+## Verifying Logical Equivalences
 
+We can use our system as an equivalence checker. Two
+expressions are equivalent exactly when their biconditional
+is valid (true under all interpretations).
+@@@ -/
 
-/-!
-Examples: Checking satisfiability-related properties of a few expressions
--/
+-- De Morgan's Laws
+#eval is_valid (¬(P ∧ Q) ↔ (¬P ∨ ¬Q))   -- true
+#eval is_valid (¬(P ∨ Q) ↔ (¬P ∧ ¬Q))   -- true
 
-#reduce is_sat ⊤
-#reduce is_sat ⊥
+-- Double negation elimination
+#eval is_valid (¬¬P ↔ P)                 -- true
 
-#reduce is_sat P
-#reduce is_unsat P
-#reduce is_valid P
+-- Distribution of ∧ over ∨ (and vice versa)
+#eval is_valid ((P ∧ (Q ∨ R)) ↔ ((P ∧ Q) ∨ (P ∧ R)))  -- true
+#eval is_valid ((P ∨ (Q ∧ R)) ↔ ((P ∨ Q) ∧ (P ∨ R)))  -- true
 
-#reduce is_sat ¬P
-#reduce is_unsat ¬P
-#reduce is_valid ¬P
+/- @@@
+## Three-Variable Examples
 
-#reduce is_sat (P ∨ ¬P)
-#reduce is_unsat (P ∨ ¬P)
-#reduce is_valid (P ∨ ¬P)
+With three variables the system generates 2³ = 8
+interpretations, and the model sets get more interesting.
+@@@ -/
 
-#reduce is_sat (P ∧ ¬P)
-#reduce is_unsat (P ∧ ¬P)
-#reduce is_valid (P ∧ ¬P)
+-- Majority: at least two of P, Q, R are true
+def majority := (P ∧ Q) ∨ (P ∧ R) ∨ (Q ∧ R)
+#eval bitListsFromInterpsHelper (findModels majority) 3
+-- four models: [FTT], [TFT], [TTF], [TTT]
 
-#reduce is_sat (P ∧ Q)
-#reduce is_unsat (P ∧ Q)
-#reduce is_valid (P ∧ Q)
+-- Exclusive or (exactly one of P, Q is true)
+def xor_PQ := (P ∨ Q) ∧ ¬(P ∧ Q)
+#eval bitListsFromInterpsHelper (findModels xor_PQ) 2
+-- [[false, true], [true, false]]
 
-#reduce is_sat (P ∨ Q)
-#reduce is_unsat (P ∨ Q)
-#reduce is_valid (P ∨ Q)
+-- A chain of implications with P forced true
+def chain := (P ⇒ Q) ∧ (Q ⇒ R) ∧ P
+#eval bitListsFromInterpsHelper (findModels chain) 3
+-- just one model: P, Q, R all true
 
+/- @@@
+## Challenge
 
+Before evaluating the next expression, predict: how many
+models does it have? What are they?
 
-/-
-MODELS AND COUNTEREXAMPLES
+Hint: think about what (P ⇒ Q) ∧ (Q ⇒ R) constrains when
+P is *not* forced to be true.
+@@@ -/
 
-Please read about models and counterexamples in models.lean.
-Then come here and predict the answers for each of the following
-problems before seeing what our model finder says. Notice that in
-each case we're asking to find all models, or counterexamples, for
-a given expression.
-
-Details: The numeric argument determines should reflect how many
-variables there are in the expression being analyzed. The number
-is used to determine how many variables each interpretation should
-be output as strings in the resulting lists of lists of strings.
-
-To decode the outputs remember that P refers to variable 0, Q
-to variable 1, R to variable 2. So in a list of strings for one
-interpretation, you'd want to print its values for these three
-variables. The output would be something like this [["0","1","1"]]
-meaning that P is assigned 0; Q, 1; R, 1, by that interpretation.
--/
-
--- the numeric argument determines how many variables in expr
-#eval! bitListsFromInterpsHelper
-        (findModels P)
-        1
-
-#eval! bitListsFromInterpsHelper
-        (findModels ¬P)
-        1
-#eval! bitListsFromInterpsHelper
-        (findModels (P ∨ Q))
-        2
-
-#eval! bitListsFromInterpsHelper
-        (findModels (P ∧ Q))
-        2
-
-#eval! bitListsFromInterpsHelper
-        (findModels (P ↔ Q))
-        2
-
-#eval! bitListsFromInterpsHelper
-        (findCounterexamples P)
-        1
-
-#eval! bitListsFromInterpsHelper
-        (findCounterexamples ¬P)
-        1
-
-#eval! bitListsFromInterpsHelper
-        (findCounterexamples (P ∨ Q))
-        2
-
-#eval! bitListsFromInterpsHelper
-        (findCounterexamples (P ∧ Q))
-        2
-
-#eval! bitListsFromInterpsHelper
-        (findCounterexamples (P ↔ Q))
-        2
-
-#eval! bitListsFromInterpsHelper
-        (findCounterexamples      -- a list of interpretations for ...
-          ((P ⇒ Q) ⇒ (¬P ⇒ ¬Q)))  -- this proposition (parens needed)
-        2                         -- number of variables in result strings
+def challenge := (P ⇒ Q) ∧ (Q ⇒ R)
+#eval bitListsFromInterpsHelper (findModels challenge) 3
 
 end Content.B02_ClassicalPropositionalLogic.chapters.propLogic
