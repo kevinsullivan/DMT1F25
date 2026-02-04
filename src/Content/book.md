@@ -1,6 +1,6 @@
 ```lean
-import DMT1.B01_ConstructivePropositionalLogic.chapters
-import DMT1.B02_ConstructivePredicateLogic.chapters
+import Content.B02_ClassicalPropositionalLogic.chapters
+
 
 /-
 # Discrete Mathematics in Type Theory

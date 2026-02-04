@@ -1,1 +1,0 @@
-# Inference Rule Cheat Sheet

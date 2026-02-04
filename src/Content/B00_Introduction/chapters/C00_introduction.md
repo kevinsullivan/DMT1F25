@@ -1,12 +1,3 @@
-```lean
-structure Foo where
-(t : Type 0)
-(n : t)
-
-
-#check Foo.mk Bool true
-#check Foo
-```
 # Logics
 
 Follow along at https://live.lean-lang.org/

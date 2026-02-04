@@ -1,5 +1,5 @@
 ```lean
-import Content.B01_ConstructivePredicateLogic.chapters
+import Content.B01_ConstructivePropositionalLogic.chapters
 
 /-
 # Book 1: Constructive Propositional Logic

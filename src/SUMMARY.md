@@ -2,19 +2,11 @@
 # Reasoning and Computation
 
 - [Reasoning and Computation](./Content/book.md)
-  - [Constructive Predicate Logic](./reasoning.md)
-    - [Introduction](./Content/B01_ConstructivePropositionalLogic/chapters/C00_introduction.md)
-    - [True](./Content/B01_ConstructivePropositionalLogic/chapters/C01_true.md)
-    - [And](./Content/B01_ConstructivePropositionalLogic/chapters/C02_and.md)
-    - [Implies](./Content/B01_ConstructivePropositionalLogic/chapters/C03_implies.md)
-    - [Functions](./Content/B01_ConstructivePropositionalLogic/chapters/C04_functions.md)
-    - [Equivalence](./Content/B01_ConstructivePropositionalLogic/chapters/C06_iff.md)
-    - [Or](./Content/B01_ConstructivePropositionalLogic/chapters/C07_or.md)
-    - [False](./Content/B01_ConstructivePropositionalLogic/chapters/C08_false.md)
-    - [Negation](./Content/B01_ConstructivePropositionalLogic/chapters/C09_negation.md)
-    - [Curry Howard](./Content/B01_ConstructivePropositionalLogic/chapters/C10_curryHoward.md)
-  
----
+  - [I](./Content/B01_ConstructivePropositionalLogic/chapters/CS6501_2026_01_20.md)
+  - [II](./Content/B01_ConstructivePropositionalLogic/chapters/CS6501_2026_01_26.md)
+  - [III](./Content/B01_ConstructivePropositionalLogic/chapters/CS6501_2026_01_28.md)
+  - [IV](./Content/B01_ConstructivePropositionalLogic/chapters/CS6501_2026_02_02.md)
+  - [V](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_2026_02_04.md)
 
 [Inference Rule Cheat Sheet](./DMT1/L00_deductiveReasoning/L99_inferenceRules2.md)
 [Curry Howard](./DMT1/L00_deductiveReasoning/L99_curryHoward.md)
