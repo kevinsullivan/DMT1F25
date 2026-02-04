@@ -27,7 +27,7 @@ exactly bail one of of an impossible case. Here's a
 formal proof illustrating this idea.
 @@@ -/
 
-namespace Alpha.book1lib.homework.HW03_throughFalse
+namespace Content.book1lib.homework.HW03_throughFalse
 
 
 example
@@ -110,4 +110,4 @@ arbitrary propositions, then (P ∧ Q) ∧ (Q → False) → P
 --   _
 -- )
 
-end Alpha.book1lib.homework.HW03_throughFalse
+end Content.book1lib.homework.HW03_throughFalse

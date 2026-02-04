@@ -1,11 +1,11 @@
-import Alpha.book3lib.library.model_theory.models
+import Content.book3lib.library.model_theory.models
 
 
-open Alpha.book3lib.library.syntax
-open Alpha.book3lib.library.semantics
-open Alpha.book3lib.library.model_theory.models
+open Content.book3lib.library.syntax
+open Content.book3lib.library.semantics
+open Content.book3lib.library.model_theory.models
 
-namespace Alpha.book3lib.library.counterexamples
+namespace Content.book3lib.library.counterexamples
 
 /- @@@
 # Counterexamples
@@ -19,4 +19,4 @@ def findCounterexamples (e : Expr) : List Interp := findModels ¬e
 
 def findCounterexample (e : Expr) : Option Interp := findModel ¬e
 
-end Alpha.book3lib.library.counterexamples
+end Content.book3lib.library.counterexamples

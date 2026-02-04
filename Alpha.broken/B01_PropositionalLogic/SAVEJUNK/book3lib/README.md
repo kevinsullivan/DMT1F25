@@ -80,12 +80,12 @@ After completing this module, students will be able to:
 
 ### Relationship to Books 1-2
 
-| Aspect | Books 1-2 | This Module |
-|--------|-----------|-------------|
-| Approach | Use Lean's native logic | Build custom logic |
-| Student activity | Write proofs | Write interpreters |
-| Verification | Type-checked proofs | Boolean computation |
-| Logic system | Full predicate logic | Propositional only |
+| Aspect           | Books 1-2               | This Module         |
+| ---------------- | ----------------------- | ------------------- |
+| Approach         | Use Lean's native logic | Build custom logic  |
+| Student activity | Write proofs            | Write interpreters  |
+| Verification     | Type-checked proofs     | Boolean computation |
+| Logic system     | Full predicate logic    | Propositional only  |
 
 ### Prerequisites
 
@@ -98,4 +98,4 @@ After completing this module, students will be able to:
 
 ### Namespace Convention
 
-All files use: `namespace Alpha.book3lib.library.<module>`
+All files use: `namespace Content.book3lib.library.<module>`

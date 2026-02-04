@@ -7,7 +7,7 @@ gives you no new information. So there is no elimination
 rule for True.
 -/
 
-namespace Alpha.book1lib.chapters.C01_true
+namespace Content.book1lib.chapters.C01_true
 
 /-!
 ## The Proposition True
@@ -83,4 +83,4 @@ Both are types with exactly one value.
 | Curry-Howard twin | Unit |
 -/
 
-end Alpha.book1lib.chapters.C01_true
+end Content.book1lib.chapters.C01_true

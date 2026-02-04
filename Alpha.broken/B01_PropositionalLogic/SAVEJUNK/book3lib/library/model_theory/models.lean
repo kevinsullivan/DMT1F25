@@ -1,7 +1,7 @@
-import Alpha.book3lib.library.model_theory.properties
+import Content.book3lib.library.model_theory.properties
 
-namespace Alpha.book3lib.library
-open Alpha.book3lib.library.syntax
+namespace Content.book3lib.library
+open Content.book3lib.library.syntax
 open semantics
 open interpretation
 namespace model_theory.models
@@ -37,4 +37,4 @@ def findModel :  Expr → Option Interp
   | [] => none
   | h::_ => h
 
-end Alpha.book3lib.library.model_theory.models
+end Content.book3lib.library.model_theory.models

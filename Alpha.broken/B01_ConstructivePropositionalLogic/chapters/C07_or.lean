@@ -10,7 +10,7 @@ that meaning. It's called *disjunction*,
 logical *or*, or simply *Or*.
 -/
 
-namespace Alpha.book1lib.chapters.C07_or
+namespace Content.book1lib.chapters.C07_or
 
 /-!
 ## Example: Fire ∨ Flood
@@ -323,4 +323,4 @@ theorem or_comm_iff {P Q : Prop} : P ∨ Q ↔ Q ∨ P :=
 theorem or_assoc_iff {P Q R : Prop} : P ∨ Q ∨ R ↔ (P ∨ Q) ∨ P :=
   sorry
 
-end Alpha.book1lib.chapters.C07_or
+end Content.book1lib.chapters.C07_or

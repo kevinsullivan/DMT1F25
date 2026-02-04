@@ -1,5 +1,5 @@
-import Alpha.B01_ConstructivePropositionalLogic.chapters
-import Alpha.B02_ConstructivePredicateLogic.chapters
+import Content.B01_ConstructivePropositionalLogic.chapters
+import Content.B02_ConstructivePredicateLogic.chapters
 
 /-
 # Discrete Mathematics in Type Theory

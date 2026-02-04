@@ -2,13 +2,13 @@
 # Semantics
 @@@ -/
 
-import Alpha.book3lib.library.syntax
-import Alpha.book3lib.library.domain
+import Content.book3lib.library.syntax
+import Content.book3lib.library.domain
 
-open Alpha.book3lib.library.syntax
-open Alpha.book3lib.library.domain
+open Content.book3lib.library.syntax
+open Content.book3lib.library.domain
 
-namespace Alpha.book3lib.library.semantics
+namespace Content.book3lib.library.semantics
 
 
 /- @@@
@@ -25,8 +25,8 @@ in the semantic domain of PL: Boolean algebra.
 def evalBinOp : BinOp → (Bool → Bool → Bool)
 | BinOp.and => Bool.and
 | BinOp.or => Bool.or
-| BinOp.imp => Alpha.book3lib.library.domain.imp
-| BinOp.iff => Alpha.book3lib.library.domain.iff
+| BinOp.imp => Content.book3lib.library.domain.imp
+| BinOp.iff => Content.book3lib.library.domain.iff
 
 open Expr
 
@@ -53,4 +53,4 @@ The standard notation for (eval e i) is
 
 notation "⟦" e "⟧" i => (eval e i)
 
-end Alpha.book3lib.library.semantics
+end Content.book3lib.library.semantics

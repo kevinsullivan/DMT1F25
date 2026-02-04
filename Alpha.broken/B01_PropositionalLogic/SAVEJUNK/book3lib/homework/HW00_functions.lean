@@ -15,7 +15,7 @@ The second part has you implement the untyped
 lambda calculus, as seen in the video, in Lean.
 @@@ -/
 
-namespace Alpha.book1lib.homework.HW00_functions
+namespace Content.book1lib.homework.HW00_functions
 
 
 /- @@@
@@ -440,4 +440,4 @@ languages, including Python and C++. Computing derives
 from pure mathematical logic.
 @@@ -/
 
-end Alpha.book1lib.homework.HW00_functions
+end Content.book1lib.homework.HW00_functions

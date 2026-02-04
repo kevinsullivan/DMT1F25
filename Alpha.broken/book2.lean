@@ -1,9 +1,9 @@
-import Alpha.B02_PredicateLogic.chapters
+import Content.B02_PredicateLogic.chapters
 
 /-
 # Book 2: Constructive Predicate Logic
 
-This book introduces predicate logic through the Curry-Howard 
+This book introduces predicate logic through the Curry-Howard
 correspondence. Students learn to construct
 proofs as programs in Lean 4, building intuition for each
 logical connective through its introduction and elimination rules.

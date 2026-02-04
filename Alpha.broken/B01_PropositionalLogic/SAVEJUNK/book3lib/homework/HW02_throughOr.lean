@@ -13,7 +13,7 @@ from just these assumptions. Let's see what happens if
 we try.
 @@@ -/
 
-namespace Alpha.book1lib.homework.HW02_throughOr
+namespace Content.book1lib.homework.HW02_throughOr
 
 
 -- UNCOMMENT WHEN READY
@@ -251,4 +251,4 @@ In logic we mean A ∧ (B ∨ C) ↔ (A ∧ B) ∨ (A ∧ C). Formally state
 and prove this equivalence.
 @@@ -/
 
-end Alpha.book1lib.homework.HW02_throughOr
+end Content.book1lib.homework.HW02_throughOr

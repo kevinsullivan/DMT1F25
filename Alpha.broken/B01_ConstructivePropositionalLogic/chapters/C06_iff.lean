@@ -10,7 +10,7 @@ that meaming. It's called bi-implication,
 equivalence, if and only if, or *iff*.
 -/
 
-namespace Alpha.book1lib.chapters.C06_iff
+namespace Content.book1lib.chapters.C06_iff
 
 /-!
 ## Example: Light ↔ Power
@@ -361,4 +361,4 @@ Theorems (deductoins from axioms)
 - Iff.trans : (P ↔ Q) → (Q ↔ R) → (P ↔ R)
 -/
 
-end Alpha.book1lib.chapters.C06_iff
+end Content.book1lib.chapters.C06_iff

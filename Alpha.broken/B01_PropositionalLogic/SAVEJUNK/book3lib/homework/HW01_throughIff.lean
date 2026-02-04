@@ -7,7 +7,7 @@ inference rules cheat sheet linked at the bottom
 of the web site.
 @@@ -/
 
-namespace Alpha.book1lib.homework.HW01_throughIff
+namespace Content.book1lib.homework.HW01_throughIff
 
 
 
@@ -65,4 +65,4 @@ statement of the theorem itself.
 
 -- Answer
 
-end Alpha.book1lib.homework.HW01_throughIff
+end Content.book1lib.homework.HW01_throughIff

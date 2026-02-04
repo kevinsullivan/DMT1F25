@@ -1,4 +1,4 @@
-namespace Alpha.book3lib.library.domain
+namespace Content.book3lib.library.domain
 /- @@@
 # Boolean Algebra
 
@@ -38,4 +38,4 @@ def iff : Bool → Bool → Bool
 | false, false => true
 | _, _ => false
 
-end Alpha.book3lib.library.domain
+end Content.book3lib.library.domain

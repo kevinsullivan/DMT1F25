@@ -16,7 +16,7 @@
   - { P : Prop } (pFalse : P → Prop)
 @@@ -/
 
-namespace Alpha.book1lib.homework.HW04_negation
+namespace Content.book1lib.homework.HW04_negation
 
 
 axiom α : Type
@@ -166,4 +166,4 @@ their own lines. Then fill in the remaining proofs
 as required.
 @@@ -/
 
-end Alpha.book1lib.homework.HW04_negation
+end Content.book1lib.homework.HW04_negation

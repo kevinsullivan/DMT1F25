@@ -1,6 +1,6 @@
 # Source and target directories
-SRC_DIR := Alpha
-BUILD_DIR := src/Alpha
+SRC_DIR := Content
+BUILD_DIR := src/Content
 
 # Find all source files recursively
 SRC_FILES := $(shell find $(SRC_DIR) -type f -name '*.lean')

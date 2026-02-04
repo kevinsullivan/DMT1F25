@@ -2,7 +2,7 @@
 # Syntax
 @@@ -/
 
-namespace Alpha.book3lib.library.syntax
+namespace Content.book3lib.library.syntax
 
 structure Var : Type where
   mk :: (index: Nat)
@@ -37,4 +37,4 @@ infixr:30 " ∨  "  => Expr.bin_op_expr BinOp.or
 infixr:20 " ↔ " => bin_op_expr BinOp.iff
 infixr:25 " ⇒ " => bin_op_expr BinOp.imp
 
-end Alpha.book3lib.library.syntax
+end Content.book3lib.library.syntax

@@ -7,7 +7,7 @@ elimination rules: what it takes and how to form them,
 and how, once formed, they can be used.
 -/
 
-namespace Alpha.book1lib.chapters.C04_functions
+namespace Content.book1lib.chapters.C04_functions
 
 /-!
 # Functions
@@ -584,4 +584,4 @@ theorem comp_assoc {α β γ : Type}
 - Type inference and implicit arguments reduce type annotation noise in code
 -/
 
-end Alpha.book1lib.chapters.C04_functions
+end Content.book1lib.chapters.C04_functions

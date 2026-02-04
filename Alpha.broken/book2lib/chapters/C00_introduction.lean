@@ -80,8 +80,8 @@ example (a b : Nat) (h : a = b) : b = a := h.symm
 
 @@@ -/
 
-namespace Alpha.book2lib.chapters.C00_introduction
+namespace Content.book2lib.chapters.C00_introduction
 
 -- Content to be developed
 
-end Alpha.book2lib.chapters.C00_introduction
+end Content.book2lib.chapters.C00_introduction

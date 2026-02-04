@@ -1,8 +1,8 @@
-import Alpha.book3lib.library.syntax
+import Content.book3lib.library.syntax
 
-open Alpha.book3lib.library.syntax
+open Content.book3lib.library.syntax
 
-namespace Alpha.book3lib.library
+namespace Content.book3lib.library
 namespace axioms
 
 /- @@@
@@ -90,4 +90,4 @@ apply the checker we'll specify.
 ```
 @@@ -/
 
-end Alpha.book3lib.library.axioms
+end Content.book3lib.library.axioms

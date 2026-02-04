@@ -1,4 +1,4 @@
-import Alpha.B01_ConstructivePredicateLogic.chapters
+import Content.B01_ConstructivePredicateLogic.chapters
 
 /-
 # Book 1: Constructive Propositional Logic

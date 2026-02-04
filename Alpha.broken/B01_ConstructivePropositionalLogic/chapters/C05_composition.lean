@@ -84,7 +84,7 @@ concepts of Rock (big rocks), Ore (crushed down),
 and (smelted) Metal.
 -/
 
-namespace Alpha.book1lib.chapters.C05_composition
+namespace Content.book1lib.chapters.C05_composition
 
 axiom Rock : Type   -- type for uncrushed rocks
 axiom Ore : Type    -- type for crushed coarse ore
@@ -232,4 +232,4 @@ overall input-to-output transformation as a composition
 of two more elementary functions.
 -/
 
-end Alpha.book1lib.chapters.C05_composition
+end Content.book1lib.chapters.C05_composition

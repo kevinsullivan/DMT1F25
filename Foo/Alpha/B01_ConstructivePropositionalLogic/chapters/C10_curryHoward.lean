@@ -1,6 +1,6 @@
 import Mathlib.Logic.Equiv.Defs
 
-namespace Alpha.book1lib.chapters.C10_curryHoward
+namespace Content.book1lib.chapters.C10_curryHoward
 
 /- @@@
 # Product and Sum Types Mirror And and Or
@@ -468,4 +468,4 @@ This correspondence means:
 - Running a program = Simplifying a proof
 @@@ -/
 
-end Alpha.book1lib.chapters.C10_curryHoward
+end Content.book1lib.chapters.C10_curryHoward

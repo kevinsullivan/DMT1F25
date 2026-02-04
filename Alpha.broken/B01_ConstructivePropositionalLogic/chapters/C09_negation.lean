@@ -16,7 +16,7 @@
   - { P : Prop } (pFalse : P → Prop)
 -/
 
-namespace Alpha.book1lib.chapters.C09_negation
+namespace Content.book1lib.chapters.C09_negation
 
 axiom α : Type
 axiom P : Prop
@@ -250,4 +250,4 @@ These are **not provable** in constructive logic! We will
 explore classical reasoning in Book II.
 -/
 
-end Alpha.book1lib.chapters.C09_negation
+end Content.book1lib.chapters.C09_negation

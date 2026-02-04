@@ -1,10 +1,10 @@
-import Alpha.book3lib.library.interpretation
+import Content.book3lib.library.interpretation
 
-open Alpha.book3lib.library.syntax
-open Alpha.book3lib.library.semantics
-open Alpha.book3lib.library.interpretation
+open Content.book3lib.library.syntax
+open Content.book3lib.library.semantics
+open Content.book3lib.library.interpretation
 
-namespace Alpha.book3lib.library.model_theory
+namespace Content.book3lib.library.model_theory
 namespace truthTable
 
 /- @@@
@@ -23,4 +23,4 @@ evalBoolExpr_interps : List (Interp) → Expr → List Bool
 | [], _ => []
 | h::t, e => [eval e h] ++ evalBoolExpr_interps t e
 
-end Alpha.book3lib.library.model_theory.truthTable
+end Content.book3lib.library.model_theory.truthTable

@@ -2,7 +2,7 @@
 #### Low-level bit vector routines
 -/
 
-namespace Alpha.book3lib.library.utilities
+namespace Content.book3lib.library.utilities
 
 /-!
 Converting natural number indices to corresponding rows of
@@ -80,4 +80,4 @@ where foo : List Bool → Nat → Option Nat
           /-search rest-/
           foo bs len
 
-end Alpha.book3lib.library.utilities
+end Content.book3lib.library.utilities

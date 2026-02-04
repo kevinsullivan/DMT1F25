@@ -1,8 +1,8 @@
-import Alpha.book3lib.library.syntax
+import Content.book3lib.library.syntax
 
-open Alpha.book3lib.library.syntax
+open Content.book3lib.library.syntax
 
-namespace Alpha.book3lib.library
+namespace Content.book3lib.library
 namespace identities
 
 /- @@@
@@ -89,4 +89,4 @@ single interpretation under which the given expression
 is false.
 @@@ -/
 
-end Alpha.book3lib.library.identities
+end Content.book3lib.library.identities

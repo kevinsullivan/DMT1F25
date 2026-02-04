@@ -1,4 +1,4 @@
-/- 
+/-
 # Book 2: Constructive Predicate Logic
 ## Quantifiers, Equality, and Induction in Lean
 
@@ -13,4 +13,4 @@ This book extends constructive propositional logic with:
 - Book 1: Constructive Propositional Logic
 -/
 
-import Alpha.book2lib.chapters
+import Content.book2lib.chapters

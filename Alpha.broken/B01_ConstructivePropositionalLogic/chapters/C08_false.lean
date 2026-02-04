@@ -1,4 +1,4 @@
-namespace Alpha.book1lib.chapters.C08_false
+namespace Content.book1lib.chapters.C08_false
 
 /-!
 # False
@@ -179,4 +179,4 @@ values will ever really have to be returned. The function
 can't be used but it's mere existence does prove Empty → P.
 -/
 
-end Alpha.book1lib.chapters.C08_false
+end Content.book1lib.chapters.C08_false

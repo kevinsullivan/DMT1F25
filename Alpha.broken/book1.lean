@@ -1,4 +1,4 @@
-import Alpha.B01_PropositionalLogic.chapters
+import Content.B01_PropositionalLogic.chapters
 
 /-
 # Book 1: Propositional Logic

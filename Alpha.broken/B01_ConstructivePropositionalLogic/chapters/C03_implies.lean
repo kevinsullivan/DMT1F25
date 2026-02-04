@@ -4,7 +4,7 @@
 <!-- toc -->
 -/
 
-namespace Alpha.book1lib.chapters.C03_implies
+namespace Content.book1lib.chapters.C03_implies
 
 /-!
 ## Syntax
@@ -333,4 +333,4 @@ Big ideas:
 - *Generalized* theorems can be *applied* to particulars to derive *specialized* conclusions
 -/
 
-end Alpha.book1lib.chapters.C03_implies
+end Content.book1lib.chapters.C03_implies

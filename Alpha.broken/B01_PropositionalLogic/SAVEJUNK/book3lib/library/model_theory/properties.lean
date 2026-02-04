@@ -1,4 +1,4 @@
-import Alpha.book3lib.library.model_theory.truthTable
+import Content.book3lib.library.model_theory.truthTable
 
 /- @@@
 ### Satisfiability
@@ -17,11 +17,11 @@ being *unsatisfiable?* And does "e" have the property of being
 *valid*.
 @@@ -/
 
-namespace Alpha.book3lib.library
+namespace Content.book3lib.library
 namespace properties
 
-open  Alpha.book3lib.library.syntax
-open Alpha.book3lib.library.model_theory.truthTable
+open  Content.book3lib.library.syntax
+open Content.book3lib.library.model_theory.truthTable
 open semantics
 open utilities
 
@@ -53,4 +53,4 @@ def is_unsat : Expr → Bool :=
 def is_model : (Var → Bool) → Expr → Bool :=
   fun i e => eval e i
 
-end Alpha.book3lib.library.properties
+end Content.book3lib.library.properties

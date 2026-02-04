@@ -15,16 +15,16 @@ induction to prove properties of recursive structures.
 
 ### Planned Chapters
 
-| Chapter | Topic | Key Concepts |
-|---------|-------|--------------|
-| C00 | Introduction | From propositional to predicate logic |
-| C01 | Predicates | Properties as functions to Prop |
-| C02 | Universal (∀) | `∀ x, P x`, introduction and elimination |
-| C03 | Existential (∃) | `∃ x, P x`, witnesses, `Exists.intro` |
-| C04 | Equality | `=`, `rfl`, `Eq.subst`, rewriting |
-| C05 | Induction | Nat induction, structural induction |
-| C06 | Relations | Binary predicates, properties |
-| C07 | Summary | Reference and exercises |
+| Chapter | Topic           | Key Concepts                             |
+| ------- | --------------- | ---------------------------------------- |
+| C00     | Introduction    | From propositional to predicate logic    |
+| C01     | Predicates      | Properties as functions to Prop          |
+| C02     | Universal (∀)   | `∀ x, P x`, introduction and elimination |
+| C03     | Existential (∃) | `∃ x, P x`, witnesses, `Exists.intro`    |
+| C04     | Equality        | `=`, `rfl`, `Eq.subst`, rewriting        |
+| C05     | Induction       | Nat induction, structural induction      |
+| C06     | Relations       | Binary predicates, properties            |
+| C07     | Summary         | Reference and exercises                  |
 
 ### Key Ideas
 
@@ -40,11 +40,11 @@ induction to prove properties of recursive structures.
 
 ### Curry-Howard Extensions
 
-| Logic | Computation |
-|-------|-------------|
+| Logic          | Computation                        |
+| -------------- | ---------------------------------- |
 | ∀ (x : α), P x | (x : α) → P x (dependent function) |
-| ∃ (x : α), P x | Σ (x : α), P x (dependent pair) |
-| a = b | Path/identity type |
+| ∃ (x : α), P x | Σ (x : α), P x (dependent pair)    |
+| a = b          | Path/identity type                 |
 
 ### Learning Outcomes
 
@@ -63,4 +63,4 @@ After completing this book, students will be able to:
 
 ### Namespace Convention
 
-All chapters use: `namespace Alpha.book2lib.chapters.CXX_name`
+All chapters use: `namespace Content.book2lib.chapters.CXX_name`

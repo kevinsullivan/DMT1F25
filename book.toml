@@ -1,9 +1,8 @@
 [book]
-title = "Reasoning and Computation Book 1: Propositional Logic"
+title = "Reasoning and Computation: Propositional Logic"
 authors = ["Kevin Sullivan"]
 language = "en"
-multilingual = false
-description = "Reasoning and Computation: Book 1: Propositional Logic"
+description = "Reasoning and Computation: Propositional Logic"
 src = "src"
 
 [build]

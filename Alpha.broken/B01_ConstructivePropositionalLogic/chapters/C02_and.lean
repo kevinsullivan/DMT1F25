@@ -33,7 +33,7 @@ construct a proof to show that that the resulting proposition is
 true?*
 -/
 
-namespace Alpha.book1lib.chapters.C02_and
+namespace Content.book1lib.chapters.C02_and
 
 /-!
 ## Propositions
@@ -431,4 +431,4 @@ theorem proofAndAssoc : P ∧ (Q ∧ R) ↔ (P ∧ Q) ∧ R :=
     )
   )
 
-end Alpha.book1lib.chapters.C02_and
+end Content.book1lib.chapters.C02_and

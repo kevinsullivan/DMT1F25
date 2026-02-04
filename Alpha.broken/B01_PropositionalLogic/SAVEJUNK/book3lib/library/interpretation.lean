@@ -1,12 +1,12 @@
-import Alpha.book3lib.library.utilities
-import Alpha.book3lib.library.semantics
+import Content.book3lib.library.utilities
+import Content.book3lib.library.semantics
 
-namespace Alpha.book3lib.library.interpretation
+namespace Content.book3lib.library.interpretation
 
-open Alpha.book3lib.library
+open Content.book3lib.library
 open utilities
 open semantics
-open Alpha.book3lib.library.syntax
+open Content.book3lib.library.syntax
 
 
 /- @@@
@@ -100,4 +100,4 @@ def interpStringsFromInterps : List Interp → Nat → List (List String)
 | [], _ => []
 | h::t, n => bitStringsFromInterp h n::interpStringsFromInterps t n
 
-end Alpha.book3lib.library.interpretation
+end Content.book3lib.library.interpretation

@@ -277,7 +277,7 @@ Then use False.elim to derive anything.
 - `¬(P ∧ Q) → (¬P ∨ ¬Q)` ✗ (requires classical logic)
 -/
 
-namespace Alpha.book1lib.chapters.C11_summary
+namespace Content.book1lib.chapters.C11_summary
 
 /-!
 ## Comprehensive Exercises
@@ -292,7 +292,7 @@ ordered by difficulty.
 theorem and_idemp {P : Prop} : P ↔ P ∧ P := by
   sorry
 
--- EXERCISE 2: Or is idempotent  
+-- EXERCISE 2: Or is idempotent
 theorem or_idemp {P : Prop} : P ↔ P ∨ P := by
   sorry
 
@@ -309,12 +309,12 @@ theorem or_absorb_and {P Q : Prop} : P ∨ (P ∧ Q) ↔ P := by
 -/
 
 -- EXERCISE 5: And distributes over Or
-theorem and_distrib_or {P Q R : Prop} : 
+theorem and_distrib_or {P Q R : Prop} :
   P ∧ (Q ∨ R) ↔ (P ∧ Q) ∨ (P ∧ R) := by
   sorry
 
 -- EXERCISE 6: Or distributes over And
-theorem or_distrib_and {P Q R : Prop} : 
+theorem or_distrib_and {P Q R : Prop} :
   P ∨ (Q ∧ R) ↔ (P ∨ Q) ∧ (P ∨ R) := by
   sorry
 
@@ -361,27 +361,27 @@ theorem and_imp_neg_imp {P Q : Prop} : (P ∧ ¬Q) → ¬(P → Q) := by
 -/
 
 -- EXERCISE 13: Prove this tautology
-theorem complex1 {P Q R : Prop} : 
+theorem complex1 {P Q R : Prop} :
   ((P → Q) ∧ (Q → R)) → (P → R) := by
   sorry
 
 -- EXERCISE 14: Prove this tautology
-theorem complex2 {P Q R : Prop} : 
+theorem complex2 {P Q R : Prop} :
   (P → Q → R) ↔ (P ∧ Q → R) := by
   sorry
 
 -- EXERCISE 15: Prove this tautology (currying)
-theorem curry {P Q R : Prop} : 
+theorem curry {P Q R : Prop} :
   (P ∧ Q → R) ↔ (P → Q → R) := by
   sorry
 
 -- EXERCISE 16: Prove this tautology
-theorem complex3 {P Q : Prop} : 
+theorem complex3 {P Q : Prop} :
   (P → Q) → (¬P ∨ Q) := by
   sorry  -- CHALLENGE: Requires classical logic!
 
 -- The constructive theorem we CAN prove:
-theorem complex3_converse {P Q : Prop} : 
+theorem complex3_converse {P Q : Prop} :
   (¬P ∨ Q) → (P → Q) := by
   sorry
 
@@ -393,12 +393,12 @@ These are harder. Some may require techniques from Book II.
 
 -- CHALLENGE 1: Peirce's law is NOT constructively provable
 -- But its double negation IS provable!
-theorem peirce_double_neg {P Q : Prop} : 
+theorem peirce_double_neg {P Q : Prop} :
   ¬¬((P → Q) → P) → P := by
   sorry  -- Actually requires classical logic
 
 -- CHALLENGE 2: Prove equivalence of these forms
-theorem iff_neg_or {P Q : Prop} : 
+theorem iff_neg_or {P Q : Prop} :
   (P → Q) ↔ (¬P ∨ Q) := by
   sorry  -- Forward direction requires classical logic
 
@@ -428,7 +428,7 @@ example (h : ∀ n : Nat, n + 0 = n) : 5 + 0 = 5 := h 5
 example : ∃ (n : Nat), n > 0 := ⟨1, Nat.one_pos⟩
 
 -- To use ∃ x, P x: extract witness and proof
-example (h : ∃ n : Nat, n > 0) : True := 
+example (h : ∃ n : Nat, n > 0) : True :=
   match h with | ⟨n, _⟩ => True.intro
 
 /-!
@@ -485,4 +485,4 @@ You're ready for Book II, where we'll add quantifiers and induction,
 giving you the full power of predicate logic!
 -/
 
-end Alpha.book1lib.chapters.C11_summary
+end Content.book1lib.chapters.C11_summary

@@ -168,7 +168,7 @@ After completing Book I, you'll be ready for:
 Let's begin!
 -/
 
-namespace Alpha.book1lib.chapters.C00_introduction
+namespace Content.book1lib.chapters.C00_introduction
 
 /-!
 ## A First Example
@@ -206,4 +206,4 @@ your toolkit for constructing proofs.
 Ready? Turn to C01_true.lean to begin!
 -/
 
-end Alpha.book1lib.chapters.C00_introduction
+end Content.book1lib.chapters.C00_introduction
