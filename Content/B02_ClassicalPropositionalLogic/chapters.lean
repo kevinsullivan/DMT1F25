@@ -1,5 +1,4 @@
 -- Book 2: Constructive Predicate Logic - Chapter Imports
-import Content.B02_ClassicalPropositionalLogic.chapters.C00_introduction
 import Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
 import Content.B02_ClassicalPropositionalLogic.chapters.demo
 import Content.B02_ClassicalPropositionalLogic.chapters.domain

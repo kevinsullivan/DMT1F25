@@ -1,7 +1,7 @@
 /- @@@
 Semantic Validity
 
-UNDER CONSTRUCTION
+UNDER CONSTSRUCTION
 
 # Validity
 
@@ -24,7 +24,7 @@ the elements of the proposition might refer.
 
 At this point, we've established a definition of what it means
 for a proposition in propositional logic to be valid: that it
-is true under all possible interpretations: in all possible world
+is true under all possible intepretations: in all possible world
 states, as it were.
 
 ## Predicate Logic Changes the Game
@@ -44,9 +44,9 @@ in the selected domain.
 
 ### It has Existential and Universal Quantifier Expressions
 In addition, predicate logic extends the propositional logic
-with universal and existential quantifier expressions, of the
-form, *∀ (x : α), P x* and *∃ (x : α), P x*. The first can be
-read as, every *x* of type *α* satisfies the predicate, P; and
+with universall and existential quantifier expressions, of the
+formm, *∀ (x : α), P x* and *∃ (x : α), P x*. The first can be
+read as, every *x* of type *α satisfies the predicate, P; and
 the latter, as "some (at least one) x satisfies P."
 
 ### It has Predicates: Abstractions from Families of Propositions
@@ -81,14 +81,14 @@ means with an always finite computation).
 
 That is no longer the case when we get to predicate logic.
 There's now an unbounded number of possible domains. You
-can use predicate logic to talk about anything. Predicate
+can se predicate logic to talk about anything. Predicate
 logic is a "bring your own domain" formal language! Such
-domains need not be finite (e.g., we can take real numbers
+domains need not be finite (e.g., we can take real= numbers
 as a values to which some variable expressions refer. Or
 the same expression might be interpreted as asserting that
-some condition is true of traffic in Boston. Clearly we can
+some condition is true of traffic in Boston. Cearly we can
 no longer test an expression for validity by evaluating it
-under a finite number of interpretations.
+under a finite number of interprtations.
 
 How can we show that a given proposition is true for every
 possible interpretation (every possible world state) in

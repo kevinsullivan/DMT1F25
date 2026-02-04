@@ -140,7 +140,7 @@ We do need to let Lean know the result should be a "var".
 Now we just defined variable expressions as expressions
 of the form (var_expr v). We define var_expr shortly. View
 var_expr as the method for constructing a variable expression
-from a variable. And given a variable expression, you can
+from a variable. ANd given a variable expression, you can
 get the underlying variable back out to work with. We'll
 need that when it comes to defining interpretations as
 functions that take *variables* in and that return values
@@ -199,7 +199,7 @@ deriving Repr
 
 /- @@@
 Every type encloses the names of its constructors
-in a namespace with the same name as the type. So
+in a snamespace with the same name as the type. So
 Expr is now a namespace, and the constructor names
 (lit_expr, etc.) are referred to as Expr.lit_expr,
 etc. To avoid having to repeat that Expr. bit all

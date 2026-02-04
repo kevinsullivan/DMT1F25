@@ -81,7 +81,7 @@ def true_intro := ⊤
 def false_elim := ⊥ ⇒ P
 
 /- @@@
-As we'll see later, this is not a collection of arbitrary
+As we'll later, this is not a collection of arbitrary
 propositions (expressions), but of propositions that
 we can take as defining a set of elementary principles
 for valid reasoning. For now, though, we can take them

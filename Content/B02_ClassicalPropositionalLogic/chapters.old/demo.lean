@@ -26,7 +26,7 @@ larger propositions using the propositional logic expression-
 constructing operators. Here's how you do it.
 -/
 
--- First define a distinct variable for each variable expression
+-- First define a disting variable for each variable expression
 def v₀ : Var := Var.mk 0    -- abstract syntax
 def v₁ : Var := ⟨1⟩             -- Lean notation for mk
 def v₂ : Var := ⟨2⟩
@@ -62,9 +62,9 @@ def P_and_Q_abstract : Expr :=
 
 /-!
 Standard concrete infix notation for (Expr.bin_op_expr BinOp.and
-That is the actual desugared representation of ∧. Other propositional
+That is the actual desugarad representation of ∧. Other propositional
 logic concrete notations (and the concepts they represent) reduce to
-these abstract syntax representations.
+these abstract sybtax repreesentations.
 -/
 def P_and_Q_concrete := P ∧ Q
 #reduce P_and_Q_concrete
@@ -78,10 +78,10 @@ def P_and_Q_concrete := P ∧ Q
 /-! SEMANTICS UNDER INTERPRETATIONS
 
 We can easily enumerate all possible interpretations.
-That's just the "input" side of a truth table. Notice
+That's jsut the "input" side of a truth table. Notice
 that this part doesn't depend on the details of e (an
 expression) at all. The driving factor is the number
-of *variables* (columns). The number of rows is
+number of *variables* (columns). The number of rows is
 then 2^#columns. But there's more. What relationship
 do you see between the row indices and the row contents?
 -/
@@ -98,7 +98,7 @@ do you see between the row indices and the row contents?
 
 /-!
 Recall that we represent each interpretation (each row)
-as a function. That function takes a variable (its index)
+as a function. That function takes a variable (it's index)
 as an actual parameter, and returns the Boolean value for
 that variable *in that row* ("under that interpretation").
 
@@ -155,7 +155,7 @@ helpful to print functions in Lean. If you want to see a
 string representation of an interpretation, we do have a
 function for that. You pass it the interpretation and how
 many columns you want to see. An interpretation function
-is technically defined as false for all column indices
+is technicallky defined as false for all column indices
 beyond those of interest in a given case.
 -/
 
@@ -182,7 +182,7 @@ We can also easily obtain, and provide a function, for
 getting a list of *all* interpretations for an expression
 with "n" variables, for any number, n. This function first
 counts the number of variables in e and then constructs a
-list of interpretations, one for each index from 2^n-1 to 0.
+list of interpretatins, one for each index from 2^n-1 to 0.
 -/
 
 def all_interps_e := interpsFromExpr e
@@ -226,7 +226,7 @@ list of all interpretations
 /-!
 TRUTH TABLES (output vectors). The returned
 list is the semantic meaning of the single
-given expression under each interpretation,
+given expression under each ]interpretation,
 starting with all true and descending to all
 false. (We have a note to clean this up.)
 -/
@@ -285,7 +285,7 @@ be output as strings in the resulting lists of lists of strings.
 To decode the outputs remember that P refers to variable 0, Q
 to variable 1, R to variable 2. So in a list of strings for one
 interpretation, you'd want to print its values for these three
-variables. The output would be something like this [["0","1","1"]]
+variables. The ouput would be something like this [["0","1","1"]]
 meaning that P is assigned 0; Q, 1; R, 1, by that interpretation.
 -/
 

@@ -15,8 +15,8 @@ open Content.B02_ClassicalPropositionalLogic.chapters.utilities
 
 /- @@@
 An interpretation, *i*, in propositional logic is a function
-from variables to Booleans. That is just how we represent
-one in Lean: as a value of type Interp, an abbreviation for
+from variables to Booleans;. That is just how we represent
+on in Lean: as a value of type Interp, an abbreviation for
 the type of total functions from Var to Bool, *Var → Bool*.
 
 Recall that in our specification, a variable expression is
@@ -109,11 +109,11 @@ of its possible interpretations. This will enable us
 to compute *truth tables* for expressions, where each
 interpretation corresponds to one row of a truth table
 except for the final output value, which is computed
-by applying *eval* to *e* and to the interpretation
+by applying *eval* to *e** and to the interpretation
 that the corresponding row of variable values in the
 truth table represents.
 
-The implementation involves some details. We break
+The implementation is involves some details. We break
 the presentation of our specification of this function
 into two parts: all the helpful functions, followed by
 the main function of interest. For those looking just
@@ -302,7 +302,7 @@ should be generated as the second argument to this function.
 #reduce bitListsFromInterpsHelper (interpsFromNumVars 3) 3
 
 /- @@@
-You can ask for bindings for more variables than are relevant,
+By can ask for bindings for more variables than are relevant,
 and in this case, we'll get default values from the initial
 interpretation that was overriden with new values for all of
 the relevant (first *n*) variables. Here, we started with the
@@ -349,7 +349,7 @@ maxVariableIndex : Expr → Option Nat
     | none,   none   => none
 
 /- @@@
-## API: Get List of All Interpretations for Expression
+## API: Get List of All Interprations for Expression
 
 Given a Expr, *e*, return a list of all of its *2^n*
 interpretations in *ascending* order (from all-false to

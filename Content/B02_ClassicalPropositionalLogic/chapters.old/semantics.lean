@@ -48,7 +48,7 @@ open Content.B02_ClassicalPropositionalLogic.chapters.domain
 ## Fixed Interpretation of Unary Connectives
 
 The first thing we'll do is define what Boolean operators
-we mean by the names of our unary and binary "connectives".
+we mean by the names of our unary and binary "conenctives".
 @@@ -/
 
 -- function takes unary operator and returns *unary* Boolean function
@@ -97,9 +97,9 @@ Finally now here is the central definition: the semantics of
 propositional logic, specified in terms of our representations
 of interpretations, variables, etc.
 
-The first line defines eval to be some function taking
+The first line defines evalBoolExpr to be some function taking
 an expression, e, and an interpretation, i, as arguments and
-returning the Boolean meaning of e in the "world" (binding
+returning the Boolean meaining of e in the "world" (binding
 of all variables to Boolean values) expressed by that i.
 @@@ -/
 

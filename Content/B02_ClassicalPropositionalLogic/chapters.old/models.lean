@@ -25,7 +25,7 @@ open Content.B02_ClassicalPropositionalLogic.chapters.interpretation
 
 /- @@@
 Given a proposition (Expr), *e*, and an interpretation for
-the variables in *e*, we can apply our semantic evaluation
+the variables in *e*, we can apply our semantic evalation
 function, ⟦⬝⟧, to e and i, to compute the truth of *e* under
 *i*.
 
@@ -42,7 +42,7 @@ when there is at least one interpretation for *e* that is
 a model: under which *e* evaluates to true. We can think of
 a model as a *solution* to the problem posed by an expression:
 to find an assignment of values to its variables under which
-it evaluates to true.
+it evaluate to true.
 
 Here's a brute force function that if given an expression,
 *e*, returns a list of all of its models. (The list filter

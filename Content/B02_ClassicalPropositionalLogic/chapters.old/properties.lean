@@ -6,12 +6,12 @@
 We built a satisfiability checker. The procedure it implements
 *decides* whether any propositional logic expression, e, has at
 least one interpretation, i, such that (i e) is true. It works
-by generating all 2^n interpretation for any set of n propositional
+by generating all 2^n intepretation for any set of n propositional
 variables, evaluating the expression under each interpretation,
 then returning true if and only if any of the results are true.
 
 With the same underlying machinery we can easily implement what
-we will call *decision procedures* that similarly answer two similar
+we will *decision procedures* that similarly answer two similar
 questions: does a given expression, e, have the *property* of
 being *unsatisfiable?* And does "e" have the property of being
 *valid*.

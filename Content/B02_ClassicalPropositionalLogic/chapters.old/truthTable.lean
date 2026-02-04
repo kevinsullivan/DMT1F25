@@ -8,8 +8,8 @@ of all 2^n interpretations for *e* with each one paired
 with the value of *e* under it. The primary function that
 this module defines takes an expression and returns the
 list of its output values under each interpretation for
-that expression. From this information a truth table can
-be assembled.
+that expressiom. From this information a truth table can
+be assembed.
 @@@ -/
 
 import Content.B02_ClassicalPropositionalLogic.chapters.syntax
@@ -34,7 +34,7 @@ def mapEvalExprInterps : Expr → List Interp → List Bool
 | e, h::t => (⟦e⟧h)::mapEvalExprInterps e t
 
 /- @@@
-Return the list of Bool values obtained by evaluating
+Return the list of Bool values obtaibed by evaluating
 an expression, e, over each of its interpretations, in
 their natural order.
 @@@ -/
