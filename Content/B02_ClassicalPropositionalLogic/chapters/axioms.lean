@@ -13,8 +13,10 @@ able to use them here without prefixes.
 @@@ -/
 
 import Content.B02_ClassicalPropositionalLogic.chapters.syntax
+import Content.B02_ClassicalPropositionalLogic.chapters.properties
 
 open Content.B02_ClassicalPropositionalLogic.chapters.syntax
+open Content.B02_ClassicalPropositionalLogic.chapters.properties
 
 namespace Content.B02_ClassicalPropositionalLogic.chapters.axioms
 
@@ -87,6 +89,26 @@ we can take as defining a set of elementary principles
 for valid reasoning. For now, though, we can take them
 as good examples of expressions we can write now using
 the syntax we've defined.
+
+Let's verify that each of these axioms is indeed valid:
+every one evaluates to true under all interpretations.
 @@@ -/
+
+-- Validate all axioms
+#eval is_valid and_intro        -- true
+#eval is_valid and_elim_left    -- true
+#eval is_valid and_elim_right   -- true
+#eval is_valid or_intro_left    -- true
+#eval is_valid or_intro_right   -- true
+#eval is_valid or_elim          -- true
+#eval is_valid not_intro        -- true
+#eval is_valid not_elim         -- true
+#eval is_valid imp_intro        -- true
+#eval is_valid imp_elim         -- true
+#eval is_valid equiv_intro      -- true
+#eval is_valid equiv_elim_left  -- true
+#eval is_valid equiv_elim_right -- true
+#eval is_valid true_intro       -- true
+#eval is_valid false_elim       -- true
 
 end Content.B02_ClassicalPropositionalLogic.chapters.axioms

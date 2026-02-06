@@ -1,8 +1,6 @@
 /- @@@
 Semantic Validity
 
-UNDER CONSTRUCTION
-
 # Validity
 
 <!-- toc -->
@@ -26,7 +24,92 @@ At this point, we've established a definition of what it means
 for a proposition in propositional logic to be valid: that it
 is true under all possible interpretations: in all possible world
 states, as it were.
+@@@ -/
 
+import Content.B02_ClassicalPropositionalLogic.chapters.properties
+import Content.B02_ClassicalPropositionalLogic.chapters.models
+import Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
+
+namespace Content.B02_ClassicalPropositionalLogic.chapters.validity
+
+open Content.B02_ClassicalPropositionalLogic.chapters.syntax
+open Content.B02_ClassicalPropositionalLogic.chapters.properties
+open Content.B02_ClassicalPropositionalLogic.chapters.models
+open Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
+
+/- @@@
+## Three Key Properties
+
+Given our decision procedures, we can classify any
+propositional logic expression into one of three categories:
+
+- **Valid**: true under *every* interpretation
+- **Satisfiable**: true under *at least one* interpretation
+- **Unsatisfiable**: true under *no* interpretation
+
+Let's see these in action with concrete examples.
+@@@ -/
+
+def P := {⟨0⟩}
+def Q := {⟨1⟩}
+
+/- @@@
+### A Valid Expression
+
+The expression *P ∨ ¬P* (excluded middle) is valid:
+it's true no matter what truth value P has.
+@@@ -/
+
+#eval is_valid (P ∨ ¬P)          -- true
+#eval is_sat (P ∨ ¬P)            -- true (valid implies satisfiable)
+#eval is_unsat (P ∨ ¬P)          -- false
+
+/- @@@
+### A Satisfiable (but not Valid) Expression
+
+The expression *P ∧ Q* is satisfiable — it's true
+when both P and Q are true — but not valid, since
+it's false when either is false.
+@@@ -/
+
+#eval is_valid (P ∧ Q)           -- false
+#eval is_sat (P ∧ Q)             -- true
+#eval is_unsat (P ∧ Q)           -- false
+#eval findModels (P ∧ Q)         -- the one model: both true
+#eval findCounterexamples (P ∧ Q) -- the three counterexamples
+
+/- @@@
+### An Unsatisfiable Expression
+
+The expression *P ∧ ¬P* is unsatisfiable: no
+interpretation can make it true.
+@@@ -/
+
+#eval is_valid (P ∧ ¬P)          -- false
+#eval is_sat (P ∧ ¬P)            -- false
+#eval is_unsat (P ∧ ¬P)          -- true
+#eval findModels (P ∧ ¬P)        -- no models
+
+/- @@@
+### The Relationships
+
+These three properties are closely related:
+
+- An expression is **valid** if and only if its **negation is unsatisfiable**
+- An expression is **unsatisfiable** if and only if its **negation is valid**
+- An expression that is neither valid nor unsatisfiable is **contingent**:
+  satisfiable but with at least one counterexample
+@@@ -/
+
+-- Valid ↔ negation is unsatisfiable
+#eval is_valid (P ∨ ¬P)          -- true
+#eval is_unsat (¬(P ∨ ¬P))      -- true
+
+-- Unsatisfiable ↔ negation is valid
+#eval is_unsat (P ∧ ¬P)          -- true
+#eval is_valid (¬(P ∧ ¬P))      -- true
+
+/- @@@
 ## Predicate Logic Changes the Game
 
 In the next unit of this class, we will meet a much more
@@ -66,7 +149,7 @@ propositions to a single predicate, *XIsHappy*, where
 particular person, *Ben*, would reduce to the proposition,
 no longer a predicate, that *BenIsHappy,* as a special case.
 
-### Validity is No Longer Semantically Definable
+### Validity is No Longer Semantically Decidable
 
 In propositional logic, there's just one semantic domain,
 Boolean algebra, and only two semantic values to which
@@ -94,3 +177,5 @@ How can we show that a given proposition is true for every
 possible interpretation (every possible world state) in
 every possible domain? We need something different.
 @@@ -/
+
+end Content.B02_ClassicalPropositionalLogic.chapters.validity
