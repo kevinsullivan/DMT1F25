@@ -1,4 +1,4 @@
-/-!
+/- @@@
 # Boolean Algebra
 
 <!-- toc -->
@@ -22,11 +22,11 @@ most commonly used Boolean operators as functions.
 
 The two elements we'll need that Lean doesn't define
 natively are definitions of *implies* and *equivalentTo*.
--/
+@@@ -/
 
 namespace Content.B02_ClassicalPropositionalLogic.chapters.domain
 
-/-
+/- @@@
 ## Lean's Boolean Algebra Definitions
 
 The standard Lean libraries define the Boolean
@@ -74,7 +74,7 @@ functions that implement the truth tables of the Boolean
 → and ↔ operators. Each function, taking two Boolean
 arguments, is defined "by cases", of which there are
 four. In other words, we're specifying truth tables.
--/
+@@@ -/
 
 -- Implication
 def imp : Bool → Bool → Bool
@@ -109,6 +109,6 @@ conjunction, implication. These objects, both values and
 functions, are *denotations* of propositional logic syntax
 elements: of constants and variables and of the syntactic
 operators, such as ∧ (mapping to &&).
-@@@-/
+@@@ -/
 
 end Content.B02_ClassicalPropositionalLogic.chapters.domain

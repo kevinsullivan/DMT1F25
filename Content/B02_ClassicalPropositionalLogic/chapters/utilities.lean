@@ -1,13 +1,13 @@
-/-!
+/- @@@
 #### Low-level bit vector routines
--/
+@@@ -/
 
 namespace Content.B02_ClassicalPropositionalLogic.chapters.utilities
 
-/-!
+/- @@@
 Converting natural number indices to corresponding rows of
 truth tables for any given v, a number of variables.
--/
+@@@ -/
 
 --
 abbrev Bit := Bool
@@ -30,25 +30,25 @@ def binaryFromNat : Nat → Binary
   have : (shiftRight (n' + 2)) < (n' + 2) := by unfold shiftRight; omega
   (binaryFromNat (shiftRight (n' + 2))) ++ [(BitFromNat (rightBit (n' + 2)))]
 
-/-!
+/- @@@
 Left pad list of nats with zeros
 Todo: Clarify bits vs nats
--/
+@@@ -/
 def zeroPadListLeft : Binary → Nat → Binary
   | l, n => zero_pad_recursive (n - (l.length)) l
 where zero_pad_recursive : Nat → Binary → Binary
   | 0, l => l
   | n'+1, l => zero_pad_recursive n' (false::l)
 
-/-!
- Make bit list at index "row" zero padded "cols" wide
--/
+/- @@@
+Make bit list at index "row" zero padded "cols" wide
+@@@ -/
 def binaryFromRowCols : (row : Nat) → (cols: Nat) → Binary
 | r, c => zeroPadListLeft (binaryFromNat r) c
 
-/-!
+/- @@@
 Make row'th row of truth table with vars variable columns
--/
+@@@ -/
 def listBoolFromRowIndexForNumVars : (row : Nat) → (vars : Nat) → List Bool
 | index, cols => (binaryFromRowCols index cols)
 
@@ -62,11 +62,11 @@ def reduce_and : List Bool → Bool
 | [] => true
 | h::t => and h (reduce_and t)
 
-/-
+/- @@@
 The indexFirstTrue function returns an option:
 either (some "index of the first true value in
 the list"), or "none" if there is no such value.
--/
+@@@ -/
 
 def indexFirstTrue : List Bool → Option Nat
     | bs => foo bs bs.length

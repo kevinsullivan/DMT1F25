@@ -190,7 +190,7 @@ Here we defined *claim* to be the name of a proposition
 if p1 and p2 refer to any two people, then it is the case
 that those two people like each other, whic is to say that
 p1 Likes p2.
-@@@-/
+@@@ -/
 
 def claim : Prop := ∀ (p1 p2 : Person), Likes p1 p2
 
@@ -390,7 +390,7 @@ to be true. And that's how Lean thinks about it, too.
 #check 1 + 1 = 2
 #check (Eq.refl 2 : 1 + 1 = 2)
 
-/-
+/- @@@
 The one remaing trick is to define *all* the proofs
 of *all* true equality propositions with one rule.
 In Lean, it's called *Eq.refl*. You just saw it used,
@@ -541,7 +541,7 @@ not compute."
 -- example : myWorld = off := Eq.refl off
 -- example : myWorld = off := rfl
 
-/-@@@
+/- @@@
 are only two Boolean values (*true* and *false*) in the
 logic we're defining here, there are only two possoible
 worlds: one where
