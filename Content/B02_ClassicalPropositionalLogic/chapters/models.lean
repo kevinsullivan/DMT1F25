@@ -73,4 +73,21 @@ def findModel :  Expr → Option Interp
   | [] => none
   | h::_ => some h
 
+/- @@@
+## Printable Model Finders
+
+An interpretation is a function (Var → Bool), which Lean
+can't print directly. The following functions return models
+as lists of Boolean values — one per variable in the given
+expression — which Lean knows how to display.
+@@@ -/
+
+def showModels (e : Expr) : List (List Bool) :=
+  bitListsFromInterpsHelper (findModels e) (numVarsFromExpr e)
+
+def showModel (e : Expr) : Option (List Bool) :=
+  match findModel e with
+  | none => none
+  | some i => some (bitListFromInterpHelper i (numVarsFromExpr e))
+
 end Content.B02_ClassicalPropositionalLogic.chapters.models

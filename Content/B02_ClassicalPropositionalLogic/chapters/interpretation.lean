@@ -320,16 +320,4 @@ are irrelevant; they are an implementation detail in our design.
 def anExpr := ({⟨0⟩} ∧ {⟨1⟩} ∨ {⟨2⟩})  -- P ∧ Q ∨ R
 #reduce bitListsFromInterpsHelper (interpsFromExpr anExpr) 3
 
-/- @@@
-### Repr Instance for Interpretations
-
-An interpretation is a function, so Lean can't print it
-directly. We provide a Repr instance that displays the
-Boolean values assigned to variables 0 through 2 (the
-three used in most of our examples).
-@@@ -/
-
-instance : Repr Interp where
-  reprPrec i _ := repr (bitListFromInterpHelper i 3)
-
 end Content.B02_ClassicalPropositionalLogic.chapters.interpretation

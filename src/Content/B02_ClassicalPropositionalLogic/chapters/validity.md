@@ -74,8 +74,8 @@ it's false when either is false.
 #eval is_valid (P ∧ Q)           -- false
 #eval is_sat (P ∧ Q)             -- true
 #eval is_unsat (P ∧ Q)           -- false
-#eval findModels (P ∧ Q)         -- the one model: both true
-#eval findCounterexamples (P ∧ Q) -- the three counterexamples
+#eval showModels (P ∧ Q)         -- the one model: both true
+#eval showCounterexamples (P ∧ Q) -- the three counterexamples
 ```
 
 ### An Unsatisfiable Expression
@@ -87,7 +87,7 @@ interpretation can make it true.
 #eval is_valid (P ∧ ¬P)          -- false
 #eval is_sat (P ∧ ¬P)            -- false
 #eval is_unsat (P ∧ ¬P)          -- true
-#eval findModels (P ∧ ¬P)        -- no models
+#eval showModels (P ∧ ¬P)        -- no models
 ```
 
 ### The Relationships

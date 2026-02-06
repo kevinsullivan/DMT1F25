@@ -39,6 +39,18 @@ You should understand lists intuitively from CS1. You can think of an option
 as a list of length either zero (called none) or one (called some e), where
 e the specific value in the length-one list of values (an interpretation).
 
+## Printable Counterexample Finders
+
 ```lean
+open Content.B02_ClassicalPropositionalLogic.chapters.interpretation
+
+def showCounterexamples (e : Expr) : List (List Bool) :=
+  bitListsFromInterpsHelper (findCounterexamples e) (numVarsFromExpr e)
+
+def showCounterexample (e : Expr) : Option (List Bool) :=
+  match findCounterexample e with
+  | none => none
+  | some i => some (bitListFromInterpHelper i (numVarsFromExpr e))
+
 end Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
 ```
