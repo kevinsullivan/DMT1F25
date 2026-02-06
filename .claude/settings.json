@@ -1,0 +1,11 @@
+{
+    "permissions": {
+        "allow": [
+            "Bash(lake build*)",
+            "Bash(lake test*)",
+            "Bash(lake clean*)",
+            "Bash(lake env*)",
+            "Bash(grep*)"
+        ]
+    }
+}
