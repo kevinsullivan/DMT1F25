@@ -1,7 +1,10 @@
 ```lean
 import Content.B02_ClassicalPropositionalLogic.chapters.syntax
+import Content.B02_ClassicalPropositionalLogic.chapters.properties
 
 namespace Content.B02_ClassicalPropositionalLogic.chapters.identities
+
+open Content.B02_ClassicalPropositionalLogic.chapters.properties
 
 def P := {⟨0⟩}
 def Q := {⟨1⟩}
@@ -34,6 +37,26 @@ def distribOrAnd    := (P ∨ (Q ∧ R)) ↔ ((P ∨ Q) ∧ (P ∨ R))
 -- DeMorgan's laws
 def deMorganAnd     := ¬(P ∧ Q) ↔ (¬P ∨ ¬ Q)
 def deMorganOr      := ¬(P ∨ Q) ↔ (¬P ∧ ¬ Q)
+
+-- Validate all identities
+#eval is_valid andIdempotent    -- true
+#eval is_valid orIdempotent     -- true
+#eval is_valid andCommutative   -- true
+#eval is_valid orCommutative    -- true
+#eval is_valid identityAnd      -- true
+#eval is_valid identityOr       -- true
+#eval is_valid annihilateAnd    -- true
+#eval is_valid annihilateOr     -- true
+#eval is_valid orAssociative    -- true
+#eval is_valid andAssociative   -- true
+#eval is_valid equivalence      -- true
+#eval is_valid implication      -- true
+#eval is_valid exportation      -- true
+#eval is_valid absurdity        -- true
+#eval is_valid distribAndOr     -- true
+#eval is_valid distribOrAnd     -- true
+#eval is_valid deMorganAnd      -- true
+#eval is_valid deMorganOr       -- true
 
 end Content.B02_ClassicalPropositionalLogic.chapters.identities
 ```

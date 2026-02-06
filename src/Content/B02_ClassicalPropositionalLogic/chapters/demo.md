@@ -126,13 +126,6 @@ in others. Most "interesting" propositions are like this.
 #eval is_unsat (P ∧ Q)        -- false
 ```
 
-**Unsatisfiable**: true in no world (a contradiction).
-
-```lean
-#eval is_valid (P ∧ ¬P)       -- false
-#eval is_sat   (P ∧ ¬P)       -- false
-#eval is_unsat (P ∧ ¬P)       -- true
-```
 
 ## Models and Counterexamples
 
@@ -178,6 +171,8 @@ def implication    := P ⇒ Q       -- if P then Q
 def converse       := Q ⇒ P       -- if Q then P
 def inverse        := ¬P ⇒ ¬Q     -- if not P then not Q
 def contrapositive := ¬Q ⇒ ¬P     -- if not Q then not P
+
+#eval is_valid ((P ⇒ Q) ⇒ (¬Q ⇒ ¬P))
 
 
 -- Compare their truth tables
@@ -283,6 +278,20 @@ P is *not* forced to be true.
 
 ```lean
 def challenge := (P ⇒ Q) ∧ (Q ⇒ R)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #eval bitListsFromInterpsHelper (findModels challenge) 3
 
 end Content.B02_ClassicalPropositionalLogic.chapters.propLogic

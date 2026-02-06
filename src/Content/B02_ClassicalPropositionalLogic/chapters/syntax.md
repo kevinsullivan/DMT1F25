@@ -195,9 +195,14 @@ do this if it would result in names having multiple
 different definitions being "directly visible."
 ```lean
 open Expr
+
+-- X ∧ Y
+#check
+  Expr.bin_op_expr
+    BinOp.and             -- ∧
+    (Expr.var_expr ⟨0⟩)   -- X
+    (Expr.var_expr ⟨1⟩)   -- Y
 ```
-
-
 
 ## Concrete Syntax: All the Usual Notations
 
