@@ -1,4 +1,3 @@
-/- @@@
 # Inductive Types: Nat, List, and Option
 
 <!-- toc -->
@@ -16,12 +15,12 @@ Key ideas include:
 - Pattern matching lets us take values apart
 - Recursive types naturally give rise to recursive functions
 - Nat and List α have analogous type and function definitions
-@@@ -/
 
+```lean
 namespace Content.B02_ClassicalPropositionalLogic.chapters.natList
+```
 
-/- @@@
-## Nat : A Type for Representing Natural Numbers
+## Natural Numbers
 
 The natural numbers (0, 1, 2, ...) are of course one of the
 most basic of concepts in all of mathematics. They are where
@@ -65,59 +64,40 @@ So `0` is `Nat.zero`, `1` is `Nat.succ Nat.zero`,
 `2` is `Nat.succ (Nat.succ Nat.zero)`, and so on.
 Every natural number is built by applying `succ` some
 finite number of times to `zero`.
-@@@ -/
 
+```lean
 #check Nat
 #check Nat.zero
 #check Nat.succ
+```
 
-/- @@@
-## Defining Functions by Case Analysis
+### Defining Functions by Pattern Matching
 
 It's not enough to be able to *construct* values of type
 Nat. One must be able to use them, too. What uses a Nat is
 a function. And a function uses a Nat, in general, by first
 deciding whether it's zero or non-zero, and then behaving
-accordingly.
+accordingly.  Because any Nat is constructed by either the
+`zero` or the `succ n'` constructor, we can define functions
+taking any Nat by defining smaller functions to handle each
+possible case. Lean checks that we've covered all cases.
 
-Because any Nat is constructed by either the `zero` or the
-`succ n'` constructor, we can define a function taking any
-Nat, by applying the logical principle of induction to two
-smaller functions. The first function returns the result for
-0; the second function takes the the answer for any *n'* as
-an argument then computes the answer for *n' + 1 = n*.
+Here is the factorial function. The key idea: first, we
+know to compute `factorial 0.` It's just `1`. Then, if we
+know any `n'` and `factorial n'`, then it's trivial to
+compute `factorial n' + 1).` That defines `factorial n`
+for any natural number, `n` whatsoever.
 
-To get the answer for any n, start with the answer for 0 then
-apply the step function to it n times. Recursion is just the
-machine that spins you down to the base case start the actual
-bottom-up construction of the answer for any *n*. The induction
-axiom for Nat says that if you have definitions of both of the
-compuations, you can compute answers for *any* n. You have a
-total function, and Lean will recognize it as such.
-
-Let's define a total function, *f : Nat → Nat*. Given any `n`
-we have to explain how to compute `f n`. Break it up by case
-analysis on `n`. Here is the *factorial* function in informal
-(made up0 case analysis notation (not Lean).
-
-```
-def (fact n)
-| Case n = 0        :   1
-| Case n = n' + 1   :   (n' + 1) * (fact n')
-```
-
-Here it is formalized in Lean.
-@@@ -/
-
+```lean
 def factorial : Nat → Nat
 | 0 => 1
-| n' + 1 => (n' + 1) * factorial n'
+| Nat.succ n' => (n' + 1) * factorial n'
 
 #eval factorial 0     -- 1
 #eval factorial 5     -- 120
 #eval factorial 10    -- 3628800
+```
 
-/- @@@
 ### Recursion Follows Structure
 
 The pattern above — one case for `zero`, one case for
@@ -131,28 +111,28 @@ n + m is m incremented n times. Here, iteration is achieved
 by structural recursion on the first argument, n. When n
 is zero, the sum is just m. When n is `succ n'`, we recurse
 on `n'` and wrap the result in one more `succ`.
-@@@ -/
 
+```lean
 def myAdd : Nat → Nat → Nat
 | 0, m => m
-| (n' + 1), m => (myAdd n' m) + 1
+| (Nat.succ n'), m => Nat.succ (myAdd n' m)
 
 #eval myAdd 0 5     -- 5
 #eval myAdd 4 5     -- 9
+```
 
-/- @@@
 Multiplication follows the same pattern: multiply by
 zero gives zero, and `(n' + 1) * m` is `m + (n' * m)`.
-@@@ -/
 
+```lean
 def myMul : Nat → Nat → Nat
 | 0, _ => 0
-| (n' + 1), m => myAdd m (myMul n' m)
+| (Nat.succ n'), m => myAdd m (myMul n' m)
 
 #eval myMul 4 7     -- 28
 #eval myMul 0 100   -- 0
+```
 
-/- @@@
 ### What We Now Have
 
 What we now have is a type whose values simulate
@@ -183,9 +163,7 @@ Define exponentiation and tetration as the next functions
 in this sequence of functions, where each, except pure
 increment, works by iterating the most recently defined
 function of this kind.
-@@@ -/
 
-/- @@@
 ## Lists
 
 Now we turn to list. You will see that not only the data
@@ -210,19 +188,19 @@ There are exactly two constructors:
 Notice that `List` is *parameterized* by a type `α`.
 That means we can have `List Nat`, `List Bool`,
 `List String`, etc. — all from one definition.
-@@@ -/
 
+```lean
 #check List
 #check @List.nil
 #check @List.cons
+```
 
-/- @@@
 ### Building Lists
 
 We can build lists using the constructors directly,
 or using Lean's bracket notation.
-@@@ -/
 
+```lean
 def emptyListNat : List Nat := List.nil
 def oneNatList := List.cons 0 List.nil
 def twoNatList := List.cons 1 oneNatList
@@ -235,8 +213,8 @@ def fourNatList := [3, 2, 1, 0]
 
 -- Here's concrete notation for cons.
 #eval 4 :: fourNatList      -- [4, 3, 2, 1, 0]
+```
 
-/- @@@
 ### Functions on Lists
 
 Just as with Nat, we define functions on lists by giving
@@ -248,41 +226,41 @@ always terminate.
 
 Here is a function that returns the first element of a
 list, or a default value (0) if the list is empty.
-@@@ -/
 
+```lean
 def head : List Nat → Nat
 | [] => 0
 | h :: _ => h
 
 #eval head []             -- 0
 #eval head [7, 8, 9]      -- 7
+```
 
-/- @@@
 Here is the length function. The empty list has length 0.
 A cons list has length one more than its tail.
-@@@ -/
 
+```lean
 def listLen : List Nat → Nat
 | [] => 0
 | _ :: t => 1 + listLen t
 
 #eval listLen []              -- 0
 #eval listLen [1, 2, 3, 4, 5] -- 5
+```
 
-/- @@@
 List append joins two lists end-to-end. We recurse on
 the first list: if it's empty, the result is the second
 list; otherwise, we keep the head and recurse on the tail.
-@@@ -/
 
+```lean
 def listAppend : List Nat → List Nat → List Nat
 | [], l => l
 | h :: t, l => h :: (listAppend t l)
 
 #eval listAppend [] [1, 2, 3, 4]      -- [1, 2, 3, 4]
 #eval listAppend [1, 2, 3] [4, 5, 6]  -- [1, 2, 3, 4, 5, 6]
+```
 
-/- @@@
 ## Option: Handling Missing Values
 
 Our `head` function above returns 0 for the empty list.
@@ -302,34 +280,34 @@ An `Option Nat` is either:
 - `some n`: we have a value, and it's *n*
 
 This is much safer than returning a magic default value.
-@@@ -/
 
+```lean
 #check Option
 #check @Option.none
 #check @Option.some
+```
 
-/- @@@
 ### Example: Safe Predecessor
 
 The predecessor of 0 is undefined in the natural numbers.
 Rather than returning an ambiguous answer, we use Option to
 signal that the operation has no result for this input.
-@@@ -/
 
+```lean
 def safePred : Nat → Option Nat
 | 0 => Option.none
-| n' + 1 => Option.some n'
+| Nat.succ n' => Option.some n'
 
 #eval safePred 0    -- none
 #eval safePred 5    -- some 4
+```
 
-/- @@@
 ### Example: Safe Head
 
 Now we can write a version of `head` that honestly reports
 when the list is empty, instead of silently returning 0.
-@@@ -/
 
+```lean
 def safeHead : List Nat → Option Nat
 | [] => Option.none
 | h :: _ => Option.some h
@@ -337,8 +315,8 @@ def safeHead : List Nat → Option Nat
 #eval safeHead []           -- none
 #eval safeHead [7, 8, 9]    -- some 7
 #eval safeHead [0, 1, 2]    -- some 0  (not confused with "no answer")
+```
 
-/- @@@
 ## The Common Pattern
 
 All three types — Nat, List, Option — are inductive types.
@@ -352,6 +330,7 @@ This is the same pattern we used when defining `Expr` for
 propositional logic and writing `eval` to compute the
 meaning of an expression. Inductive types and structural
 recursion are the backbone of much of what we build in Lean.
-@@@ -/
 
+```lean
 end Content.B02_ClassicalPropositionalLogic.chapters.natList
+```
