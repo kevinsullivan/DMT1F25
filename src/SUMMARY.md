@@ -9,10 +9,10 @@
   - [V](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_2026_02_04.md)
   - [VI](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_2026_02_09.md)
 
-[Inference Rule Cheat Sheet](./DMT1/L00_deductiveReasoning/L99_inferenceRules2.md)
-[Curry Howard](./DMT1/L00_deductiveReasoning/L99_curryHoward.md)
-[True vs. Valid](./DMT1/L00_deductiveReasoning/L99_validity.md)
-[Function Composition](./DMT1/L00_deductiveReasoning/L03_funcComposition.md)
+[Inference Rule Cheat Sheet](./Resources/L00_deductiveReasoning/L99_inferenceRules2.md)
+[Curry Howard](./Resources/L00_deductiveReasoning/L99_curryHoward.md)
+[True vs. Valid](./Resources/L00_deductiveReasoning/L99_validity.md)
+[Function Composition](./Resources/L00_deductiveReasoning/L03_funcComposition.md)
 
 ---
 
