@@ -5,7 +5,7 @@ import Content.B02_ClassicalPropositionalLogic.chapters.demo
 import Content.B02_ClassicalPropositionalLogic.chapters.domain
 import Content.B02_ClassicalPropositionalLogic.chapters.interpretation
 import Content.B02_ClassicalPropositionalLogic.chapters.models
-import Content.B02_ClassicalPropositionalLogic.CS6501_NatList
+import Content.B02_ClassicalPropositionalLogic.chapters.CS6501_2026_02_09
 import Content.B02_ClassicalPropositionalLogic.chapters.properties
 import Content.B02_ClassicalPropositionalLogic.chapters.semantics
 import Content.B02_ClassicalPropositionalLogic.chapters.syntax
