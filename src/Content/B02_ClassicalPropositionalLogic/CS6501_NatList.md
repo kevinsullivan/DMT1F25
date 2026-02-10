@@ -20,7 +20,7 @@ Key ideas include:
 namespace Content.B02_ClassicalPropositionalLogic.chapters.natList
 ```
 
-## Natural Numbers
+## Nat : A Type for Representing Natural Numbers
 
 The natural numbers (0, 1, 2, ...) are of course one of the
 most basic of concepts in all of mathematics. They are where
@@ -71,27 +71,46 @@ finite number of times to `zero`.
 #check Nat.succ
 ```
 
-### Defining Functions by Pattern Matching
+## Defining Functions by Case Analysis
 
 It's not enough to be able to *construct* values of type
 Nat. One must be able to use them, too. What uses a Nat is
 a function. And a function uses a Nat, in general, by first
 deciding whether it's zero or non-zero, and then behaving
-accordingly.  Because any Nat is constructed by either the
-`zero` or the `succ n'` constructor, we can define functions
-taking any Nat by defining smaller functions to handle each
-possible case. Lean checks that we've covered all cases.
+accordingly.
 
-Here is the factorial function. The key idea: first, we
-know to compute `factorial 0.` It's just `1`. Then, if we
-know any `n'` and `factorial n'`, then it's trivial to
-compute `factorial n' + 1).` That defines `factorial n`
-for any natural number, `n` whatsoever.
+Because any Nat is constructed by either the `zero` or the
+`succ n'` constructor, we can define a function taking any
+Nat, by applying the logical principle of induction to two
+smaller functions. The first function returns the result for
+0; the second function takes the the answer for any *n'* as
+an argument then computes the answer for *n' + 1 = n*.
+
+To get the answer for any n, start with the answer for 0 then
+apply the step function to it n times. Recursion is just the
+machine that spins you down to the base case start the actual
+bottom-up construction of the answer for any *n*. The induction
+axiom for Nat says that if you have definitions of both of the
+compuations, you can compute answers for *any* n. You have a
+total function, and Lean will recognize it as such.
+
+Let's define a total function, *f : Nat → Nat*. Given any `n`
+we have to explain how to compute `f n`. Break it up by case
+analysis on `n`. Here is the *factorial* function in informal
+(made up0 case analysis notation (not Lean).
+
+```
+def (fact n)
+| Case n = 0        :   1
+| Case n = n' + 1   :   (n' + 1) * (fact n')
+```
+
+Here it is formalized in Lean.
 
 ```lean
 def factorial : Nat → Nat
 | 0 => 1
-| Nat.succ n' => (n' + 1) * factorial n'
+| n' + 1 => (n' + 1) * factorial n'
 
 #eval factorial 0     -- 1
 #eval factorial 5     -- 120
@@ -115,7 +134,7 @@ on `n'` and wrap the result in one more `succ`.
 ```lean
 def myAdd : Nat → Nat → Nat
 | 0, m => m
-| (Nat.succ n'), m => Nat.succ (myAdd n' m)
+| (n' + 1), m => (myAdd n' m) + 1
 
 #eval myAdd 0 5     -- 5
 #eval myAdd 4 5     -- 9
@@ -127,7 +146,7 @@ zero gives zero, and `(n' + 1) * m` is `m + (n' * m)`.
 ```lean
 def myMul : Nat → Nat → Nat
 | 0, _ => 0
-| (Nat.succ n'), m => myAdd m (myMul n' m)
+| (n' + 1), m => myAdd m (myMul n' m)
 
 #eval myMul 4 7     -- 28
 #eval myMul 0 100   -- 0
@@ -164,16 +183,13 @@ in this sequence of functions, where each, except pure
 increment, works by iterating the most recently defined
 function of this kind.
 
-## Lists
+## Lists of (Values of a Given Type) α
 
-Now we turn to list. You will see that not only the data
-type but the operations and indeed the axioms are deeply
-analogous to those for the Nat type. Let's jump to it.
-
-A list is either empty or it has a head element of some
-type, α, followed by a tail that is itself a list of values
-of that same type. Here is (essentially) the definition
-from Lean's core library:
+Now we turn to List α. You will see List α and Nat are
+analogous. A list is either empty or it has a head element
+of some type, α, followed by a tail that is itself a list
+of values of that same type. Here is the definition lightly
+edited from Lean's core library:
 
 ```
 inductive List (α : Type u) where
@@ -296,7 +312,7 @@ signal that the operation has no result for this input.
 ```lean
 def safePred : Nat → Option Nat
 | 0 => Option.none
-| Nat.succ n' => Option.some n'
+| n' + 1 => Option.some n'
 
 #eval safePred 0    -- none
 #eval safePred 5    -- some 4

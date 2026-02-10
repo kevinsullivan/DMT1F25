@@ -186,16 +186,13 @@ function of this kind.
 @@@ -/
 
 /- @@@
-## Lists
+## Lists of (Values of a Given Type) α
 
-Now we turn to list. You will see that not only the data
-type but the operations and indeed the axioms are deeply
-analogous to those for the Nat type. Let's jump to it.
-
-A list is either empty or it has a head element of some
-type, α, followed by a tail that is itself a list of values
-of that same type. Here is (essentially) the definition
-from Lean's core library:
+Now we turn to List α. You will see List α and Nat are
+analogous. A list is either empty or it has a head element
+of some type, α, followed by a tail that is itself a list
+of values of that same type. Here is the definition lightly
+edited from Lean's core library:
 
 ```
 inductive List (α : Type u) where
