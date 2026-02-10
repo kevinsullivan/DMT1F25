@@ -1,5 +1,3 @@
-```lean
-/-!
 # Boolean Algebra
 
 <!-- toc -->
@@ -23,22 +21,22 @@ most commonly used Boolean operators as functions.
 
 The two elements we'll need that Lean doesn't define
 natively are definitions of *implies* and *equivalentTo*.
--/
 
+```lean
 namespace Content.B02_ClassicalPropositionalLogic.chapters.domain
+```
 
-/-
 ## Lean's Boolean Algebra Definitions
 
 The standard Lean libraries define the Boolean
 Type, the Boolean operators (functions) commonly
 used in programming (&&, ||, !).
-```
-
-#check true && (true || !true)
-
 
 ```lean
+#check true && (true || !true)
+```
+
+
 ## Implication
 
 Suppose you have an implication expression, say
@@ -75,8 +73,8 @@ functions that implement the truth tables of the Boolean
 → and ↔ operators. Each function, taking two Boolean
 arguments, is defined "by cases", of which there are
 four. In other words, we're specifying truth tables.
--/
 
+```lean
 -- Implication
 def imp : Bool → Bool → Bool
 | true, true => true

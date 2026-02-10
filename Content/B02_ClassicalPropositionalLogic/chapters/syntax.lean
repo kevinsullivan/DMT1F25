@@ -93,7 +93,7 @@ will take a Var object as arguments and return the
 Boolean values that that interpretation assigns to it.
 @@@ -/
 
-structure Var : Type :=
+structure Var : Type where
   mk :: (index: Nat)
 deriving Repr
 
@@ -250,6 +250,52 @@ infixr:35 " ∧ "  =>  Expr.bin_op_expr BinOp.and
 infixr:30 " ∨ "  => Expr.bin_op_expr BinOp.or
 infixr:20 " ↔ " => bin_op_expr BinOp.iff
 infixr:25 " ⇒ " => bin_op_expr BinOp.imp
+
+/- @@@
+## Pretty Printing
+
+The derived Repr instance prints expressions in abstract
+syntax, which is hard for humans to read. The following
+ToString instance prints expressions using the familiar
+concrete notation defined above.
+
+Variable expressions with indices 0, 1, 2 are printed
+as P, Q, R. Higher indices print as v₃, v₄, etc.
+@@@ -/
+
+private def varName : Var → String
+| ⟨0⟩ => "P"
+| ⟨1⟩ => "Q"
+| ⟨2⟩ => "R"
+| ⟨n⟩ => s!"v{n}"
+
+private def unOpToString : UnOp → String
+| UnOp.not => "¬"
+
+private def binOpToString : BinOp → String
+| BinOp.and => " ∧ "
+| BinOp.or  => " ∨ "
+| BinOp.imp => " ⇒ "
+| BinOp.iff => " ↔ "
+
+private def binOpPrec : BinOp → Nat
+| BinOp.and => 35
+| BinOp.or  => 30
+| BinOp.imp => 25
+| BinOp.iff => 20
+
+private def exprToString : Expr → Nat → String
+| lit_expr true,          _ => "⊤"
+| lit_expr false,         _ => "⊥"
+| var_expr v,             _ => varName v
+| un_op_expr op e,        _ => unOpToString op ++ exprToString e 40
+| bin_op_expr op e1 e2,   p =>
+  let prec := binOpPrec op
+  let s := exprToString e1 (prec + 1) ++ binOpToString op ++ exprToString e2 prec
+  if p > prec then "(" ++ s ++ ")" else s
+
+instance : ToString Expr where
+  toString e := exprToString e 0
 
 /- @@@
 That's it. That's the entire abstract and concrete

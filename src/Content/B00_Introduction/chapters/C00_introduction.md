@@ -386,8 +386,8 @@ to be true. And that's how Lean thinks about it, too.
 ```lean
 #check 1 + 1 = 2
 #check (Eq.refl 2 : 1 + 1 = 2)
+```
 
-/-
 The one remaing trick is to define *all* the proofs
 of *all* true equality propositions with one rule.
 In Lean, it's called *Eq.refl*. You just saw it used,
@@ -409,9 +409,9 @@ as a proof of the proposition, *Eq a a*, for which Lean
 provides the usual notation, *a = a*. In short, *Eq.refl*
 takes a type and one value of that type and hands you a
 proof that that object is equal to itself.
-```
 
 
+```lean
 -- Takes any type α and two α values and yields a proposition
 #check @Eq
 
@@ -440,8 +440,8 @@ proof that that object is equal to itself.
 example : 3 = 3 := rfl
 example : true = true := rfl
 example : "Hi!" = "Hi!" := rfl
+```
 
-```lean
 ## Equality is a Relation
 
 We'll introduce the notation *Eq x y* for a binary
@@ -480,8 +480,8 @@ A function that produces proofs of equality propositions
 thus needs only take *one* object, call it *o*, as input,
 returning a proof of the proposition, *o = o*. Here we'll
 use *Eq.refl* as the name of this machine.
-```
 
+```lean
 -- A proof of *myWorld = myWorld*
 #check Eq.refl myWorld
 
@@ -496,9 +496,9 @@ use *Eq.refl* as the name of this machine.
 
 -- A proof of *Cool! = Cool!*
 #check Eq.refl "Cool!"
+```
 
 
-```lean
 So now to show that an equality proposition, say
 *x = y*, is true, you can use either *Eq.refl x*
 to get a proof that *x = x*, which will work if
@@ -508,16 +508,16 @@ will work as long as *x* is really the same as
 *y*. But if *x* and *y* are not the same object,
 neither proof will work and you will not be able
 to prove that they are equal.
-```
-
-example : myWorld = myWorld := Eq.refl myWorld
 
 ```lean
+example : myWorld = myWorld := Eq.refl myWorld
+```
+
 In the particular automated logic we're using here,
 *rfl* for *Eq.refl _* that often works. We'll see
 more details later.
-```
 
+```lean
 def eq1 : myWorld = myWorld := rfl
 
 -- eq1 is a proof of myWorld = myWorld
@@ -526,19 +526,19 @@ def eq1 : myWorld = myWorld := rfl
 -- we can check proofs without giving them names
 example : 3 = 3 := rfl
 example : "Hi" = "Hi" := rfl
+```
 
-```lean
 And so now the question: Is *myWorld = off* true? It's
 not. Why not? Because there's no possible proof of it.
 Uncomment the following examples to see that they "do
 not compute."
-```
 
+```lean
 -- example : myWorld = off := Eq.refl myWorld
 -- example : myWorld = off := Eq.refl off
 -- example : myWorld = off := rfl
+```
 
-```lean
 are only two Boolean values (*true* and *false*) in the
 logic we're defining here, there are only two possoible
 worlds: one where
@@ -576,6 +576,5 @@ computer can use it to reason deductively about things
  introduces you to
 a revolutionary way of thinking about logic and proof: the idea
 that propositions are types and proofs are programs.
-```
 
 

@@ -62,11 +62,15 @@ abstract syntax. We can see the desugared form:
 
 #reduce (P ∧ Q)
 /- @@@
-This prints:
-  (bin_op_expr BinOp.and)
-    (var_expr { index := 0 })
-    (var_expr { index := 1 })
+This prints the abstract syntax tree:
+  bin_op_expr BinOp.and (var_expr { index := 0 }) (var_expr { index := 1 })
+
+But our ToString instance prints using familiar notation:
 @@@ -/
+#eval toString (P ∧ Q)              -- "P ∧ Q"
+#eval toString (P ⇒ Q ∧ ¬R)        -- "P ⇒ Q ∧ ¬R"
+#eval toString ((P ∨ Q) ∧ R)       -- "(P ∨ Q) ∧ R"
+#eval toString (P ⇒ Q ⇒ R)        -- "P ⇒ Q ⇒ R"
 
 /- @@@
 ## First Taste: What Can This System Do?

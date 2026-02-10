@@ -11,21 +11,69 @@ open Content.B02_ClassicalPropositionalLogic.chapters.syntax
 open Content.B02_ClassicalPropositionalLogic.chapters.semantics
 ```
 
-An interpretation, *i*, in propositional logic is a function
-from variables to Booleans. That is just how we represent
-one in Lean: as a value of type Interp, an abbreviation for
-the type of total functions from Var to Bool, *Var → Bool*.
+An *interpretation*, *i*, for a well formed propositional
+logic expression is an assignment of truth (Boolean) values
+to each of the propositional variables in the expression.
+If the expression is *P ∧ Q*, for example, then there are
+four possible interpretations:
 
-Recall that in our specification, a variable expression is
-constructed from a variable. All variable expressions built
-from the same variable will thus be assigned the same value.
+- P is true, Q is true
+- P is true; Q is false
+- P is false; Q is true
+- P is false; Q is false
 
-## Defining Interpretations
+As you've seen we define a propositional variable
+expression as a value of type Expr constructed using
+var_expr (from_var : Var) constructor. A *Var* in turn
+is just a wrapper type enclosing a Nat, *n*, instantiated
+by *Var.mk n*. Such a term/value represents the *n'th*
+variable in an infinite set of anonymous variables, all
+*indexed* by natural numbers.
 
-Suppose for example that we want to evaluate an expression
-under an interpretation that assigns the value, *false*, to
-every variable, and thus to every variable expression. We
-can define such an interpretation in one line.
+## Representing Interpretations as Var → Bool Functions
+
+To evaluate an expression under an interpretation, we
+need a way to represent an interpretation. In our design,
+we represent an interpretation as a function from *any*
+Var (containing any Nat index value) to Bool.
+
+As Var is indexed by Nat, Nat has an infinite number of
+values, we need to define a function from Var to Bool
+for every possible Nat Index. If we have an expression
+with only two distinct variables, we'll defina function
+with the correct assignment of values for the variables
+at indices 0 and 1, and otherwise we'll return a default
+value (which will be ignored).
+
+### Example
+
+As an example, consider the assignment, *P := false* and
+*Q := true*. Here's a function that would do.
+
+```lean
+def falseTrueInterp : Var → Bool
+| ⟨0⟩ => false
+| ⟨1⟩ => true
+| _ => false
+
+
+
+#eval ⟦{⟨0⟩}⟧ falseTrueInterp
+#eval ⟦{⟨0⟩} ∧ {⟨1⟩}⟧ falseTrueInterp
+#eval ⟦{⟨0⟩} ∨ {⟨1⟩}⟧ falseTrueInterp
+#eval ⟦{⟨0⟩} ⇒ {⟨1⟩}⟧ falseTrueInterp
+#eval ⟦{⟨0⟩}⟧ falseTrueInterp
+#eval ⟦{⟨1⟩}⟧ falseTrueInterp
+
+
+/-
+### Example
+We can now evaluate the truth of any proposition with
+(up to) two propositional variables.
+-/
+```
+Here's an interpretation that assigns *false* to every
+variable.
 
 ```lean
 def allFalse : Var → Bool := fun _ => false
@@ -44,7 +92,14 @@ command to apply *eval* to an expression, *e*, and to *i*,
 to answer the question, does *i* satisfy *e*?
 
 ```lean
-def e : Expr := {⟨0⟩}  -- expression on 0th variable
+-- A proposition that's just a single propositional variable
+def e : Expr :=
+  {                     -- our notation for variable expression
+    ⟨                   -- Lean notation for structure *mk*
+      0                 -- variable index
+    ⟩
+  }
+
 #reduce eval e allFalse        -- expect false
 #reduce ⟦(¬e)⟧ allFalse         -- expect true (our notation)
 #reduce ⟦(e ∨ ¬e)⟧ allFalse     -- expect true
@@ -69,12 +124,10 @@ indices. Here's an interpretation that assigns true to the
 other (irrelevant) variable.
 
 ```lean
-def tf : Interp :=
-fun v =>
-  match v with
-  | (Var.mk 0) => true    -- using our abstract syntax
-  | ⟨1⟩ => false          -- using Lean's notation for mk
-  | _ => true             -- default for all other variables
+def tf : Interp
+| (Var.mk 0) => true    -- using our abstract syntax
+| ⟨1⟩ => false          -- using Lean's notation for mk
+| _ => true             -- default for all other variables
 
 def f : Expr := {⟨1⟩}
 #reduce ⟦(e ∧ f)⟧ tf   -- expect false
@@ -155,18 +208,27 @@ returns the element at index *k* if it exists, or
 the provided default value (here, *false*) otherwise.
 ```lean
 def interpFromBools (l : List Bool) : Interp :=
-  fun ⟨k⟩ => l.getD k false
+  -- a function from k to kth Bool in list l
+  fun ⟨k⟩ =>
+  -- k'th element of list l if exists otherwise false
+    l.getD k false
 ```
 
+
+Push on stack.
+-/
+
+
+```lean
 Here's an example, where nextInterp assigns true to
 the variable with index *0* (and thus as the value it
 assigns to *e*), false to the variable with index *1*,
 and then false to every variable at any higher index.
-```lean
+```
 def nextInterp : Interp := interpFromBools [true, false]
 #eval ⟦e⟧ nextInterp    -- expect e to evaluate to true
-```
 
+```lean
 ### Nth Interpretation for k Variables
 
 A useful observation is that each row of a truth table
@@ -187,15 +249,15 @@ interpretation for any given row directly: for variable
 *k* in a row with *numVars* columns, the corresponding
 bit is obtained by dividing the row index by *2^(numVars
 - 1 - k)* and checking whether the result is odd.
+```
 
-```lean
 def interpFromRowNumVars (row : Nat) (numVars : Nat) : Interp :=
   fun ⟨k⟩ =>
     if k < numVars then
       (row / (2 ^ (numVars - 1 - k))) % 2 != 0
     else false
-```
 
+```lean
 ### All Interpretations for k Variables
 
 To generate all *2^n* interpretations for *n* variables,
@@ -215,15 +277,15 @@ interpretation, producing a list of two-element lists, and
 
 Be careful: the constructed list is exponential in the
 number of variables.
+```
 
-```lean
 def interpsFromNumVars : Nat → List Interp
   | 0     => [fun _ => false]
   | n + 1 =>
     ((interpsFromNumVars n).map fun i =>
       [overrideValue i ⟨n⟩ false, overrideValue i ⟨n⟩ true]).flatten
-```
 
+```lean
 ### Counting the Number of Variables in an Expression
 
 To compute a list of all interpretations for a given expression,
@@ -241,7 +303,7 @@ the answer is *some i*. For a unary operator expression, *(op e)*,
 it's the result for *e*. And for a binary operator expression,
 *(op e1 e2)*, it's the maximum of the results for each of *e1*
 and *e2*.
-```lean
+```
 def numVarsFromExpr : Expr → Nat :=
   (fun e =>
     match maxVariableIndex e with
@@ -257,8 +319,15 @@ maxVariableIndex : Expr → Option Nat
     | some a, none   => some a
     | none,   some b => some b
     | none,   none   => none
+
+```lean
+LET'S TALK ABOUT THE OPTION TYPE IN LEAN (AND FP GENERALLY)
+
+Push on stack.
 ```
 
+
+```lean
 ## API: Get List of All Interpretations for Expression
 
 Given an Expr, *e*, return a list of all of its *2^n*
@@ -266,11 +335,11 @@ interpretations in *ascending* order (from all-false to
 all-true). This function works by computing a list of
 all interpretations for *n* variables where *n* is the
 number of variables in *e*.
-```lean
+```
 def interpsFromExpr : Expr → List Interp
 | e => interpsFromNumVars (numVarsFromExpr e)
-```
 
+```lean
 ### Printable Representations of Interpretations
 
 Since an interpretation is a function (and thus unprintable),
@@ -278,21 +347,21 @@ we provide helpers to convert interpretations to printable
 lists of Booleans. Given an interpretation and a width *n*,
 *bitListFromInterpHelper* returns a list of the Boolean values
 assigned to variables with indices *0* through *n-1*.
+```
 
-```lean
 def bitListFromInterpHelper (i : Interp) (n : Nat) : List Bool :=
   (List.range n).map (fun k => i ⟨k⟩)
 
 #reduce bitListFromInterpHelper allFalse 3 -- expect [false, false, false]
-```
 
+```lean
 This function takes a list of interpretations and a width
 and returns a list of Boolean lists, one for each interpretation.
-```lean
+```
 def bitListsFromInterpsHelper (interps : List Interp) (n : Nat) : List (List Bool) :=
   interps.map (fun i => bitListFromInterpHelper i n)
-```
 
+```lean
 Lean knows how to print lists of Booleans, and lists
 of lists of Booleans, so these functions can be used
 to derive printable forms of interpretations and lists
@@ -302,22 +371,26 @@ only a finite initial sub-list of variable-to-value
 bindings is relevant. We provide the number of *relevant*
 variable bindings for which outputs should be generated
 as the second argument to this function.
-
-```lean
-#reduce bitListsFromInterpsHelper (interpsFromNumVars 3) 3
 ```
 
+#reduce bitListsFromInterpsHelper (interpsFromNumVars 3) 3
+
+```lean
 You can ask for bindings for more variables than are relevant,
 and in this case, we'll get default values (false) beyond those
 that matter. These values are ignored during evaluation and so
 are irrelevant; they are an implementation detail in our design.
+```
 
-```lean
 #reduce bitListsFromInterpsHelper (interpsFromNumVars 3) 5
 
 -- Example
 def anExpr := ({⟨0⟩} ∧ {⟨1⟩} ∨ {⟨2⟩})  -- P ∧ Q ∨ R
+
+-- toString is Programmed to write P, Q, R as names for first three Vars
+#eval toString anExpr
+#eval toString ({⟨0⟩} ∧ {⟨1⟩} ∨ {⟨2⟩} ⇒ {⟨3⟩})
+
 #reduce bitListsFromInterpsHelper (interpsFromExpr anExpr) 3
 
 end Content.B02_ClassicalPropositionalLogic.chapters.interpretation
-```

@@ -3,9 +3,9 @@ import Content.B00_Introduction.chapters
 -- B01 not yet imported: InferenceRules/ chapter files are not on disk
 -- import Content.B01_ConstructivePropositionalLogic.chapters
 import Content.B02_ClassicalPropositionalLogic.chapters
+```
 
 
-/-
 # Discrete Mathematics in Type Theory
 
 A series of books teaching logic and discrete mathematics
@@ -16,4 +16,3 @@ through the Curry-Howard correspondence in Lean 4.
 - Book 1: Constructive Propositional Logic
 - Book 2: Constructive Predicate Logic
 - Book 3: Propositional Logic - A Deep Embedding (Optional)
-```

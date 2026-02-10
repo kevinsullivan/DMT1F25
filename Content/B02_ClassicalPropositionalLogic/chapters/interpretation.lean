@@ -12,21 +12,69 @@ open Content.B02_ClassicalPropositionalLogic.chapters.syntax
 open Content.B02_ClassicalPropositionalLogic.chapters.semantics
 
 /- @@@
-An interpretation, *i*, in propositional logic is a function
-from variables to Booleans. That is just how we represent
-one in Lean: as a value of type Interp, an abbreviation for
-the type of total functions from Var to Bool, *Var → Bool*.
+An *interpretation*, *i*, for a well formed propositional
+logic expression is an assignment of truth (Boolean) values
+to each of the propositional variables in the expression.
+If the expression is *P ∧ Q*, for example, then there are
+four possible interpretations:
 
-Recall that in our specification, a variable expression is
-constructed from a variable. All variable expressions built
-from the same variable will thus be assigned the same value.
+- P is true, Q is true
+- P is true; Q is false
+- P is false; Q is true
+- P is false; Q is false
 
-## Defining Interpretations
+As you've seen we define a propositional variable
+expression as a value of type Expr constructed using
+var_expr (from_var : Var) constructor. A *Var* in turn
+is just a wrapper type enclosing a Nat, *n*, instantiated
+by *Var.mk n*. Such a term/value represents the *n'th*
+variable in an infinite set of anonymous variables, all
+*indexed* by natural numbers.
 
-Suppose for example that we want to evaluate an expression
-under an interpretation that assigns the value, *false*, to
-every variable, and thus to every variable expression. We
-can define such an interpretation in one line.
+## Representing Interpretations as Var → Bool Functions
+
+To evaluate an expression under an interpretation, we
+need a way to represent an interpretation. In our design,
+we represent an interpretation as a function from *any*
+Var (containing any Nat index value) to Bool.
+
+As Var is indexed by Nat, Nat has an infinite number of
+values, we need to define a function from Var to Bool
+for every possible Nat Index. If we have an expression
+with only two distinct variables, we'll defina function
+with the correct assignment of values for the variables
+at indices 0 and 1, and otherwise we'll return a default
+value (which will be ignored).
+
+### Example
+
+As an example, consider the assignment, *P := false* and
+*Q := true*. Here's a function that would do.
+@@@ -/
+
+def falseTrueInterp : Var → Bool
+| ⟨0⟩ => false
+| ⟨1⟩ => true
+| _ => false
+
+
+
+#eval ⟦{⟨0⟩}⟧ falseTrueInterp
+#eval ⟦{⟨0⟩} ∧ {⟨1⟩}⟧ falseTrueInterp
+#eval ⟦{⟨0⟩} ∨ {⟨1⟩}⟧ falseTrueInterp
+#eval ⟦{⟨0⟩} ⇒ {⟨1⟩}⟧ falseTrueInterp
+#eval ⟦{⟨0⟩}⟧ falseTrueInterp
+#eval ⟦{⟨1⟩}⟧ falseTrueInterp
+
+
+/-
+### Example
+We can now evaluate the truth of any proposition with
+(up to) two propositional variables.
+-/
+/- @@@
+Here's an interpretation that assigns *false* to every
+variable.
 @@@ -/
 
 def allFalse : Var → Bool := fun _ => false
@@ -45,7 +93,14 @@ command to apply *eval* to an expression, *e*, and to *i*,
 to answer the question, does *i* satisfy *e*?
 @@@ -/
 
-def e : Expr := {⟨0⟩}  -- expression on 0th variable
+-- A proposition that's just a single propositional variable
+def e : Expr :=
+  {                     -- our notation for variable expression
+    ⟨                   -- Lean notation for structure *mk*
+      0                 -- variable index
+    ⟩
+  }
+
 #reduce eval e allFalse        -- expect false
 #reduce ⟦(¬e)⟧ allFalse         -- expect true (our notation)
 #reduce ⟦(e ∨ ¬e)⟧ allFalse     -- expect true
@@ -70,12 +125,10 @@ indices. Here's an interpretation that assigns true to the
 other (irrelevant) variable.
 @@@ -/
 
-def tf : Interp :=
-fun v =>
-  match v with
-  | (Var.mk 0) => true    -- using our abstract syntax
-  | ⟨1⟩ => false          -- using Lean's notation for mk
-  | _ => true             -- default for all other variables
+def tf : Interp
+| (Var.mk 0) => true    -- using our abstract syntax
+| ⟨1⟩ => false          -- using Lean's notation for mk
+| _ => true             -- default for all other variables
 
 def f : Expr := {⟨1⟩}
 #reduce ⟦(e ∧ f)⟧ tf   -- expect false
@@ -156,7 +209,16 @@ returns the element at index *k* if it exists, or
 the provided default value (here, *false*) otherwise.
 @@@ -/
 def interpFromBools (l : List Bool) : Interp :=
-  fun ⟨k⟩ => l.getD k false
+  -- a function from k to kth Bool in list l
+  fun ⟨k⟩ =>
+  -- k'th element of list l if exists otherwise false
+    l.getD k false
+
+/- @@@ LET'S TALK LISTS! @@@
+
+Push on stack.
+-/
+
 
 /- @@@
 Here's an example, where nextInterp assigns true to
@@ -260,6 +322,13 @@ maxVariableIndex : Expr → Option Nat
     | none,   none   => none
 
 /- @@@
+LET'S TALK ABOUT THE OPTION TYPE IN LEAN (AND FP GENERALLY)
+
+Push on stack.
+@@@ -/
+
+
+/- @@@
 ## API: Get List of All Interpretations for Expression
 
 Given an Expr, *e*, return a list of all of its *2^n*
@@ -318,6 +387,11 @@ are irrelevant; they are an implementation detail in our design.
 
 -- Example
 def anExpr := ({⟨0⟩} ∧ {⟨1⟩} ∨ {⟨2⟩})  -- P ∧ Q ∨ R
+
+-- toString is Programmed to write P, Q, R as names for first three Vars
+#eval toString anExpr
+#eval toString ({⟨0⟩} ∧ {⟨1⟩} ∨ {⟨2⟩} ⇒ {⟨3⟩})
+
 #reduce bitListsFromInterpsHelper (interpsFromExpr anExpr) 3
 
 end Content.B02_ClassicalPropositionalLogic.chapters.interpretation
