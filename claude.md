@@ -34,6 +34,8 @@ are your best tool — use them after every edit.
 - `List.flatten` not `bind`/`join`
 - `.symm` for equation direction
 - No `sorry` in committed code, ever
+- All documentation comment blocks use `/- @@@ ... @@@ -/` delimiters
+- Prefer `n' + 1` over `Nat.succ n'` in pattern matches and expressions
 
 ## Common Pitfalls in This Codebase
 - Universe level mismatches: check `universe` declarations first
