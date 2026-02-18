@@ -16,7 +16,7 @@ additional-js = [
     # "assets/mermaid-init.js",    # Uncomment only if you have custom mermaid config
 ]
 mathjax-support = true
-git-repository-url = "https://github.com/kevinsullivan/Instructor"
+git-repository-url = "https://github.com/kevinsullivan/DMT1F25"
 # git-repository-icon = "fa-github" # Optional: adds GitHub icon
 
 [output.html.playground]

@@ -1,3 +1,15 @@
+/- @@@
+# Propositional Logic: A Working Demonstration
+
+<!-- toc -->
+
+Now that we have syntax, semantics, and decision procedures
+in hand, let's put them to work. This chapter builds up a
+thorough set of examples, starting from variable expressions
+and working through the axioms and identities of classical
+propositional logic.
+@@@ -/
+
 import Content.B02_ClassicalPropositionalLogic.chapters.properties
 import Content.B02_ClassicalPropositionalLogic.chapters.truthTable
 import Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
@@ -15,15 +27,7 @@ open Content.B02_ClassicalPropositionalLogic.chapters.properties
 open Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
 
 /- @@@
-# Propositional Logic: A Working Demonstration
-
-This file demonstrates what our propositional logic
-implementation can do. We'll build expressions using
-familiar logical connectives, then use automated tools
-to analyze their properties, find models, and discover
-counterexamples.
-
-## Setting Up: Propositional Variables
+## Propositional Variables
 
 We start by defining propositional variables P, Q, and R.
 Each is built from a Var (with a numeric index) wrapped
@@ -73,27 +77,6 @@ But our ToString instance prints using familiar notation:
 #eval toString (P ⇒ Q ⇒ R)        -- "P ⇒ Q ⇒ R"
 
 /- @@@
-## First Taste: What Can This System Do?
-
-Here's the payoff. Given any propositional logic expression,
-our system can automatically determine whether it's valid
-(true in every possible world), find models (worlds where
-it's true), and find counterexamples (worlds where it fails).
-@@@ -/
-
--- Is "P or not P" valid? (The law of the excluded middle)
-#eval is_valid (P ∨ ¬P)           -- true
-
--- Is "P implies Q" valid? (Not every implication is a law)
-#eval is_valid (P ⇒ Q)            -- false
-
--- Which worlds make it false? Let's find out.
--- Each list is an interpretation: [P-value, Q-value]
-#eval bitListsFromInterpsHelper
-        (findCounterexamples (P ⇒ Q)) 2
--- [[true, false]]: the only counterexample has P true, Q false
-
-/- @@@
 ## Truth Tables
 
 The *truthTableOutputs* function evaluates an expression
@@ -108,7 +91,7 @@ to all-true).
 #eval truthTableOutputs (P ⇒ Q)     -- [true, true, false, true]
 
 /- @@@
-## Three Kinds of Expressions
+## Three Kinds of Propositions
 
 Every propositional expression falls into exactly one of
 three categories. These are the most important properties
@@ -130,6 +113,14 @@ in others. Most "interesting" propositions are like this.
 #eval is_sat   (P ∧ Q)        -- true
 #eval is_unsat (P ∧ Q)        -- false
 
+/- @@@
+**Unsatisfiable**: true under no interpretation. A
+contradiction.
+@@@ -/
+
+#eval is_valid (P ∧ ¬P)       -- false
+#eval is_sat   (P ∧ ¬P)       -- false
+#eval is_unsat (P ∧ ¬P)       -- true
 
 /- @@@
 ## Models and Counterexamples
@@ -164,7 +155,167 @@ is P, the second Q, the third R (if present).
 -- [] (empty list)
 
 /- @@@
-## Reasoning Patterns: Implication and Its Relatives
+## Axioms of Propositional Logic
+
+The following propositions are not arbitrary examples.
+They are the *axioms* of classical propositional logic:
+inference rules that are valid by virtue of the connectives
+alone. Each one captures a fundamental pattern of reasoning.
+
+We can verify each axiom by checking that it is valid —
+true under every interpretation.
+
+### Conjunction (And)
+@@@ -/
+
+def and_intro :=        R ⇒ Q ⇒ R ∧ Q
+def and_elim_left :=    R ∧ Q ⇒ R
+def and_elim_right :=   R ∧ Q ⇒ Q
+
+#eval is_valid and_intro        -- true
+#eval is_valid and_elim_left    -- true
+#eval is_valid and_elim_right   -- true
+
+/- @@@
+### Disjunction (Or)
+@@@ -/
+
+def or_intro_left :=    R ⇒ R ∨ Q
+def or_intro_right :=   Q ⇒ R ∨ Q
+def or_elim :=          Q ∨ R ⇒ (Q ⇒ P) ⇒ (R ⇒ P) ⇒ P
+
+#eval is_valid or_intro_left    -- true
+#eval is_valid or_intro_right   -- true
+#eval is_valid or_elim          -- true
+
+/- @@@
+### Negation
+@@@ -/
+
+def not_intro :=        (R ⇒ ⊥) ⇒ ¬R
+def not_elim :=         ¬¬R ⇒ R
+
+#eval is_valid not_intro        -- true
+#eval is_valid not_elim         -- true
+
+/- @@@
+### Implication
+@@@ -/
+
+def imp_intro :=        R ⇒ P ⇒ (R ⇒ P)
+def imp_elim :=         (R ⇒ P) ⇒ R ⇒ P
+
+#eval is_valid imp_intro        -- true
+#eval is_valid imp_elim         -- true
+
+/- @@@
+### Equivalence (Iff)
+@@@ -/
+
+def equiv_intro :=      (R ⇒ P) ⇒ (P ⇒ R) ⇒ (R ↔ P)
+def equiv_elim_left :=  (R ↔ P) ⇒ (R ⇒ P)
+def equiv_elim_right := (R ↔ P) ⇒ (P ⇒ R)
+
+#eval is_valid equiv_intro      -- true
+#eval is_valid equiv_elim_left  -- true
+#eval is_valid equiv_elim_right -- true
+
+/- @@@
+### Truth and Falsity
+@@@ -/
+
+def true_intro := ⊤
+def false_elim := ⊥ ⇒ P
+
+#eval is_valid true_intro       -- true
+#eval is_valid false_elim       -- true
+
+/- @@@
+## Identities: Theorems Derived from the Axioms
+
+The axioms above are the starting points. From them we
+can *derive* a rich collection of identities — theorems
+about the logical connectives that hold universally.
+
+Unlike axioms, which we take as given, identities are
+consequences. Our decision procedures confirm each one
+by checking validity across all interpretations.
+
+### Idempotence and Commutativity
+@@@ -/
+
+def andIdempotent   := P ↔ (P ∧ P)
+def orIdempotent    := P ↔ (P ∨ P)
+
+def andCommutative  := (P ∧ Q) ↔ (Q ∧ P)
+def orCommutative   := (P ∨ Q) ↔ (Q ∨ P)
+
+#eval is_valid andIdempotent    -- true
+#eval is_valid orIdempotent     -- true
+#eval is_valid andCommutative   -- true
+#eval is_valid orCommutative    -- true
+
+/- @@@
+### Identity and Annihilation
+@@@ -/
+
+def identityAnd      := (P ∧ ⊤) ↔ P
+def identityOr       := (P ∨ ⊥) ↔ P
+
+def annihilateAnd    := (P ∧ ⊥) ↔ ⊥
+def annihilateOr     := (P ∨ ⊤) ↔ ⊤
+
+#eval is_valid identityAnd      -- true
+#eval is_valid identityOr       -- true
+#eval is_valid annihilateAnd    -- true
+#eval is_valid annihilateOr     -- true
+
+/- @@@
+### Associativity
+@@@ -/
+
+def orAssociative   := ((P ∨ Q) ∨ R) ↔ (P ∨ (Q ∨ R))
+def andAssociative  := ((P ∧ Q) ∧ R) ↔ (P ∧ (Q ∧ R))
+
+#eval is_valid orAssociative    -- true
+#eval is_valid andAssociative   -- true
+
+/- @@@
+### Distributive Laws
+@@@ -/
+
+def distribAndOr    := (P ∧ (Q ∨ R)) ↔ ((P ∧ Q) ∨ (P ∧ R))
+def distribOrAnd    := (P ∨ (Q ∧ R)) ↔ ((P ∨ Q) ∧ (P ∨ R))
+
+#eval is_valid distribAndOr     -- true
+#eval is_valid distribOrAnd     -- true
+
+/- @@@
+### De Morgan's Laws
+@@@ -/
+
+def deMorganAnd     := ¬(P ∧ Q) ↔ (¬P ∨ ¬Q)
+def deMorganOr      := ¬(P ∨ Q) ↔ (¬P ∧ ¬Q)
+
+#eval is_valid deMorganAnd      -- true
+#eval is_valid deMorganOr       -- true
+
+/- @@@
+### Equivalence, Implication, and Derived Rules
+@@@ -/
+
+def equivalence     := (P ↔ Q) ↔ ((P ⇒ Q) ∧ (Q ⇒ P))
+def implication     := (P ⇒ Q) ↔ (¬P ∨ Q)
+def exportation     := ((P ∧ Q) ⇒ R) ↔ (P ⇒ Q ⇒ R)
+def absurdity       := (P ⇒ Q) ∧ (P ⇒ ¬Q) ⇒ ¬P
+
+#eval is_valid equivalence      -- true
+#eval is_valid implication      -- true
+#eval is_valid exportation      -- true
+#eval is_valid absurdity        -- true
+
+/- @@@
+## Reasoning Patterns
 
 In everyday reasoning, people often confuse an implication
 with its converse, inverse, or contrapositive. Our system
@@ -172,19 +323,16 @@ can show us exactly which of these are equivalent and which
 are not.
 @@@ -/
 
-def implication    := P ⇒ Q       -- if P then Q
+def impl           := P ⇒ Q       -- if P then Q
 def converse       := Q ⇒ P       -- if Q then P
 def inverse        := ¬P ⇒ ¬Q     -- if not P then not Q
 def contrapositive := ¬Q ⇒ ¬P     -- if not Q then not P
 
-#eval is_valid ((P ⇒ Q) ⇒ (¬Q ⇒ ¬P))
-
-
 -- Compare their truth tables
-#eval truthTableOutputs implication      -- [true, true, false, true]
-#eval truthTableOutputs converse         -- [true, false, true, true]
-#eval truthTableOutputs inverse          -- [true, false, true, true]
-#eval truthTableOutputs contrapositive   -- [true, true, false, true]
+#eval truthTableOutputs impl            -- [true, true, false, true]
+#eval truthTableOutputs converse        -- [true, false, true, true]
+#eval truthTableOutputs inverse         -- [true, false, true, true]
+#eval truthTableOutputs contrapositive  -- [true, true, false, true]
 
 /- @@@
 Look carefully: implication and contrapositive have the
@@ -196,13 +344,13 @@ are logically equivalent when their biconditional is valid.
 @@@ -/
 
 -- Implication ↔ contrapositive: equivalent
-#eval is_valid (implication ↔ contrapositive)   -- true
+#eval is_valid (impl ↔ contrapositive)       -- true
 
 -- Converse ↔ inverse: equivalent
-#eval is_valid (converse ↔ inverse)             -- true
+#eval is_valid (converse ↔ inverse)          -- true
 
 -- Implication ↔ converse: NOT equivalent
-#eval is_valid (implication ↔ converse)          -- false
+#eval is_valid (impl ↔ converse)             -- false
 
 /- @@@
 ### The Inverse Error
@@ -211,9 +359,6 @@ are logically equivalent when their biconditional is valid.
 Does that mean "if it's NOT raining, then the ground
 is NOT wet"? Many people reason this way. This is
 called the *inverse error* (or *denying the antecedent*).
-
-Let's ask: is it valid that an implication entails its
-inverse?
 @@@ -/
 
 #eval is_valid ((P ⇒ Q) ⇒ (¬P ⇒ ¬Q))   -- false!
@@ -232,26 +377,7 @@ But the contrapositive *is* always valid:
 #eval is_valid ((P ⇒ Q) ⇒ (¬Q ⇒ ¬P))   -- true
 
 /- @@@
-## Verifying Logical Equivalences
-
-We can use our system as an equivalence checker. Two
-expressions are equivalent exactly when their biconditional
-is valid (true under all interpretations).
-@@@ -/
-
--- De Morgan's Laws
-#eval is_valid (¬(P ∧ Q) ↔ (¬P ∨ ¬Q))   -- true
-#eval is_valid (¬(P ∨ Q) ↔ (¬P ∧ ¬Q))   -- true
-
--- Double negation elimination
-#eval is_valid (¬¬P ↔ P)                 -- true
-
--- Distribution of ∧ over ∨ (and vice versa)
-#eval is_valid ((P ∧ (Q ∨ R)) ↔ ((P ∧ Q) ∨ (P ∧ R)))  -- true
-#eval is_valid ((P ∨ (Q ∧ R)) ↔ ((P ∨ Q) ∧ (P ∨ R)))  -- true
-
-/- @@@
-## Three-Variable Examples
+## Multi-Variable Examples
 
 With three variables the system generates 2³ = 8
 interpretations, and the model sets get more interesting.
@@ -283,9 +409,6 @@ P is *not* forced to be true.
 @@@ -/
 
 def challenge := (P ⇒ Q) ∧ (Q ⇒ R)
-
-
-
 
 
 

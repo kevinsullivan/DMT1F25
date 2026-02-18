@@ -323,6 +323,42 @@ example : Bool.and true false = false := rfl
 example : true && false = false := rfl  -- Bool.and notation
 
 /- @@@
+### Case Analysis: Boolean Implies
+
+The binary Boolean implies function is not natively
+implemented in Lean's Boolean algebra. We know the
+truth table. Let's implement it using pattern matching.
+@@@ -/
+
+def implies : Bool → Bool → Bool
+| true, false => false
+| _, _ => true
+
+#eval implies false true     -- true
+#eval implies true false     -- false
+
+/- @@@
+### Tactic Mode: Cases
+
+Tactics in Lean are programs that operate on your proof
+state. The *cases* tactic performs case analysis on a
+value, generating one subgoal per constructor. Here is
+the same function defined in tactic mode.
+@@@ -/
+
+def implies' (b1 b2 : Bool) : Bool := by
+  cases b1
+  · cases b2
+    · exact true
+    · exact true
+  · cases b2
+    · exact false
+    · exact true
+
+#eval implies' false false   -- true
+#eval implies' true false    -- false
+
+/- @@@
 ### Function (→) Types
 
 Given any two (possibly the same) types, α and

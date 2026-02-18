@@ -384,14 +384,3 @@ are irrelevant; they are an implementation detail in our design.
 @@@ -/
 
 #reduce bitListsFromInterpsHelper (interpsFromNumVars 3) 5
-
--- Example
-def anExpr := ({⟨0⟩} ∧ {⟨1⟩} ∨ {⟨2⟩})  -- P ∧ Q ∨ R
-
--- toString is Programmed to write P, Q, R as names for first three Vars
-#eval toString anExpr
-#eval toString ({⟨0⟩} ∧ {⟨1⟩} ∨ {⟨2⟩} ⇒ {⟨3⟩})
-
-#reduce bitListsFromInterpsHelper (interpsFromExpr anExpr) 3
-
-end Content.B02_ClassicalPropositionalLogic.chapters.interpretation
