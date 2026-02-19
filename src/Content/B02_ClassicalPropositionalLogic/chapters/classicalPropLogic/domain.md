@@ -1,4 +1,3 @@
-/- @@@
 # Boolean Algebra
 
 <!-- toc -->
@@ -22,22 +21,22 @@ most commonly used Boolean operators as functions.
 
 The two elements we'll need that Lean doesn't define
 natively are definitions of *implies* and *equivalentTo*.
-@@@ -/
 
+```lean
 namespace Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.domain
+```
 
-/- @@@
 ## Lean's Boolean Algebra Definitions
 
 The standard Lean libraries define the Boolean
 Type, the Boolean operators (functions) commonly
 used in programming (&&, ||, !).
-@@@ -/
 
+```lean
 #check true && (true || !true)
+```
 
 
-/- @@@
 ## Implication
 
 Suppose you have an implication expression, say
@@ -74,22 +73,22 @@ functions that implement the truth tables of the Boolean
 → and ↔ operators. Each function, taking two Boolean
 arguments, is defined "by cases", of which there are
 four. In other words, we're specifying truth tables.
-@@@ -/
 
+```lean
 -- Implication
 def imp : Bool → Bool → Bool
 | true, true => true
 | true, false => false
 | false, true => true
 | false, false => true
+```
 
-/- @@@
 
 First: *(P → Q) → (Q → P) → (P ↔ Q)*.
 Then, *(P ↔ Q) → P → Q*
 and *(P ↔ Q) → Q → P*
-@@@ -/
 
+```lean
 -- Equivalence (bi-conditional, if and only if)
 def iff : Bool → Bool → Bool
 | true, true => true
@@ -98,8 +97,8 @@ def iff : Bool → Bool → Bool
 
 -- Problem #1 (combinatorics): How many binary Boolean functions are there?
 -- Problem #2 (Boolean algebra): Write a specification of the exclusive or function (xor)
+```
 
-/- @@@
 ## Conclusion
 
 Boolean algebra comprises the set of two Boolean values
@@ -109,6 +108,7 @@ conjunction, implication. These objects, both values and
 functions, are *denotations* of propositional logic syntax
 elements: of constants and variables and of the syntactic
 operators, such as ∧ (mapping to &&).
-@@@ -/
 
+```lean
 end Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.domain
+```
