@@ -15,7 +15,7 @@
     - [Counterexamples](./Content/B02_ClassicalPropositionalLogic/chapters/classicalPropLogic/counterexamples.md)
     - [Validity](./Content/B02_ClassicalPropositionalLogic/chapters/classicalPropLogic/validity.md)
     - [Working Demonstration](./Content/B02_ClassicalPropositionalLogic/chapters/classicalPropLogic/demo.md)
-  - [Inductive Types: Nat, List, Option](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_2026_02_09.md)
+  - [Inductive Types: Nat, List, Option](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_InductiveTypes.md)
   - [Higher-Order Functions](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_2026_02_13_higherOrderFunctions.md)
   - [Overloaded Structures: Monoid](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_MonoidGroup.md)
 

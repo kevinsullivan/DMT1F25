@@ -3,7 +3,7 @@
 import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
 import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
 import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
-import Content.B02_ClassicalPropositionalLogic.chapters.CS6501_2026_02_09
+import Content.B02_ClassicalPropositionalLogic.chapters.CS6501_InductiveTypes
 
 open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
 open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
