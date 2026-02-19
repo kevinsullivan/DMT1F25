@@ -398,7 +398,7 @@ instance : AddGroup Duration where
   neg_add_cancel := by intro a; cases a <;> rfl
 
 /- @@@
-## Duration is Now a Group
+## Duration Now Endowed With Additive Group Structure
 
 Duration is a registered AddGroup. This unlocks all
 group-level theorems and functions in Mathlib. We can
@@ -416,5 +416,33 @@ verify a few group properties.
 -- Double negation returns the original
 #eval (-(-one) : Duration)          -- one
 #eval (-(-two) : Duration)          -- two
+
+/- @@@
+## What a Group Gives You
+
+An additive group equips a type with three operations
+and guarantees about their behavior:
+
+- **Addition** (`+`): a way to combine any two elements
+- **Zero** (`0`): a distinguished element that does nothing when added
+- **Negation** (`-`): for every element, a way to undo it
+
+These operations are not arbitrary. The group structure
+*proves* that they satisfy the following laws, so any
+code that depends on these properties can trust them
+unconditionally:
+
+- **Associativity**: `(a + b) + c = a + (b + c)`
+- **Left identity**: `0 + a = a`
+- **Right identity**: `a + 0 = a`
+- **Left inverse**: `-a + a = 0`
+
+The first three are the monoid axioms. The fourth is
+what distinguishes a group from a monoid: every element
+can be cancelled. From these four laws, one can derive
+right inverses (`a + -a = 0`), uniqueness of inverses,
+cancellation laws, and much more. The entire theory of
+groups rests on this small foundation.
+@@@ -/
 
 end Content.B02_ClassicalPropositionalLogic.chapters.monoid
