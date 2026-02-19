@@ -1,5 +1,5 @@
 ```lean
--- Book 2: Constructive Predicate Logic - Chapter Imports
+-- Book 2: Classical Propositional Logic - Chapter Imports
 import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.counterexamples
 import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.demo
 import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.domain

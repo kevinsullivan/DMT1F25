@@ -12,6 +12,6 @@ through the Curry-Howard correspondence in Lean 4.
 ## Books
 
 - Book 1: Constructive Propositional Logic
-- Book 2: Constructive Predicate Logic
+- Book 2: Classical Propositional Logic
 - Book 3: Propositional Logic - A Deep Embedding (Optional)
 @@@ -/
