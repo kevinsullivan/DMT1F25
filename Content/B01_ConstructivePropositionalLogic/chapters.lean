@@ -1,17 +1,11 @@
 -- Book 1: Constructive Propositional Logic - Chapter Imports
 
 import Content.B01_ConstructivePropositionalLogic.chapters.CS6501_2026_01_20
-import Content.B01_ConstructivePropositionalLogic.chapters.CS6501_2026_01_28
 
--- import Content.B01_ConstructivePropositionalLogic.chapters.InferenceRules.C00_introduction
--- import Content.B01_ConstructivePropositionalLogic.chapters.InferenceRules.C01_true
--- import Content.B01_ConstructivePropositionalLogic.chapters.InferenceRules.C02_and
--- import Content.B01_ConstructivePropositionalLogic.chapters.InferenceRules.C03_implies
--- import Content.B01_ConstructivePropositionalLogic.chapters.InferenceRules.C04_functions
--- import Content.B01_ConstructivePropositionalLogic.chapters.InferenceRules.C05_composition
--- import Content.B01_ConstructivePropositionalLogic.chapters.InferenceRules.C06_iff
--- import Content.B01_ConstructivePropositionalLogic.chapters.InferenceRules.C07_or
--- import Content.B01_ConstructivePropositionalLogic.chapters.InferenceRules.C08_false
--- import Content.B01_ConstructivePropositionalLogic.chapters.InferenceRules.C09_negation
--- import Content.B01_ConstructivePropositionalLogic.chapters.InferenceRules.C10_curryHoward
--- import Content.B01_ConstructivePropositionalLogic.chapters.InferenceRules.C11_summary
+-- Propositions as Types (shallow embedding of constructive propositional logic)
+import Content.B01_ConstructivePropositionalLogic.chapters.propAsTypes.C00_introduction
+import Content.B01_ConstructivePropositionalLogic.chapters.propAsTypes.C01_conjunction
+import Content.B01_ConstructivePropositionalLogic.chapters.propAsTypes.C02_disjunction
+import Content.B01_ConstructivePropositionalLogic.chapters.propAsTypes.C03_falsity_negation
+import Content.B01_ConstructivePropositionalLogic.chapters.propAsTypes.C04_implication
+import Content.B01_ConstructivePropositionalLogic.chapters.propAsTypes.C05_embedding_summary

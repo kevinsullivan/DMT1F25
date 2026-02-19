@@ -1,6 +1,5 @@
 import Content.B00_Introduction.chapters
--- B01 not yet imported: InferenceRules/ chapter files are not on disk
--- import Content.B01_ConstructivePropositionalLogic.chapters
+import Content.B01_ConstructivePropositionalLogic.chapters
 import Content.B02_ClassicalPropositionalLogic.chapters
 
 
