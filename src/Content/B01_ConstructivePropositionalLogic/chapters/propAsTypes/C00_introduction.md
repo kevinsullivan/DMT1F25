@@ -60,8 +60,35 @@ def pfEarthGreen : EarthGreen := EarthGreen.intro
 
 Each of these types has exactly one constructor, so
 each has exactly one proof. A proposition with a proof
-is true. In the chapters that follow, we will see how
-the logical connectives — and, or, not, implies — are
+is true.
+
+## True: The Unit Type
+
+Any type with at least one constructor that can be
+called without providing an absurd argument (such as
+a value of an empty type) is a true proposition — it
+has a proof. Our SkyBlue and EarthGreen above are
+examples.
+
+Lean provides a standard, canonical true proposition
+called *Unit*. It has exactly one constructor, *Unit.unit*
+(also written `()`). Because it always has a proof, it
+represents a proposition that is trivially true.
+
+```lean
+#check Unit
+#check Unit.unit
+#check ()
+
+def pfTrue : Unit := ()
+```
+
+Unit plays the role of logical truth (⊤) in our
+embedding. Any function that returns Unit is trivially
+satisfiable — you can always produce `()`.
+
+In the chapters that follow, we will see how the
+logical connectives — and, or, not, implies — are
 represented using basic data and function types, and
 how their introduction and elimination rules arise
 naturally from this encoding.
