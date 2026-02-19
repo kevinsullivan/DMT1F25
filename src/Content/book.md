@@ -5,13 +5,39 @@ import Content.B02_ClassicalPropositionalLogic.chapters
 ```
 
 
-# Discrete Mathematics in Type Theory
+# Reasoning and Computation
 
-A series of books teaching logic and discrete mathematics
-through the Curry-Howard correspondence in Lean 4.
+## CS 6501, Spring 2026, University of Virginia
 
-## Books
+A course in logic and discrete mathematics formalized
+in the Lean 4 proof assistant. Every definition, theorem,
+and example in this text is machine-checked code.
 
-- Book 1: Constructive Propositional Logic
-- Book 2: Classical Propositional Logic
-- Book 3: Propositional Logic - A Deep Embedding (Optional)
+## Contents
+
+### I. Data and Function Types
+Basic types (Bool, Nat, String), function definitions,
+pattern matching, and case analysis in Lean 4.
+
+### II. Constructive Propositional Logic
+A shallow embedding of propositional logic into Lean's
+Type universe via the Curry-Howard correspondence.
+Propositions are types; proofs are values. Covers
+conjunction (products), disjunction (sums), negation
+(empty types), implication (functions), and equivalence.
+
+### III. Classical Propositional Logic
+A deep embedding: syntax, semantics, and decision
+procedures for propositional logic. Boolean algebra,
+interpretations, truth tables, models, counterexamples,
+validity, satisfiability, and a working demonstration.
+
+### IV. Inductive Types and Higher-Order Functions
+Nat, List, and Option as inductive types. Map, fold,
+and reduce as higher-order functions, applied to our
+propositional logic property checker.
+
+### V. Algebraic Structures: Monoid and Group
+Typeclasses in Lean and Mathlib. Building an AddMonoid
+and AddGroup for a three-hour clock, layer by layer
+through the Mathlib hierarchy.
