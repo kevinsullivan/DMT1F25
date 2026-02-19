@@ -23,7 +23,7 @@
     - [Validity](./Content/B02_ClassicalPropositionalLogic/chapters/classicalPropLogic/validity.md)
     - [Working Demonstration](./Content/B02_ClassicalPropositionalLogic/chapters/classicalPropLogic/demo.md)
   - [Inductive Types: Nat, List, Option](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_InductiveTypes.md)
-  - [Higher-Order Functions](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_2026_02_13_higherOrderFunctions.md)
+  - [Higher-Order Functions](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_HigherOrderFunctions.md)
   - [Overloaded Structures: Monoid](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_MonoidGroup.md)
 
 [Inference Rule Cheat Sheet](./Resources/L00_deductiveReasoning/L99_inferenceRules2.md)

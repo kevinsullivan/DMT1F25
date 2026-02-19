@@ -61,7 +61,7 @@ something with it, and returns a closely related new function as a
 result. In the lingo of *programming languages*, functions that
 take functions as arguments or that return functions as results or
 both, are referred to as *higher-order functions*.
--/
+@@@ -/
 
 open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
 open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics

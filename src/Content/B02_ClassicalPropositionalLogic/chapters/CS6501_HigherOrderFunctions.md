@@ -62,17 +62,17 @@ something with it, and returns a closely related new function as a
 result. In the lingo of *programming languages*, functions that
 take functions as arguments or that return functions as results or
 both, are referred to as *higher-order functions*.
--/
 
+```lean
 open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
 open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
 namespace Content.B02_ClassicalPropositionalLogic.higherOrderFunctions
-
-
-```lean
-## Preliminaries
 ```
 
+
+## Preliminaries
+
+```lean
 -- An example proposition. The Nat's are the variable indices.
 -- We've programming toString to write P, Q, and R for the first three variables
 def anExpr := {⟨0⟩} ∧ {⟨1⟩} ∨ {⟨2⟩} ⇒ {⟨3⟩} -- P ∧ Q ∨ R
@@ -92,9 +92,9 @@ def li : List Interp := interpsFromExpr e
 #eval eval e li[1]
 #eval eval e li[2]
 #eval eval e li[3]
+```
 
 
-```lean
 ## The Map Higher Order Function (for List)
 
 Map takes a list of α and a function from α to β
@@ -108,8 +108,8 @@ result. As *li* is a list of interpretations, and
 *e*) across the list to obtain the truth value of
 *e* under each interpretation. That's what we've
 got here.
-```
 
+```lean
 def addOneMap : List Nat → List Nat
 | [] => []
 | h::t => h.succ::(addOneMap t)
@@ -131,9 +131,9 @@ def myMap {α β : Type} : (α → β) → List α → List β
 
 def outputs := List.map (fun i => eval e i) li
 #reduce outputs
+```
 
 
-```lean
 ## The Reduce, or Fold Higher-Order Function
 
 In the simple case, the reduce, or fold, operation
@@ -151,8 +151,8 @@ only if every bool is true only if the proposition
 is true under every interpretation. Satisfiability
 is just the Boolean *or* (||) of the outputs. And,
 EXERCISE: How do you determine *unsatisfiability*?
-```
 
+```lean
 def myReduceAnd : List Bool → Bool
 | [] => true
 | h::t => h && (myReduceAnd t)
@@ -173,8 +173,8 @@ def myReduce {α : Type} : (op : α → α → α) → (id : α) → List α →
 
 #eval List.foldr Bool.and true outputs
 #eval List.foldr Bool.or true outputs
+```
 
-```lean
 The general form of reduce transforms a list of elements of one
 type (such as String) into a value of another type (such as Bool). A
 good example is a function that takes a list of String and returns true
@@ -185,8 +185,8 @@ takes as its two arguments, (1) the head of list, e.g., a Nat, and
 (2)  the *result* of reducing the rest of the list, e.g., a Bool,
 and then returns the answer by combining them into a result of the
 return type, e.g., Bool.
-```
 
+```lean
 -- A function computing whether a String is of even length
 def isEvenLen (s : String) : Bool := s.length % 2 == 0
 
@@ -212,8 +212,8 @@ def myFoldr {α β : Type} : (α → β → β) → β → List α → β
 
 -- But look: We can write bad code. Typechecking didn't help.
 #eval myFoldr Nat.add 1 [0,1,2,3,4,5]  -- expect 15
+```
 
-```lean
 Oops! Some applications of our perfectly well typed function
 are just wrong, namely those where the id argument is not an
 identity element for the binary operation, whatever it might
@@ -225,6 +225,7 @@ right answer is 15. The error: 1 is not the identity for +.
 We need to be more structured in what we pass as an argument
 to foldr. It should really only allow correct combinations
 of operator and identity (probably among other such rules).
-```
 
+```lean
 end Content.B02_ClassicalPropositionalLogic.higherOrderFunctions
+```
