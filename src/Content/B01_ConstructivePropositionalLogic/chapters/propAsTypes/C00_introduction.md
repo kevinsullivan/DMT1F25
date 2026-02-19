@@ -28,6 +28,7 @@ true                Unit
 P ∧ Q               Prod P Q  (P × Q)
 P ∨ Q               Sum P Q   (P ⊕ Q)
 P → Q               P → Q
+P ↔ Q               (P → Q) × (Q → P)
 ¬P                  P → Empty
 ```
 

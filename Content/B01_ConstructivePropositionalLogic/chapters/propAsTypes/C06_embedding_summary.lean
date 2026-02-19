@@ -8,7 +8,7 @@ form our shallow embedding of constructive propositional
 logic into Lean's Type universe.
 @@@ -/
 
-namespace Content.B01_ConstructivePropositionalLogic.chapters.propAsTypes.C05_embedding_summary
+namespace Content.B01_ConstructivePropositionalLogic.chapters.propAsTypes.C06_embedding_summary
 
 section embedding
 
@@ -20,6 +20,7 @@ variable (α β : Type)
 #check α × β        -- α ∧ β (conjunction)
 #check α ⊕ β        -- α ∨ β (disjunction)
 #check α → β        -- α → β (implication)
+#check (α → β) × (β → α)  -- α ↔ β (equivalence)
 #check α → Empty    -- ¬α (negation)
 
 end embedding
@@ -54,4 +55,4 @@ open CPL
     (not' (and' (var' "X") (var' "Y")))
     (or' (not' (var' "X")) (not' (var' "Y")))
 
-end Content.B01_ConstructivePropositionalLogic.chapters.propAsTypes.C05_embedding_summary
+end Content.B01_ConstructivePropositionalLogic.chapters.propAsTypes.C06_embedding_summary
