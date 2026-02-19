@@ -2,12 +2,12 @@
 # Reasoning and Computation
 
 - [Reasoning and Computation](./Content/book.md)
-  - [Data and Function Types](./Content/B01_ConstructivePropositionalLogic/chapters/CS6501_2026_01_20.md)
+  - [Data and Function Types](./Content/B01_ConstructivePropositionalLogic/chapters/CS6501_DataFunctionTypes.md)
   - [Constructive Propositional Logic](./Content/B01_ConstructivePropositionalLogic/chapters/propAsTypes/propAsTypes.md)
     - [Introduction: Curry-Howard Correspondence](./Content/B01_ConstructivePropositionalLogic/chapters/propAsTypes/C00_introduction.md)
     - [Conjunction: Product Types](./Content/B01_ConstructivePropositionalLogic/chapters/propAsTypes/C01_conjunction.md)
     - [Disjunction: Sum Types](./Content/B01_ConstructivePropositionalLogic/chapters/propAsTypes/C02_disjunction.md)
-    - [Falsity and Negation: Empty Types](./Content/B01_ConstructivePropositionalLogic/chapters/propAsTypes/C03_falsity_negation.md)
+    - [Negation: Function to Empty Type](./Content/B01_ConstructivePropositionalLogic/chapters/propAsTypes/C03_falsity_negation.md)
     - [Implication: Function Types](./Content/B01_ConstructivePropositionalLogic/chapters/propAsTypes/C04_implication.md)
     - [Equivalence: Pairs of Functions](./Content/B01_ConstructivePropositionalLogic/chapters/propAsTypes/C05_equivalence.md)
     - [Complete Embedding and Preview](./Content/B01_ConstructivePropositionalLogic/chapters/propAsTypes/C06_embedding_summary.md)

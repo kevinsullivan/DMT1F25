@@ -1,7 +1,7 @@
 ```lean
 -- Book 1: Constructive Propositional Logic - Chapter Imports
 
-import Content.B01_ConstructivePropositionalLogic.chapters.CS6501_2026_01_20
+import Content.B01_ConstructivePropositionalLogic.chapters.CS6501_DataFunctionTypes
 
 -- Propositions as Types (shallow embedding of constructive propositional logic)
 import Content.B01_ConstructivePropositionalLogic.chapters.propAsTypes.C00_introduction
