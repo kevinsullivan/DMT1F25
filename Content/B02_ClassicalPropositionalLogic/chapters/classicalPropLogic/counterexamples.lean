@@ -4,14 +4,14 @@
 <!-- toc -->
 @@@ -/
 
-import Content.B02_ClassicalPropositionalLogic.chapters.truthTable
-import Content.B02_ClassicalPropositionalLogic.chapters.models
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.truthTable
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.models
 
-namespace Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
+namespace Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.counterexamples
 
-open Content.B02_ClassicalPropositionalLogic.chapters.syntax
-open Content.B02_ClassicalPropositionalLogic.chapters.semantics
-open Content.B02_ClassicalPropositionalLogic.chapters.models
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.models
 
 /- @@@
 
@@ -45,7 +45,7 @@ e the specific value in the length-one list of values (an interpretation).
 ## Printable Counterexample Finders
 @@@ -/
 
-open Content.B02_ClassicalPropositionalLogic.chapters.interpretation
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
 
 def showCounterexamples (e : Expr) : List (List Bool) :=
   bitListsFromInterpsHelper (findCounterexamples e) (numVarsFromExpr e)
@@ -55,4 +55,4 @@ def showCounterexample (e : Expr) : Option (List Bool) :=
   | none => none
   | some i => some (bitListFromInterpHelper i (numVarsFromExpr e))
 
-end Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
+end Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.counterexamples

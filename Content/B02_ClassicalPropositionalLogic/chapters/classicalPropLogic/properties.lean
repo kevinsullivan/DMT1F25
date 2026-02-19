@@ -17,15 +17,15 @@ being *unsatisfiable?* And does "e" have the property of being
 *valid*.
 @@@ -/
 
-import Content.B02_ClassicalPropositionalLogic.chapters.syntax
-import Content.B02_ClassicalPropositionalLogic.chapters.utilities
-import Content.B02_ClassicalPropositionalLogic.chapters.truthTable
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.utilities
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.truthTable
 
-namespace Content.B02_ClassicalPropositionalLogic.chapters.properties
+namespace Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.properties
 
-open Content.B02_ClassicalPropositionalLogic.chapters.syntax
-open Content.B02_ClassicalPropositionalLogic.chapters.utilities
-open Content.B02_ClassicalPropositionalLogic.chapters.truthTable
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.utilities
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.truthTable
 
 /- @@@
 ## Satisfiability
@@ -49,4 +49,4 @@ Validity means that a proposition is true under all interpretations
 def is_valid :  Expr → Bool :=
   λ e => reduce_and (truthTableOutputs e)
 
-end Content.B02_ClassicalPropositionalLogic.chapters.properties
+end Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.properties

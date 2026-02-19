@@ -5,20 +5,20 @@
 
 The material in this chapter depends on our specification
 of the syntax of propositional logic. We enclose these
-definitions in a namespace, Content.B02_ClassicalPropositionalLogic.chapters.axioms,
+definitions in a namespace, Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.axioms,
 to avoid naming conflicts with definitions in other files.
 We open the namespace for both the syntax definitions and
 the specification of the syntax itself (Expr), so as to be
 able to use them here without prefixes.
 @@@ -/
 
-import Content.B02_ClassicalPropositionalLogic.chapters.syntax
-import Content.B02_ClassicalPropositionalLogic.chapters.properties
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.properties
 
-open Content.B02_ClassicalPropositionalLogic.chapters.syntax
-open Content.B02_ClassicalPropositionalLogic.chapters.properties
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.properties
 
-namespace Content.B02_ClassicalPropositionalLogic.chapters.axioms
+namespace Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.axioms
 
 open Expr
 
@@ -111,4 +111,4 @@ every one evaluates to true under all interpretations.
 #eval is_valid true_intro       -- true
 #eval is_valid false_elim       -- true
 
-end Content.B02_ClassicalPropositionalLogic.chapters.axioms
+end Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.axioms

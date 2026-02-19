@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Group.Defs
 
-import Content.B02_ClassicalPropositionalLogic.chapters.syntax
-import Content.B02_ClassicalPropositionalLogic.chapters.semantics
-import Content.B02_ClassicalPropositionalLogic.chapters.interpretation
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
 import Content.B02_ClassicalPropositionalLogic.chapters.CS6501_2026_02_09
 
 /- @@@
@@ -63,8 +63,8 @@ take functions as arguments or that return functions as results or
 both, are referred to as *higher-order functions*.
 -/
 
-open Content.B02_ClassicalPropositionalLogic.chapters.interpretation
-open Content.B02_ClassicalPropositionalLogic.chapters.semantics
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
 namespace Content.B02_ClassicalPropositionalLogic.higherOrderFunctions
 
 

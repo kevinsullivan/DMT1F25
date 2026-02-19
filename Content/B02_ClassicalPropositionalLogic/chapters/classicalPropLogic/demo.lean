@@ -10,21 +10,21 @@ and working through the axioms and identities of classical
 propositional logic.
 @@@ -/
 
-import Content.B02_ClassicalPropositionalLogic.chapters.properties
-import Content.B02_ClassicalPropositionalLogic.chapters.truthTable
-import Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
-import Content.B02_ClassicalPropositionalLogic.chapters.interpretation
-import Content.B02_ClassicalPropositionalLogic.chapters.semantics
-import Content.B02_ClassicalPropositionalLogic.chapters.syntax
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.properties
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.truthTable
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.counterexamples
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
 
 namespace Content.B02_ClassicalPropositionalLogic.chapters.propLogic
 
-open Content.B02_ClassicalPropositionalLogic.chapters.syntax
-open Content.B02_ClassicalPropositionalLogic.chapters.interpretation
-open Content.B02_ClassicalPropositionalLogic.chapters.models
-open Content.B02_ClassicalPropositionalLogic.chapters.truthTable
-open Content.B02_ClassicalPropositionalLogic.chapters.properties
-open Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.models
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.truthTable
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.properties
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.counterexamples
 
 /- @@@
 ## Propositional Variables

@@ -11,16 +11,16 @@ now present the concepts of models and counter-examples.
 
 @@@ -/
 
-import Content.B02_ClassicalPropositionalLogic.chapters.syntax
-import Content.B02_ClassicalPropositionalLogic.chapters.semantics
-import Content.B02_ClassicalPropositionalLogic.chapters.interpretation
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
 
 
-namespace Content.B02_ClassicalPropositionalLogic.chapters.models
+namespace Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.models
 
-open Content.B02_ClassicalPropositionalLogic.chapters.syntax
-open Content.B02_ClassicalPropositionalLogic.chapters.semantics
-open Content.B02_ClassicalPropositionalLogic.chapters.interpretation
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
 
 
 /- @@@
@@ -90,4 +90,4 @@ def showModel (e : Expr) : Option (List Bool) :=
   | none => none
   | some i => some (bitListFromInterpHelper i (numVarsFromExpr e))
 
-end Content.B02_ClassicalPropositionalLogic.chapters.models
+end Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.models

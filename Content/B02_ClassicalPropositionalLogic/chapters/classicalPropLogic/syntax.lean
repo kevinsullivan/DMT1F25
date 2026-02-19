@@ -7,7 +7,7 @@ syntax propositional logic.
 <!-- toc -->
 @@@ -/
 
-namespace Content.B02_ClassicalPropositionalLogic.chapters.syntax
+namespace Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
 
 /- @@@
 ## Abstract Syntax
@@ -307,4 +307,4 @@ interpretations of these variables as unvaryingly either
 true or false.
 @@@ -/
 
-end Content.B02_ClassicalPropositionalLogic.chapters.syntax
+end Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax

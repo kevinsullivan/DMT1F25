@@ -26,16 +26,16 @@ is true under all possible interpretations: in all possible world
 states, as it were.
 @@@ -/
 
-import Content.B02_ClassicalPropositionalLogic.chapters.properties
-import Content.B02_ClassicalPropositionalLogic.chapters.models
-import Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.properties
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.models
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.counterexamples
 
-namespace Content.B02_ClassicalPropositionalLogic.chapters.validity
+namespace Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.validity
 
-open Content.B02_ClassicalPropositionalLogic.chapters.syntax
-open Content.B02_ClassicalPropositionalLogic.chapters.properties
-open Content.B02_ClassicalPropositionalLogic.chapters.models
-open Content.B02_ClassicalPropositionalLogic.chapters.counterexamples
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.properties
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.models
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.counterexamples
 
 /- @@@
 ## Three Key Properties
@@ -178,4 +178,4 @@ possible interpretation (every possible world state) in
 every possible domain? We need something different.
 @@@ -/
 
-end Content.B02_ClassicalPropositionalLogic.chapters.validity
+end Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.validity

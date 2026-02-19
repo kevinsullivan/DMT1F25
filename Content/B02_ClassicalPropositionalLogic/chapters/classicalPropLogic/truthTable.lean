@@ -12,15 +12,15 @@ that expression. From this information a truth table can
 be assembled.
 @@@ -/
 
-import Content.B02_ClassicalPropositionalLogic.chapters.syntax
-import Content.B02_ClassicalPropositionalLogic.chapters.semantics
-import Content.B02_ClassicalPropositionalLogic.chapters.interpretation
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
 
-namespace Content.B02_ClassicalPropositionalLogic.chapters.truthTable
+namespace Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.truthTable
 
-open Content.B02_ClassicalPropositionalLogic.chapters.syntax
-open Content.B02_ClassicalPropositionalLogic.chapters.semantics
-open Content.B02_ClassicalPropositionalLogic.chapters.interpretation
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
 
 
 
@@ -44,4 +44,4 @@ def mapEvalExprAllInterps : Expr → List Bool
 -- just another name for this function
 def truthTableOutputs := mapEvalExprAllInterps
 
-end Content.B02_ClassicalPropositionalLogic.chapters.truthTable
+end Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.truthTable

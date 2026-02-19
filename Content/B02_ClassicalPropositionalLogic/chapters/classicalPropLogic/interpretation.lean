@@ -4,12 +4,12 @@
 <!-- toc -->
 @@@ -/
 
-import Content.B02_ClassicalPropositionalLogic.chapters.semantics
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
 
-namespace Content.B02_ClassicalPropositionalLogic.chapters.interpretation
+namespace Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
 
-open Content.B02_ClassicalPropositionalLogic.chapters.syntax
-open Content.B02_ClassicalPropositionalLogic.chapters.semantics
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
 
 /- @@@
 An *interpretation*, *i*, for a well formed propositional

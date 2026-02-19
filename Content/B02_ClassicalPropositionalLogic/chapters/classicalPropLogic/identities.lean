@@ -1,9 +1,9 @@
-import Content.B02_ClassicalPropositionalLogic.chapters.syntax
-import Content.B02_ClassicalPropositionalLogic.chapters.properties
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.properties
 
-namespace Content.B02_ClassicalPropositionalLogic.chapters.identities
+namespace Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.identities
 
-open Content.B02_ClassicalPropositionalLogic.chapters.properties
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.properties
 
 def P := {⟨0⟩}
 def Q := {⟨1⟩}
@@ -57,4 +57,4 @@ def deMorganOr      := ¬(P ∨ Q) ↔ (¬P ∧ ¬ Q)
 #eval is_valid deMorganAnd      -- true
 #eval is_valid deMorganOr       -- true
 
-end Content.B02_ClassicalPropositionalLogic.chapters.identities
+end Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.identities

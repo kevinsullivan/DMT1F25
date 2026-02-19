@@ -372,6 +372,9 @@ instance : SubNegMonoid Duration where
   zsmul_succ' := by intro n x; rfl
   zsmul_neg' := by intro n x; rfl
 
+def i : Int := 7
+#eval i • two
+
 /- @@@
 ### AddGroup: The Final Step
 

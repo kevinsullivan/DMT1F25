@@ -1,5 +1,5 @@
-import Content.B02_ClassicalPropositionalLogic.chapters.syntax
-import Content.B02_ClassicalPropositionalLogic.chapters.domain
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.domain
 
 /- @@@
 
@@ -36,13 +36,13 @@ Boolean function that is the designated meaning of *op*.
 That's it!
 @@@ -/
 
--- open Content.B02_ClassicalPropositionalLogic.chapters.syntax
--- open Content.B02_ClassicalPropositionalLogic.chapters.domain
+-- open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+-- open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.domain
 
-namespace Content.B02_ClassicalPropositionalLogic.chapters.semantics
+namespace Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
 
-open Content.B02_ClassicalPropositionalLogic.chapters.syntax
-open Content.B02_ClassicalPropositionalLogic.chapters.domain
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
+open Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.domain
 
 /- @@@
 ## Fixed Interpretation of Unary Connectives
@@ -127,4 +127,4 @@ a justifiably confident grasp of essentially every aspect
 of the syntax and semantics of propositional logic.
 @@@ -/
 
-end Content.B02_ClassicalPropositionalLogic.chapters.semantics
+end Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
