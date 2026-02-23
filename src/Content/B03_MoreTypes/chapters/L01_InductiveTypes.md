@@ -10,10 +10,10 @@ closely related pattern of *recursive* functions that go with
 the Nat and Lean types.
 
 Key ideas include:
-- An inductive type is defined by its *constructors*
-- Each constructor specifies one way to build a value
-- Pattern matching lets us take values apart
-- Recursive types naturally give rise to recursive functions
+- The values of an inductive type are (all and only) those terms constructible by a finite number of (type correct) constructor applications
+- Each constructor takes zero or more arguments and specifies one way to build a value of the given type
+- Case analysis with pattern matching distinguishes value by constructor and provides for flexible destructuring of such terms
+- Recursive types, with larger terms built from smaller terms of the same type, give rise to functions defined by *recursion*
 - Nat and List α have analogous type and function definitions
 
 ```lean

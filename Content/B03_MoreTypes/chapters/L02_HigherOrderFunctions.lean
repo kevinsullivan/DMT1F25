@@ -3,7 +3,7 @@ import Mathlib.Algebra.Group.Defs
 import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.syntax
 import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.semantics
 import Content.B02_ClassicalPropositionalLogic.chapters.classicalPropLogic.interpretation
-import Content.B02_ClassicalPropositionalLogic.chapters.CS6501_InductiveTypes
+import Content.B03_MoreDataFunctionTypes.chapters.L01_InductiveTypes
 
 /- @@@
 # Higher-Order Functions (in our Proposition Property Tester)

@@ -128,5 +128,7 @@ a justifiably confident grasp of essentially every aspect
 of the syntax and semantics of propositional logic.
 
 ```lean
+-- 02/11
+
 end Content.B02_ClassicalPropositionalLogic.chapters.semantics
 ```

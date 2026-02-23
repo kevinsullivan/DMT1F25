@@ -1,7 +1,8 @@
+```lean
 import Mathlib.Algebra.Group.Defs
 import Mathlib.Algebra.Group.Nat.Defs
+```
 
-/- @@@
 # Overloaded Structures: I. Monoid
 
 <!-- toc -->
@@ -28,8 +29,8 @@ Consider a clock that counts only hours, and only
 up to three. There are exactly three durations: zero
 hours, one hour, and two hours. After two, the clock
 wraps back to zero.
-@@@ -/
 
+```lean
 namespace Content.B02_ClassicalPropositionalLogic.chapters.monoid
 
 inductive Duration where
@@ -39,15 +40,15 @@ inductive Duration where
 deriving Repr, BEq, DecidableEq
 
 open Duration
+```
 
-/- @@@
 ### Adding Durations
 
 We can add durations. The result wraps around modulo
 three: one + two = zero, two + two = one, and so on.
 There are nine cases, one for each pair of values.
-@@@ -/
 
+```lean
 def durAdd : Duration → Duration → Duration
 | zero, d => d
 | d, zero => d
@@ -58,8 +59,8 @@ def durAdd : Duration → Duration → Duration
 
 #eval durAdd one two    -- zero
 #eval durAdd two two    -- one
+```
 
-/- @@@
 ### What Laws Does This Operation Satisfy?
 
 Our clock arithmetic is well behaved. If we check,
@@ -105,16 +106,16 @@ a type has a binary operation called *add*, written `+`.
 class Add (α : Type u) where
   add : α → α → α
 ```
-@@@ -/
 
+```lean
 #check Add
 
 instance : Add Duration where
   add := durAdd
 
 #eval one + two
+```
 
-/- @@@
 ### Zero: A Type with a Distinguished Element
 
 Zero provides the constant `0`. Together with Add,
@@ -125,25 +126,25 @@ are built.
 class Zero (α : Type u) where
   zero : α
 ```
-@@@ -/
 
+```lean
 #check Zero
 
 instance : Zero Duration where
   zero := Duration.zero
+```
 
-/- @@@
 With these two instances in place, Lean now resolves
 the `+` notation and the `0` literal for Duration.
 When we write `one + two`, Lean searches for an
 `Add Duration` instance and finds the one above. When
 we write `0`, Lean finds our `Zero Duration` instance.
-@@@ -/
 
+```lean
 #eval (one + two : Duration)    -- zero
 #eval (0 + one : Duration)   -- one
+```
 
-/- @@@
 ### AddSemigroup: Associative Addition
 
 An AddSemigroup requires a proof that `+` is associative.
@@ -161,14 +162,14 @@ the new field, the associativity proof.
 Because Duration has only three values, we prove this by
 exhausting all 3³ = 27 cases. The *cases* tactic splits on
 each constructor; *rfl* closes each goal by computation.
-@@@ -/
 
+```lean
 #check AddSemigroup
 
 instance : AddSemigroup Duration where
   add_assoc := by intro a b c; cases a <;> cases b <;> cases c <;> rfl
+```
 
-/- @@@
 ### AddZeroClass: Zero as Identity
 
 AddZeroClass requires proofs that zero is both a left
@@ -184,15 +185,15 @@ This class extends both `Zero M` and `Add M`. Lean finds
 our existing `Zero Duration` and `Add Duration` instances
 automatically, so we only need to supply the two identity
 proofs.
-@@@ -/
 
+```lean
 #check AddZeroClass
 
 instance : AddZeroClass Duration where
   zero_add := by intro a; cases a <;> rfl
   add_zero := by intro a; cases a <;> rfl
+```
 
-/- @@@
 ### AddMonoid: Putting It Together
 
 AddMonoid extends AddSemigroup and AddZeroClass and adds
@@ -216,23 +217,23 @@ is to supply the nsmul fields. We use `nsmulRec`, a
 standard recursive implementation that defines repeated
 addition in terms of `+` and `0`, and its proofs hold
 by definitional equality (`rfl`).
-@@@ -/
 
+```lean
 #check AddMonoid
 
 instance : AddMonoid Duration where
   nsmul := nsmulRec
   nsmul_zero := by intro x; rfl
   nsmul_succ := by intro n x; rfl
+```
 
-/- @@@
 ## Duration is Now a Monoid
 
 Duration is a registered AddMonoid. Any theorem or function
 in Mathlib that works for an arbitrary AddMonoid now works
 for Duration automatically. Let's verify a few properties.
-@@@ -/
 
+```lean
 #eval (one + zero : Duration)     -- one (right identity)
 #eval (zero + two : Duration)     -- two (left identity)
 #eval (one + one + one : Duration) -- zero (wraps around)
@@ -240,18 +241,18 @@ for Duration automatically. Let's verify a few properties.
 -- Associativity in action
 #eval ((one + two) + two : Duration)   -- two
 #eval (one + (two + two) : Duration)   -- two
+```
 
-/- @@@
 ## A Familiar Monoid: Nat under Addition
 
 The natural numbers under addition with identity zero
 form a monoid. Lean and Mathlib already know this, so
 Nat already has an AddMonoid instance.
-@@@ -/
 
+```lean
 #check (inferInstance : AddMonoid Nat)
+```
 
-/- @@@
 ## Polymorphic Functions over Monoids
 
 The real payoff of typeclasses is polymorphism. We can
@@ -259,8 +260,8 @@ write a function that works for *any* type that has an
 AddMonoid instance. The instance argument in curly braces
 acts as a type guard: calling the function on a type that
 lacks the required instance is a compile-time error.
-@@@ -/
 
+```lean
 def addThree [AddMonoid α] (a b c : α) : α :=
   a + b + c
 
@@ -272,8 +273,8 @@ def addThree [AddMonoid α] (a b c : α) : α :=
 
 -- Would NOT compile for a type without an AddMonoid instance:
 -- #eval addThree "a" "b" "c"       -- error: no AddMonoid String
+```
 
-/- @@@
 The `[AddMonoid α]` parameter is an *instance argument*.
 Lean resolves it automatically by searching for a matching
 typeclass instance. When we call `addThree one two two`,
@@ -281,9 +282,7 @@ Lean finds `AddMonoid Duration`. When we call `addThree 3 4 5`,
 Lean finds `AddMonoid Nat`. One function definition, many
 types — but only types whose algebraic structure has been
 verified.
-@@@ -/
 
-/- @@@
 ## Why Algebraic Structures Matter
 
 Without algebraic structures, we'd have types, and we'd
@@ -300,149 +299,7 @@ can trust these properties unconditionally.
 
 This is the shift from *testing* to *proving*. Tests check
 finitely many cases. Proofs cover them all.
-@@@ -/
 
-/- @@@
-## From Monoid to Group: Adding Inverses
-
-Our three-hour clock has a property that natural numbers
-lack: every duration has an *inverse*. If you go forward
-one hour, you can go forward two more to get back to zero.
-That is, one + two = zero, so two is the inverse of one
-(and vice versa). Zero is its own inverse.
-
-A monoid where every element has an inverse is called a
-*group*. To register Duration as an AddGroup, we need to
-define negation (the inverse operation) and subtraction
-(defined as adding the inverse), then prove that adding
-an element to its negation yields zero.
-
-### Neg: The Inverse Operation
-
-Negation on our clock sends each duration to the value
-that brings it back to zero: -zero = zero, -one = two,
--two = one.
-@@@ -/
-
-def durNeg : Duration → Duration
-| zero => zero
-| one => two
-| two => one
-
-instance : Neg Duration where
-  neg := durNeg
-
-#eval (-one : Duration)     -- two
-#eval (-two : Duration)     -- one
-#eval (-zero : Duration)    -- zero
-
-/- @@@
-### Sub: Subtraction as Adding the Inverse
-
-Subtraction is defined in terms of negation: a - b = a + (-b).
-This is a general pattern — once we have negation, subtraction
-comes for free.
-@@@ -/
-
-instance : Sub Duration where
-  sub a b := a + (-b)
-
-#eval (two - one : Duration)    -- one
-#eval (one - two : Duration)    -- two
-#eval (zero - one : Duration)   -- two
-
-/- @@@
-### SubNegMonoid: The Intermediate Layer
-
-Between AddMonoid and AddGroup sits SubNegMonoid. It
-extends AddMonoid with negation, subtraction, and *zsmul*
-(integer scalar multiplication — repeating addition by
-a possibly negative number of times).
-
-Lean finds our AddMonoid, Neg, and Sub instances
-automatically. We supply `zsmulRec` for integer scalar
-multiplication, and its proofs hold by `rfl`.
-@@@ -/
-
-#check SubNegMonoid
-
-instance : SubNegMonoid Duration where
-  zsmul := zsmulRec
-  zsmul_zero' := by intro x; rfl
-  zsmul_succ' := by intro n x; rfl
-  zsmul_neg' := by intro n x; rfl
-
-def i : Int := 7
-#eval i • two
-
-/- @@@
-### AddGroup: The Final Step
-
-AddGroup extends SubNegMonoid with one additional proof:
-that negation is a left inverse for addition. That is,
-for every element a, we must show -a + a = 0.
-
-```
-class AddGroup (A : Type u) extends SubNegMonoid A where
-  neg_add_cancel : ∀ a : A, -a + a = 0
-```
-
-Lean finds our SubNegMonoid instance (and transitively
-all instances beneath it). We only need to supply the
-one new proof, again by case exhaustion.
-@@@ -/
-
-#check AddGroup
-
-instance : AddGroup Duration where
-  neg_add_cancel := by intro a; cases a <;> rfl
-
-/- @@@
-## Duration Now Endowed With Additive Group Structure
-
-Duration is a registered AddGroup. This unlocks all
-group-level theorems and functions in Mathlib. We can
-verify a few group properties.
-@@@ -/
-
--- Negation is a left inverse
-#eval (-one + one : Duration)       -- zero
-#eval (-two + two : Duration)       -- zero
-
--- Subtraction works as expected
-#eval (two - two : Duration)        -- zero
-#eval (one - one : Duration)        -- zero
-
--- Double negation returns the original
-#eval (-(-one) : Duration)          -- one
-#eval (-(-two) : Duration)          -- two
-
-/- @@@
-## What a Group Gives You
-
-An additive group equips a type with three operations
-and guarantees about their behavior:
-
-- **Addition** (`+`): a way to combine any two elements
-- **Zero** (`0`): a distinguished element that does nothing when added
-- **Negation** (`-`): for every element, a way to undo it
-
-These operations are not arbitrary. The group structure
-*proves* that they satisfy the following laws, so any
-code that depends on these properties can trust them
-unconditionally:
-
-- **Associativity**: `(a + b) + c = a + (b + c)`
-- **Left identity**: `0 + a = a`
-- **Right identity**: `a + 0 = a`
-- **Left inverse**: `-a + a = 0`
-
-The first three are the monoid axioms. The fourth is
-what distinguishes a group from a monoid: every element
-can be cancelled. From these four laws, one can derive
-right inverses (`a + -a = 0`), uniqueness of inverses,
-cancellation laws, and much more. The entire theory of
-groups rests on this small foundation.
-@@@ -/
-
+```lean
 end Content.B02_ClassicalPropositionalLogic.chapters.monoid
+```
