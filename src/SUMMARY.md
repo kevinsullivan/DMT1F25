@@ -35,6 +35,7 @@
     - [Monoid](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_Monoid.md)
     - [Group](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_Group.md)
     - [Torsor](./Content/B04_AlgebraicStructures/chapters/CS6501_Torsor.md)
+    - [Generalized Torsor](./Content/B04_AlgebraicStructures/chapters/CS6501_ZModTorsor.md)
 
 
 [Inference Rule Cheat Sheet](./Resources/L00_deductiveReasoning/L99_inferenceRules2.md)
