@@ -204,19 +204,19 @@ displacements on any clock.
 #eval List.foldl (· + ·) (0 : ZMod 7) [1, 2, 3, 4, 5, 6]  -- 0
 ```
 
-## What We Gained
+## Formalized Mathematics Libraries
 
 The hand-built chapters were not wasted effort. They
 taught us exactly what a monoid, group, and torsor *are* —
 what axioms they require and what guarantees they provide.
-That understanding is essential. But once we have it,
+That understanding is essential. But once one has it,
 a library lets us apply the same ideas at any scale,
 with proofs that have been verified once and reused
 everywhere.
 
-This is the core promise of formalized mathematics:
-build the abstractions right once, prove them correct
-once, and then instantiate them freely — for k = 3,
+Formalized mathematics promises to build abstractions
+right once, prove them correct once, then instantiate
+them in all supported dimensions — e.g., here for k = 3,
 k = 12, k = 60, k = 1000000, or any k at all. The door
 to a new world has now opened to you. Ahhh, fresh math!
 
