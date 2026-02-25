@@ -1,4 +1,3 @@
-/- @@@
 # Dependent Types and Predicate Logic
 
 <!-- toc -->
@@ -19,11 +18,11 @@ will see how dependent types give rise to proof-carrying values and to
 functions whose return types vary with their inputs. And then, almost
 as a corollary, we arrive at something fundamental: dependent types
 *are* the quantifiers of predicate logic. Welcome to that.
-@@@ -/
 
+```lean
 namespace Content.B04_AlgebraicStructures.chapters.dependentTypesPredicateLogic
+```
 
-/- @@@
 ## Dependent Pairs
 
 The simplest dependent type is the *dependent pair*, also called the
@@ -40,8 +39,8 @@ pair `⟨v, h⟩` where:
 
 The type of `h` depends on `v`. That dependence is what makes the
 pair *dependent*.
-@@@ -/
 
+```lean
 -- A dependent pair: a natural number together with a proof that it is zero
 def ZeroNat : Type := { n : Nat // n = 0 }
 
@@ -64,8 +63,8 @@ def fromEvenToOdd (n : EvenNat) : Nat := 0
 -- The subtype has two projections
 #eval theZero.val         -- 0
 #check theZero.property   -- theZero.property : theZero.val = 0
+```
 
-/- @@@
 Notice what we cannot do: we cannot build a `ZeroNat` from any value
 other than `0`. The pair `⟨5, ???⟩` would require a proof of `5 = 0`,
 which no one can supply. The type system enforces this at construction
@@ -88,8 +87,8 @@ only when applied to a specific input.
 In Lean, a predicate is simply a function into `Prop`. There is no
 encoding, no separate mechanism. `Prop` is the universe of propositions,
 and a function into it is a predicate.
-@@@ -/
 
+```lean
 -- "n is even": there exists a k such that n = 2 * k
 def isEven : Nat → Prop := fun n => ∃ k, n = 2 * k
 
@@ -102,11 +101,11 @@ def isLong : String → Prop := fun s => s.length > 5
 example : isLong "Hello!" := by
   unfold isLong
   decide
+```
 
-/- @@@
 Applying a predicate to a specific value yields a specific proposition.
-@@@ -/
 
+```lean
 #check isEven 4       -- isEven 4 : Prop   (true — has a proof)
 #check isEven 7       -- isEven 7 : Prop   (false — no proof exists)
 #check divides 3 12   -- divides 3 12 : Prop
@@ -115,8 +114,8 @@ Applying a predicate to a specific value yields a specific proposition.
 -- Proofs that specific predicate applications hold
 def fourIsEven : isEven 4 := ⟨2, rfl⟩              -- 4 = 2 * 2
 def threeDividesTwelve : divides 3 12 := ⟨4, rfl⟩  -- 12 = 3 * 4
+```
 
-/- @@@
 ## Dependent Pairs
 
 With predicates in hand, we can revisit the dependent pair more
@@ -125,8 +124,8 @@ type* — a Sigma type. It pairs a natural number `n` with a proof of
 `isEven n`. The "sum" in the name reflects that the type is a disjoint
 union indexed over values of `α`: one variant for each `v`, carrying a
 proof that `v` satisfies `P`.
-@@@ -/
 
+```lean
 -- -- The type of even natural numbers: value plus proof of evenness
 -- def EvenNat : Type := { n : Nat // isEven n }
 
@@ -135,8 +134,8 @@ proof that `v` satisfies `P`.
 
 -- #eval fourEven.val     -- 4
 -- #eval zeroEven.val     -- 0
+```
 
-/- @@@
 Odd values simply cannot be inserted. The pair `⟨3, ???⟩` would need a
 proof of `isEven 3` — a witness `k` and a proof that `3 = 2 * k`. No
 such `k` exists in the naturals, so no proof can be given, so the pair
@@ -152,8 +151,8 @@ The proposition `∃ (x : α), P x` asserts that *some* value of type `α`
 satisfies `P`. A proof of it is a pair: a witness `w : α` and a proof
 of `P w`. This is a dependent pair — a Sigma type — restricted to the
 universe of propositions.
-@@@ -/
 
+```lean
 -- There exists an even natural number (witness: 0, since 0 = 2 * 0)
 theorem exists_even : ∃ n : Nat, isEven n := ⟨0, ⟨0, rfl⟩⟩
 
@@ -165,8 +164,8 @@ theorem exists_divisible : ∃ n : Nat, divides 3 n ∧ divides 5 n :=
 example (h : ∃ n : Nat, isEven n) : True := by
   obtain ⟨n, k, _⟩ := h    -- n is the witness; k is the halving factor
   trivial
+```
 
-/- @@@
 ## Dependent Product Types: Dependent-Returning Functions
 
 The other half of the picture is the *dependent product type* (Pi type,
@@ -186,8 +185,8 @@ the input `x`.
 
 In Lean, `∀ (x : α), P x` and `(x : α) → P x` are the same notation.
 The universal quantifier just is the dependent function type.
-@@@ -/
 
+```lean
 -- Every natural number is either zero or positive
 theorem zero_or_pos : ∀ n : Nat, n = 0 ∨ n > 0 := by
   intro n
@@ -211,8 +210,8 @@ def double_even' : (n : Nat) → isEven (2 * n) :=
 
 def two_divides_doubles' : (n : Nat) → divides 2 (2 * n) :=
   fun n => ⟨n, rfl⟩
+```
 
-/- @@@
 `double_even` is proved by a plain function. Given any `n`, we return
 a proof that `isEven (2 * n)` holds. That proof is itself an existential
 pair — the witness `n` and `rfl`. The Pi type is the function; the Sigma
@@ -227,8 +226,8 @@ characters. If yes, return the string paired with a proof of its
 length. If no, return the empty string paired with a proof that its
 length is zero. The caller receives not just a string, but a string
 whose length has been machine-checked.
-@@@ -/
 
+```lean
 def checkedLength (s : String) (n : Nat) :
     { t : String // t.length = n } ⊕ { t : String // t.length = 0 } :=
   if h : s.length = n then
@@ -244,8 +243,8 @@ def getResult {n : Nat} :
 
 #eval getResult (checkedLength "hello" 5)   -- "hello"
 #eval getResult (checkedLength "hello" 3)   -- ""
+```
 
-/- @@@
 The proofs in the return type are not comments or assertions — they are
 machine-checked guarantees, part of the value. The `if h : s.length = n`
 pattern binds `h` to the proof in the true branch, handing it directly
@@ -281,6 +280,7 @@ term in a Pi type. The machinery was always there; now we have the
 name and the picture.
 
 Welcome to constructive predicate logic.
-@@@ -/
 
+```lean
 end Content.B04_AlgebraicStructures.chapters.dependentTypesPredicateLogic
+```

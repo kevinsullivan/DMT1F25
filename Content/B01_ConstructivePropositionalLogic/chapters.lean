@@ -1,6 +1,6 @@
 -- Book 1: Constructive Propositional Logic - Chapter Imports
-
-import Content.B01_ConstructivePropositionalLogic.chapters.CS6501_ConstructiveLogicDataFunctionTypes
+-- Note: CS6501_ConstructiveLogicDataFunctionTypes is covered by B00 and excluded here
+-- to avoid top-level name collisions (Filling, Bread, Sandwich).
 
 -- Propositions as Types (shallow embedding of constructive propositional logic)
 import Content.B01_ConstructivePropositionalLogic.chapters.propAsTypes.C00_introduction

@@ -19,8 +19,6 @@ mathjax-support = true
 git-repository-url = "https://github.com/kevinsullivan/DMT1F25"
 # git-repository-icon = "fa-github" # Optional: adds GitHub icon
 
-[output.html.playground]
-boring-prefixes = ["# "]
 
 # Preprocessor configuration - order matters!
 [preprocessor.toc]
@@ -33,7 +31,7 @@ renderer = ["html"]
 
 [preprocessor.image-size]
 command = "mdbook-image-size"
-renderer = ["html"]           # Specify renderer for consistency
+renderer = ["html"]
 
 # Optional: Add search functionality
 # [output.html.search]
