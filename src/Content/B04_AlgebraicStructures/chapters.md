@@ -5,5 +5,7 @@ import Content.B04_AlgebraicStructures.chapters.CS6501_Monoid
 import Content.B04_AlgebraicStructures.chapters.CS6501_Group
 import Content.B04_AlgebraicStructures.chapters.CS6501_Torsor
 import Content.B04_AlgebraicStructures.chapters.CS6501_MathLibraries
-import Content.B04_AlgebraicStructures.chapters.CS6501_DependentTypesPredicateLogic
+import Content.B04_AlgebraicStructures.chapters.CS6501_Certified
+import Content.B04_AlgebraicStructures.chapters.CS6501_VectorSpace
+import Content.B04_AlgebraicStructures.chapters.CS6501_AffineSpace
 ```

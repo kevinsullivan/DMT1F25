@@ -3,6 +3,7 @@ import Content.B01_ConstructivePropositionalLogic.chapters
 import Content.B02_ClassicalPropositionalLogic.chapters
 import Content.B03_MoreTypes.chapters
 import Content.B04_AlgebraicStructures.chapters
+import Content.B05_Geometry.chapters
 
 
 /- @@@
@@ -42,4 +43,11 @@ propositional logic property checker.
 Typeclasses in Lean and Mathlib. Building an AddMonoid
 and AddGroup for a three-hour clock, layer by layer
 through the Mathlib hierarchy.
+
+### VI. Geometry
+A one-dimensional rational vector space and its affine
+space of positions on the number line. Displacement as
+a module over the rationals; Position as a torsor acted
+on by displacements. Midpoints, interpolation, and the
+parametric number line.
 @@@ -/

@@ -5,6 +5,10 @@ defaultTargets = ["Content"]
 [[lean_lib]]
 name = "Content"
 
+[[lean_exe]]
+name = "geomviz"
+root = "Content.B05_Geometry.viz.Main"
+
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"

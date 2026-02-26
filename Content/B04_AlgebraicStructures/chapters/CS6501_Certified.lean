@@ -1,15 +1,34 @@
 /- @@@
 # Certified!
 
-The general abstract mathematical structures we've been
-discussing (monoids, groups, being associative, etc.) have
-all used a single trick. The payoff is that we can be sure
+Our formalized algebraic structures define classes of
+objects that monoids, semigroups, groups, and so forth.
+We can be assured that any isntance of any such class
+satisfies all of the requirements for an object to be
+in that class. To be a monoid, for exampl, one must have
+a carrier set (type), a binary operator, an identity, and
+proofs that these things all work together *in the way you
+would expect* no matter what type of objects are in the
+underlying carrier set (integers, fields, matrices, etc.)
+
+The key that makes much of this work is the dependent type.
+A dependently typed object is one that associates a value
+with a proof of some proposition, most critically here one
+that is *about* that value. For example, the proposition,
+∃ x, P x, asserts that there exists some x, such that there
+is a proof of the proposition, P x. That proposition, in
+turn, is the result of applying the predicate (function),
+P, to x. Finally, if there's a proof of P x for a specific
+x, then we could rightly say that there exists an x with
+that property.
+
+The payoff is that we can be sure
 beyond nearly any doubt that any instance of one of classes
 (such as monoid or group) will provide all the structure, of
 types and functions and theorems and notations and the like,
 promised by the class, but for particular variables, such as
 the type of objects in the carrier set. Mathematics already
-gives you that. What Lean gives you is that on automation.
+gives you that. What Lean gives you is that *on automation*.
 
 
 <!-- toc -->
@@ -36,25 +55,27 @@ checked proof that it really is gold, well, now you know.
 You have a proof-certified value.
 
 If we overload our Duration and Time types as the carrier
-set types for a Torsor (of points in Time) over a group
-(of rotational actions (Durations), in Lean, the we can
-be absolutely sure that we've implemented the algebra as
-a flawless construction. It's the pairing of the ordinary
-data functions with *proofs involving them* that creates
-an ironclad gate: you cannot construct a group unless you
-provide proofs that the operations you're providing as part
-of the data package satisfy all of the rules that must be
-followed if one is to have a group. The group objects we
-can now create and run are your first *certified programs*.
+sets for a Torsor (points in Time) over a group of actions
+(rotations of the clock arm), in Lean, the we can be sure
+we've implemented the algebra as a flawless construction.
+It's the pairing of the ordinary data and functions with
+*machine checked proofs involving them* that creates an
+ironclad guarantee: you cannot construct a group unless
+you can provide proofs that the operations you've defined
+satisfy all of the rules that must be followed if one is
+to have a mathematical group. The group objects we've now
+created is a first *certified* mathematical program*.
 
-The algebra chapters introduced a recurring trick: bundling data
-together with *proofs about that data*. A monoid does not merely
-carry an operation and an identity element — it carries proofs that
-the identity element behaves correctly and that the operation is
-associative. A group adds further proof obligations. The typeclass
-instances encoding these structures are not just records of data;
-they are *dependent* records, because the proof fields have types
-that mention the values in the data fields.
+Again the recurring trick is to bundle data together with
+*proofs about that data*. A monoid does not merely carry an
+operation and an identity element — it carries proofs that
+the identity element behaves correctly and that the operation
+is associative. A group adds further proof obligations. The
+typeclass instances encoding these structures are not just
+records of data; they are *dependently typed* records in the
+sense that they contain proofs that the data satisfy the key
+invariants that characterize these various abstract algebraic
+structures.
 
 That trick has a name and a deeper story. We diverge briefly from
 the algebraic thread here to examine its foundations. The key concept

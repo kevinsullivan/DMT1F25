@@ -43,6 +43,15 @@
 - [Torsor](./Content/B04_AlgebraicStructures/chapters/CS6501_Torsor.md)
 - [Libraries](./Content/B04_AlgebraicStructures/chapters/CS6501_MathLibraries.md)
 - [Certified](./Content/B04_AlgebraicStructures/chapters/CS6501_Certified.md)
+- [Vector Space](./Content/B04_AlgebraicStructures/chapters/CS6501_VectorSpace.md)
+- [Affine Space](./Content/B04_AlgebraicStructures/chapters/CS6501_AffineSpace.md)
+
+# VI. Geometry
+
+- [Rational Vector Space](./Content/B05_Geometry/chapters/CS6501_RationalVectorSpace.md)
+- [Rational Affine Space](./Content/B05_Geometry/chapters/CS6501_RationalAffineSpace.md)
+- [2D Rational Affine Space](./Content/B05_Geometry/chapters/CS6501_Rational2D.md)
+- [Visualizing Affine Geometry](./Content/B05_Geometry/chapters/CS6501_Visualization.md)
 
 # Appendix
 
