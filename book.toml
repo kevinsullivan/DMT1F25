@@ -1,8 +1,8 @@
 [book]
-title = "Reasoning and Computation: Propositional Logic"
+title = "Reasoning and Computation"
 authors = ["Kevin Sullivan"]
 language = "en"
-description = "Reasoning and Computation: Propositional Logic"
+description = "Logic and discrete mathematics formalized in Lean 4. A course text for CS 6501, University of Virginia."
 src = "src"
 
 [build]

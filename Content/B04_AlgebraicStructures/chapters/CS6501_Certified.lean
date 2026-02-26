@@ -1,7 +1,51 @@
 /- @@@
-# Dependent Types and Predicate Logic
+# Certified Structures
+
+The general abstract mathematical structures we've been
+discussing (monoids, groups, being associative, etc.) have
+all used a single trick. The payoff is that we can be sure
+beyond nearly any doubt that any instance of one of classes
+(such as monoid or group) will provide all the structure, of
+types and functions and theorems and notations and the like,
+promised by the class, but for particular variables, such as
+the type of objects in the carrier set. Mathematics already
+gives you that. What Lean gives you is that on automation.
+
 
 <!-- toc -->
+
+
+Now we'll look at a fundamental concept in type theory and
+ practical mechanism in type-theoretical programming: that
+ of *dependent types*, of two fundamental kinds: dependent
+ pair types, and function types whose output types depend
+ on input values.
+
+A dependent pair types is a type of pairs, ⟨ val, pf ⟩,
+where *val* is a value of some type and *pf* is a proof
+that that particular value, *val*, has some property in
+the sense that there's a proof of a proposition *(P val)*
+asserting that *val* satisfies the predicate, i.e., has the
+property, *P*.
+
+That's important because if someone hands you a value on
+the street and says, trust me, that's gold, ... well, ok,
+where's the hidden camera? But if someone hands you a box
+and inside there's a value and right next to it is a Lean
+checked proof that it really is gold, well, now you know.
+You have a proof-certified value.
+
+If we overload our Duration and Time types as the carrier
+set types for a Torsor (of points in Time) over a group
+(of rotational actions (Durations), in Lean, the we can
+be absolutely sure that we've implemented the algebra as
+a flawless construction. It's the pairing of the ordinary
+data functions with *proofs involving them* that creates
+an ironclad gate: you cannot construct a group unless you
+provide proofs that the operations you're providing as part
+of the data package satisfy all of the rules that must be
+followed if one is to have a group. The group objects we
+can now create and run are your first *certified programs*.
 
 The algebra chapters introduced a recurring trick: bundling data
 together with *proofs about that data*. A monoid does not merely
