@@ -323,7 +323,7 @@ chapters is a dependent record. Every proof of an algebraic law is a
 term in a Pi type. The machinery was always there; now we have the
 name and the picture.
 
-Welcome to constructive predicate logic.
+Welcome to constructive predicate logic. It's good for math anyway!
 
 ```lean
 end Content.B04_AlgebraicStructures.chapters.dependentTypesPredicateLogic
