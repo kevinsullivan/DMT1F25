@@ -2,7 +2,7 @@ import Content.B04_AlgebraicStructures.chapters.CS6501_Torsor
 import Mathlib.Data.ZMod.Defs
 
 /- @@@
-# IV. Generalized Torsor
+# Math Libraries
 
 <!-- toc -->
 

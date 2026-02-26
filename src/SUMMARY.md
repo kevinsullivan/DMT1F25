@@ -38,12 +38,11 @@
 
 # V. Algebraic Structures
 
-- [Algebraic Structures](./Content/B03_MoreTypes/chapters/algebraicStructures.md)
-  - [Monoid](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_Monoid.md)
-  - [Group](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_Group.md)
-  - [Torsor](./Content/B04_AlgebraicStructures/chapters/CS6501_Torsor.md)
-  - [Mathlib](./Content/B04_AlgebraicStructures/chapters/CS6501_ZModTorsor.md)
-  - [Certified Structures](./Content/B04_AlgebraicStructures/chapters/CS6501_Certified.md)
+- [Monoid](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_Monoid.md)
+- [Group](./Content/B02_ClassicalPropositionalLogic/chapters/CS6501_Group.md)
+- [Torsor](./Content/B04_AlgebraicStructures/chapters/CS6501_Torsor.md)
+- [Math Libraries](./Content/B04_AlgebraicStructures/chapters/CS6501_MathLibraries.md)
+- [Certified](./Content/B04_AlgebraicStructures/chapters/CS6501_Certified.md)
 
 # Reference
 

@@ -11,9 +11,7 @@ build-dir = "book"
 [output.html]
 # Only include JS files that actually exist - remove or comment out missing ones
 additional-js = [
-    # "assets/lean.min.js",        # Uncomment only if this file exists
-    # "assets/mermaid.min.js",     # Remove - conflicts with mdbook-mermaid preprocessor
-    # "assets/mermaid-init.js",    # Uncomment only if you have custom mermaid config
+    "assets/lean.min.js",
 ]
 mathjax-support = true
 git-repository-url = "https://github.com/kevinsullivan/DMT1F25"

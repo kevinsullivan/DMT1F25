@@ -3,5 +3,5 @@
 import Content.B04_AlgebraicStructures.chapters.CS6501_Monoid
 import Content.B04_AlgebraicStructures.chapters.CS6501_Group
 import Content.B04_AlgebraicStructures.chapters.CS6501_Torsor
-import Content.B04_AlgebraicStructures.chapters.CS6501_ZModTorsor
+import Content.B04_AlgebraicStructures.chapters.CS6501_MathLibraries
 import Content.B04_AlgebraicStructures.chapters.CS6501_DependentTypesPredicateLogic
