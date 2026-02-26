@@ -1,5 +1,5 @@
 /- @@@
-# Certified Structures
+# Certified!
 
 The general abstract mathematical structures we've been
 discussing (monoids, groups, being associative, etc.) have

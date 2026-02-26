@@ -1,11 +1,3 @@
-```lean
-import Content.B00_Introduction.chapters
-import Content.B01_ConstructivePropositionalLogic.chapters
-import Content.B02_ClassicalPropositionalLogic.chapters
-import Content.B03_MoreTypes.chapters
-import Content.B04_AlgebraicStructures.chapters
-```
-
 # Reasoning and Computation
 
 **Kevin Sullivan**

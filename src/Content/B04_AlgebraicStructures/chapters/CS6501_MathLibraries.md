@@ -3,7 +3,7 @@ import Content.B04_AlgebraicStructures.chapters.CS6501_Torsor
 import Mathlib.Data.ZMod.Defs
 ```
 
-# Math Libraries
+# Libraries
 
 <!-- toc -->
 
