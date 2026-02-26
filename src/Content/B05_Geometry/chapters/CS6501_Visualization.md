@@ -16,55 +16,16 @@ checker. But a formal proof that a midpoint lies halfway
 between two vertices is not the same as *seeing* it.
 
 A picture is worth a thousand words — and a thousand
-lines of proof. This chapter describes a small pipeline
-that turns verified Lean geometry into an interactive
-browser visualization.
+lines of proof. This chapter describes a pipeline that
+turns verified Lean geometry into interactive browser
+visualizations: a static scene showing a triangle with
+midpoints and vectors, and a dynamic scene showing
+affine interpolation in motion.
 
-## The Pipeline
-
-The visualization works in three steps:
-
-1. **Lean library** (`CS6501_Rational2D.lean`) defines
-   the types `RPoint2`, `RVec2`, and geometry functions
-   like `midpoint2d` and `affineInterp2d`, along with JSON
-   serialization helpers.
-
-2. **Lean executable** (`viz/Main.lean`) constructs a
-   concrete scene — a triangle, its midpoints, the medial
-   triangle, displacement vectors, and interpolated points
-   — then prints JSON to stdout.
-
-3. **D3.js page** (`viz/index.html`) loads the JSON and
-   renders an interactive SVG with labeled points, arrows,
-   and line segments.
-
-To view the visualization:
-
-```
-lake build geomviz
-.lake/build/bin/geomviz > Content/B05_Geometry/viz/scene.json
-cd Content/B05_Geometry/viz && python3 -m http.server 8080
-```
-
-Then open `http://localhost:8080` in a browser.
-
-## Editing the Scene
-
-The scene is defined in `viz/Main.lean`. You can change
-the triangle vertices, add new points or segments, or
-compute new geometric constructions using the library
-functions. After editing, rebuild and regenerate:
-
-```
-lake build geomviz
-.lake/build/bin/geomviz > Content/B05_Geometry/viz/scene.json
-```
-
-Refresh the browser to see the result. Every coordinate
-in the visualization is computed by verified Lean code —
-`midpoint2d`, `affineInterp2d`, and the torsor operations `+ᵥ`
-and `-ᵥ` are all backed by proofs of the affine space
-axioms.
+In both cases, Lean computes every coordinate using
+exact rational arithmetic. The browser only renders
+what Lean produces — no mathematics happens in
+JavaScript.
 
 ## Why No Coordinate Grid?
 

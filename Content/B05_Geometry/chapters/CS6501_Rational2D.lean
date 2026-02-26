@@ -186,6 +186,14 @@ def lineThrough2d (p q : RPoint2) (t : Rat) : RPoint2 :=
 #eval affineInterp2d ⟨0, 0⟩ ⟨6, 3⟩ (1/3)       -- ⟨2, 1⟩
 #eval affineInterp2d ⟨0, 0⟩ ⟨6, 3⟩ (2/3)       -- ⟨4, 2⟩
 
+/-- Subdivide the segment from p to q into n equal pieces,
+    returning n+1 points: affineInterp2d p q (k/n) for k = 0..n. -/
+def subdivide (p q : RPoint2) (n : Nat) : List RPoint2 :=
+  (List.range (n + 1)).map fun k =>
+    affineInterp2d p q ((k : Rat) / (n : Rat))
+
+#eval (subdivide ⟨0, 0⟩ ⟨4, 2⟩ 4).length  -- 5
+
 /- @@@
 ## JSON Serialization
 
@@ -224,5 +232,13 @@ def segmentToJson (label : String) (p q : RPoint2) : String :=
 
 def toJsonArray (items : List String) : String :=
   "[\n" ++ String.intercalate ",\n" items ++ "\n]"
+
+/-- Wrap a list of frame JSON arrays into the animation format. -/
+def animationToJson (title : String) (desc : String) (frames : List String) : String :=
+  "{\"meta\":{" ++
+  "\"title\":\"" ++ title ++ "\"," ++
+  "\"frameCount\":" ++ toString frames.length ++ "," ++
+  "\"description\":\"" ++ desc ++ "\"}," ++
+  "\"frames\":[\n" ++ String.intercalate ",\n" frames ++ "\n]}"
 
 end Content.B05_Geometry.chapters.rationalVectorSpace

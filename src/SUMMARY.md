@@ -52,6 +52,8 @@
 - [Rational Affine Space](./Content/B05_Geometry/chapters/CS6501_RationalAffineSpace.md)
 - [2D Rational Affine Space](./Content/B05_Geometry/chapters/CS6501_Rational2D.md)
 - [Visualizing Affine Geometry](./Content/B05_Geometry/chapters/CS6501_Visualization.md)
+  - [Static Scene](./Content/B05_Geometry/chapters/CS6501_StaticVisualization.md)
+  - [Dynamic Interpolation](./Content/B05_Geometry/chapters/CS6501_AnimatedVisualization.md)
 
 # Appendix
 

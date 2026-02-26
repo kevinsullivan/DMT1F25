@@ -9,6 +9,10 @@ name = "Content"
 name = "geomviz"
 root = "Content.B05_Geometry.viz.Main"
 
+[[lean_exe]]
+name = "geomanim"
+root = "Content.B05_Geometry.viz.AnimMain"
+
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"
