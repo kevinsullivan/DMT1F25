@@ -4,6 +4,7 @@ import Content.B02_ClassicalPropositionalLogic.chapters
 import Content.B03_MoreTypes.chapters
 import Content.B04_AlgebraicStructures.chapters
 import Content.B05_Geometry.chapters
+import Content.B06_CoinductiveGameEngine.chapters
 
 
 /- @@@
@@ -50,4 +51,10 @@ space of positions on the number line. Displacement as
 a module over the rationals; Position as a torsor acted
 on by displacements. Midpoints, interpolation, and the
 parametric number line.
+
+### VII. Coinductive Game Engine
+A terminal-based reactive game engine modeled on HtDP's
+big-bang framework. Pure world-update functions driven
+by external events — ticks, keystrokes, and mouse
+actions — composed into a coinductive game loop.
 @@@ -/

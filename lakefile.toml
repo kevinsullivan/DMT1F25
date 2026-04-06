@@ -13,6 +13,10 @@ root = "Content.B05_Geometry.viz.Main"
 name = "geomanim"
 root = "Content.B05_Geometry.viz.AnimMain"
 
+[[lean_exe]]
+name = "bigbang"
+root = "Content.B06_CoinductiveGameEngine.Main"
+
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"
