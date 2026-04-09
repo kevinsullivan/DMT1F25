@@ -5,6 +5,7 @@ import Content.B03_MoreTypes.chapters
 import Content.B04_AlgebraicStructures.chapters
 import Content.B05_Geometry.chapters
 import Content.B06_CoinductiveGameEngine.chapters
+import Content.B07_Equality.chapters
 
 
 /- @@@

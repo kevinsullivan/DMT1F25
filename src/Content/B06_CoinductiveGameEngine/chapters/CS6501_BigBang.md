@@ -1,7 +1,8 @@
+```lean
 import Std
 import Content.B05_Geometry.chapters.CS6501_Rational2D
+```
 
-/- @@@
 # A Coinductive Game Engine: HtDP Big-Bang in Lean 4
 
 <!-- toc -->
@@ -72,8 +73,8 @@ that is by design."
 We begin with a small enumeration of the mouse events
 that the framework recognizes. These correspond to the
 standard HtDP mouse event vocabulary.
-@@@ -/
 
+```lean
 namespace HtDPBigBang
 
 universe u v
@@ -87,8 +88,8 @@ inductive MouseEvent where
   | enter
   | leave
 deriving Repr, BEq, Inhabited
+```
 
-/- @@@
 ## Input Events
 
 Every stimulus the world can receive is wrapped in a
@@ -106,16 +107,16 @@ Think of `InputEvent` as the element type of the infinite
 stream that the outside world feeds to the game loop.
 Each `tick`, `key`, or `mouse` value is one *head* drawn
 from that stream.
-@@@ -/
 
+```lean
 /-- External events that can update a world. -/
 inductive InputEvent where
   | tick
   | key (k : String)
   | mouse (x y : Nat) (m : MouseEvent)
 deriving Repr, BEq, Inhabited
+```
 
-/- @@@
 ## The BigBang Configuration
 
 The `BigBang` structure bundles all the handlers together.
@@ -146,8 +147,8 @@ escape hatch: it converts the coinductive loop into a
 `partial` function that *may* terminate. Every handler is
 a pure function; no handler touches `IO`. The impurity is
 isolated entirely in the runtime that *drives* the loop.
-@@@ -/
 
+```lean
 /--
 A terminal-friendly version of HtDP's big-bang configuration.
 
@@ -160,8 +161,8 @@ structure BigBang (World : Type u) (Scene : Type v) where
   onKey : World → String → World := fun w _ => w
   onMouse : World → Nat → Nat → MouseEvent → World := fun w _ _ _ => w
   stopWhen : World → Bool := fun _ => false
+```
 
-/- @@@
 ## Event Dispatch
 
 `handleEvent` is a pure dispatcher: given a world and
@@ -185,8 +186,8 @@ cases. The coinductive complexity lives one level up, in
 of times. Separating the finite dispatch from the infinite
 loop is a clean architectural boundary between inductive
 and coinductive reasoning.
-@@@ -/
 
+```lean
 namespace BigBang
 
 variable {World : Type u} {Scene : Type v}
@@ -197,8 +198,8 @@ def handleEvent (bb : BigBang World Scene) (w : World) : InputEvent → World
   | .mouse x y m => bb.onMouse w x y m
 
 end BigBang
+```
 
-/- @@@
 ## Terminal Runtime
 
 `runTerminal` is the coinductive heart of the system:
@@ -237,8 +238,8 @@ and productive) without claiming it terminates.
 input and the `InputEvent` algebra. `help` and `quit` are
 meta-commands handled by the runtime itself; only `.step e`
 passes through to `handleEvent`.
-@@@ -/
 
+```lean
 inductive Command where
   | step (e : InputEvent)
   | help
@@ -316,8 +317,8 @@ partial def runTerminal
     | .ok (.step e) =>
         let w' := bb.handleEvent w e
         runTerminal bb w'
+```
 
-/- @@@
 ## Example: Move a Ship to the Goal
 
 To demonstrate the framework, we build a small game.
@@ -335,8 +336,8 @@ y-coordinate, and a tick counter. The handlers are:
 
 This is a pure, functional game. Every frame is a
 deterministic function of the previous frame plus one event.
-@@@ -/
 
+```lean
 def width : Nat := 20
 def height : Nat := 8
 def maxTicks : Nat := 30
@@ -359,8 +360,8 @@ def incSat (limitExclusive n : Nat) : Nat :=
 
 def clampCoord (limitExclusive n : Nat) : Nat :=
   Nat.min n (limitExclusive - 1)
+```
 
-/- @@@
 ### Rendering
 
 The `cell` function determines what character to display
@@ -368,8 +369,8 @@ at each grid position. The `boardString` function assembles
 the full grid by mapping over rows and columns, then joins
 them with newlines. The `statusString` adds context below
 the board.
-@@@ -/
 
+```lean
 def cell (w : Ship) (x y : Nat) : String :=
   if x = w.x ∧ y = w.y then
     "@"
@@ -394,8 +395,8 @@ def statusString (w : Ship) : String :=
 
 def shipScene (w : Ship) : String :=
   boardString w ++ "\n" ++ statusString w
+```
 
-/- @@@
 ### The BigBang Instance
 
 Here we wire everything together into a `BigBang` value.
@@ -422,8 +423,8 @@ None of these functions is recursive. They are simple,
 total, one-step transformations — the building blocks
 that `runTerminal` assembles into the infinite (or
 eventually-stopping) reactive loop.
-@@@ -/
 
+```lean
 def shipBigBang : BigBang Ship String :=
   { toDraw := shipScene
 
@@ -453,22 +454,22 @@ def shipBigBang : BigBang Ship String :=
 
 def initialShip : Ship :=
   { x := 0, y := 0, ticks := 0 }
+```
 
-/- @@@
 ### Main
 
 The `main` function prints a welcome message and launches
 the terminal runtime. This is the only place IO appears
 in the entire game — everything else is pure computation.
-@@@ -/
 
+```lean
 def main : IO Unit := do
   IO.println "HtDP-style big-bang demo in Lean 4"
   IO.println "Move @ to G."
   IO.println "Type `help` for commands."
   runTerminal shipBigBang initialShip
+```
 
-/- @@@
 ## Example: Intercept — Affine Geometry in Motion
 
 The ship game above uses natural-number coordinates on
@@ -512,13 +513,13 @@ No coordinates are ever converted to floating point.
 The terminal rendering quantizes to a character grid for
 display, but the underlying world state lives in exact
 rational affine space.
-@@@ -/
 
+```lean
 section Intercept
 
 open Content.B05_Geometry.chapters.rationalVectorSpace
+```
 
-/- @@@
 ### World State
 
 The `Interceptor` structure tracks the probe position,
@@ -527,8 +528,8 @@ path. The target's position is not stored — it is
 *computed* from the tick count via `affineInterp2d`.
 This is a key design choice: derived state is never
 stored, only computed, so the world is always consistent.
-@@@ -/
 
+```lean
 def iWidth : Nat := 30
 def iHeight : Nat := 15
 def iMaxTicks : Nat := 40
@@ -543,8 +544,8 @@ deriving Repr
 
 instance : Inhabited Interceptor where
   default := { probe := ⟨0, 0⟩, pathStart := ⟨0, 0⟩, pathEnd := ⟨0, 0⟩, ticks := 0 }
+```
 
-/- @@@
 ### Target Position
 
 The target's position at tick k is the affine interpolation
@@ -552,19 +553,19 @@ The target's position at tick k is the affine interpolation
 the target is at `pathStart`; at the final tick it reaches
 `pathEnd`. Every intermediate position is an exact rational
 point on the segment.
-@@@ -/
 
+```lean
 def targetPos (w : Interceptor) : RPoint2 :=
   affineInterp2d w.pathStart w.pathEnd ((w.ticks : Rat) / (iMaxTicks : Rat))
+```
 
-/- @@@
 ### Movement
 
 Arrow keys translate the probe by a unit displacement
 vector. This is the torsor operation `v +ᵥ p` — pure
 affine geometry.
-@@@ -/
 
+```lean
 def moveProbe (w : Interceptor) (dir : String) : Interceptor :=
   let step : RVec2 :=
     if dir = "right" then re1
@@ -573,8 +574,8 @@ def moveProbe (w : Interceptor) (dir : String) : Interceptor :=
     else if dir = "up" then -re2
     else ⟨0, 0⟩
   { w with probe := step +ᵥ w.probe }
+```
 
-/- @@@
 ### Capture Test
 
 The player captures the target when the displacement
@@ -582,8 +583,8 @@ between probe and target is small in both components.
 We use the absolute value of each component of the
 vector `probe -ᵥ target` and compare against the
 capture radius. Everything is exact rational arithmetic.
-@@@ -/
 
+```lean
 def absRat (r : Rat) : Rat :=
   if r < 0 then -r else r
 
@@ -593,8 +594,8 @@ def captured (w : Interceptor) : Bool :=
 
 def timeUp (w : Interceptor) : Bool :=
   decide (w.ticks ≥ iMaxTicks)
+```
 
-/- @@@
 ### Rendering
 
 We quantize the rational positions to a character grid
@@ -602,8 +603,8 @@ for terminal display. The probe appears as `P`, the
 target as `T`, and overlap as `*`. The status line shows
 exact rational coordinates so the player can see the
 true affine state beneath the coarse grid.
-@@@ -/
 
+```lean
 def quantize (limitExclusive : Nat) (r : Rat) : Nat :=
   let n := r.floor.toNat
   if n < limitExclusive then n else limitExclusive - 1
@@ -648,8 +649,8 @@ def iStatusString (w : Interceptor) : String :=
 
 def iScene (w : Interceptor) : String :=
   iBoardString w ++ "\n" ++ iStatusString w
+```
 
-/- @@@
 ### The BigBang Instance
 
 The `onTick` handler simply increments the tick counter —
@@ -680,8 +681,8 @@ def targetPath : List RPoint2 :=
 That list has a fixed, finite length. The coinductive
 version has no predetermined length — the target just
 keeps moving until `stopWhen` fires.
-@@@ -/
 
+```lean
 def interceptBigBang : BigBang Interceptor String :=
   { toDraw := iScene
 
@@ -692,16 +693,16 @@ def interceptBigBang : BigBang Interceptor String :=
 
     stopWhen := fun w => captured w || timeUp w
   }
+```
 
-/- @@@
 ### Initial State
 
 The target travels diagonally from the top-left area
 to the bottom-right area. The probe starts near the
 center of the grid. The player must intercept the
 target as it slides along its affine path.
-@@@ -/
 
+```lean
 def initialInterceptor : Interceptor :=
   { probe := ⟨15, 7⟩
     pathStart := ⟨2, 2⟩
@@ -711,3 +712,4 @@ def initialInterceptor : Interceptor :=
 end Intercept
 
 end HtDPBigBang
+```

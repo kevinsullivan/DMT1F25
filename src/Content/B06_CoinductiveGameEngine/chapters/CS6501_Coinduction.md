@@ -1,6 +1,7 @@
+```lean
 import Std
+```
 
-/- @@@
 # Coinduction and Potentially Infinite Processes
 
 <!-- toc -->
@@ -49,8 +50,8 @@ that is by design."
 We begin with a small enumeration of the mouse events
 that the framework recognizes. These correspond to the
 standard HtDP mouse event vocabulary.
-@@@ -/
 
+```lean
 namespace HtDPBigBang
 
 universe u v
@@ -64,8 +65,8 @@ inductive MouseEvent where
   | enter
   | leave
 deriving Repr, BEq, Inhabited
+```
 
-/- @@@
 ## Input Events
 
 Every stimulus the world can receive is wrapped in a
@@ -83,16 +84,16 @@ Think of `InputEvent` as the element type of the infinite
 stream that the outside world feeds to the game loop.
 Each `tick`, `key`, or `mouse` value is one *head* drawn
 from that stream.
-@@@ -/
 
+```lean
 /-- External events that can update a world. -/
 inductive InputEvent where
   | tick
   | key (k : String)
   | mouse (x y : Nat) (m : MouseEvent)
 deriving Repr, BEq, Inhabited
+```
 
-/- @@@
 ## The BigBang Configuration
 
 The `BigBang` structure bundles all the handlers together.
@@ -123,8 +124,8 @@ escape hatch: it converts the coinductive loop into a
 `partial` function that *may* terminate. Every handler is
 a pure function; no handler touches `IO`. The impurity is
 isolated entirely in the runtime that *drives* the loop.
-@@@ -/
 
+```lean
 /--
 A terminal-friendly version of HtDP's big-bang configuration.
 
@@ -137,8 +138,8 @@ structure BigBang (World : Type u) (Scene : Type v) where
   onKey : World → String → World := fun w _ => w
   onMouse : World → Nat → Nat → MouseEvent → World := fun w _ _ _ => w
   stopWhen : World → Bool := fun _ => false
+```
 
-/- @@@
 ## Event Dispatch
 
 `handleEvent` is a pure dispatcher: given a world and
@@ -162,8 +163,8 @@ cases. The coinductive complexity lives one level up, in
 of times. Separating the finite dispatch from the infinite
 loop is a clean architectural boundary between inductive
 and coinductive reasoning.
-@@@ -/
 
+```lean
 namespace BigBang
 
 variable {World : Type u} {Scene : Type v}
@@ -174,8 +175,8 @@ def handleEvent (bb : BigBang World Scene) (w : World) : InputEvent → World
   | .mouse x y m => bb.onMouse w x y m
 
 end BigBang
+```
 
-/- @@@
 ## Terminal Runtime
 
 `runTerminal` is the coinductive heart of the system:
@@ -214,8 +215,8 @@ and productive) without claiming it terminates.
 input and the `InputEvent` algebra. `help` and `quit` are
 meta-commands handled by the runtime itself; only `.step e`
 passes through to `handleEvent`.
-@@@ -/
 
+```lean
 inductive Command where
   | step (e : InputEvent)
   | help
@@ -306,3 +307,4 @@ partial def runTerminal
         runTerminal bb w'
 
 end HtDPBigBang
+```

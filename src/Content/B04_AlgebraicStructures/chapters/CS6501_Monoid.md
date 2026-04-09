@@ -189,8 +189,19 @@ proofs.
 ```lean
 #check AddZeroClass
 
+def foo (a : Duration) : 0 + a = a :=
+match a with
+    | zero => Eq.refl 0
+    | one => rfl
+    | two => rfl
+
 instance : AddZeroClass Duration where
-  zero_add := by intro a; cases a <;> rfl
+  zero_add := fun a =>
+    match a with
+    | zero => Eq.refl 0
+    | one => rfl
+    | two => rfl
+
   add_zero := by intro a; cases a <;> rfl
 ```
 

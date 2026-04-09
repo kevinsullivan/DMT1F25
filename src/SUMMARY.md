@@ -55,6 +55,10 @@
   - [Static Scene](./Content/B05_Geometry/chapters/CS6501_StaticVisualization.md)
   - [Dynamic Interpolation](./Content/B05_Geometry/chapters/CS6501_AnimatedVisualization.md)
 
+# VIII. Equality
+
+- [Equality in Lean](./Content/B07_Equality/chapters/CS6501_Equality.md)
+
 # Appendix
 
 - [Learning Resources](resources.md)

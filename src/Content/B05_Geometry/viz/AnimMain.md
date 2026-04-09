@@ -34,7 +34,7 @@ def buildFrame (a b c : RPoint2) (k : Nat) : String :=
     segmentToJson "BP" b p,
 
     -- Displacement vector A → P
-    vectorToJson "t·(C-A)" a vap
+    vectorToJson "A+t·(C-A)" a vap
   ]
 
   toJsonArray items
