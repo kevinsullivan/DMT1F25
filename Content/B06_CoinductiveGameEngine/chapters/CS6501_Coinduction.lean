@@ -51,7 +51,7 @@ that the framework recognizes. These correspond to the
 standard HtDP mouse event vocabulary.
 @@@ -/
 
-namespace HtDPBigBang
+namespace Content.B06_CoinductiveGameEngine.chapters.CS6501_Coinduction
 
 universe u v
 
@@ -305,4 +305,4 @@ partial def runTerminal
         let w' := bb.handleEvent w e
         runTerminal bb w'
 
-end HtDPBigBang
+end Content.B06_CoinductiveGameEngine.chapters.CS6501_Coinduction
