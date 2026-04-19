@@ -75,7 +75,7 @@ that the framework recognizes. These correspond to the
 standard HtDP mouse event vocabulary.
 
 ```lean
-namespace HtDPBigBang
+namespace Content.B06_CoinductiveGameEngine.chapters.CS6501_BigBang
 
 universe u v
 
@@ -711,5 +711,5 @@ def initialInterceptor : Interceptor :=
 
 end Intercept
 
-end HtDPBigBang
+end Content.B06_CoinductiveGameEngine.chapters.CS6501_BigBang
 ```

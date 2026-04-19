@@ -1,3 +1,6 @@
+#check Prod
+#check Sum
+
 /- @@@
 # Equality in Lean
 
@@ -35,20 +38,20 @@ prove inside the logic.
 We will explore all three from the ground up, along with the key
 proof techniques: reflexivity, symmetry, transitivity, substitution,
 congruence, rewriting, and calculational chains. We finish with
-type casts, decidable equality, and exercises.
+the dependent equality problem, type casts, and decidable equality.
 @@@ -/
 
+
+#check Nat.add
 namespace Content.B07_Equality.chapters.CS6501_Equality
 
 /- @@@
-## Definitional Equality and the Eq Type
+## Definitional Equality
 
 Two expressions are *definitionally equal* (also called *judgmentally
 equal* or *convertible*) when Lean's kernel can confirm they are
 interconvertible by computation and unfolding. No proof is needed —
 the type checker verifies this automatically.
-
-### Definitional Equality
 
 When two expressions are definitionally equal, the `rfl` proof term
 can construct a proof of their propositional equality (`Eq`) — but
@@ -75,7 +78,7 @@ equal and `rfl` will close the goal.
 #reduce (fun x => x + 1) 4   -- 5
 
 /- @@@
-### The `Eq` Type
+## The `Eq` Type
 
 Lean's equality type is an inductive family with one constructor:
 
@@ -84,17 +87,14 @@ inductive Eq : α → α → Prop where
   | refl (a : α) : Eq a a
 ```
 
-#### Eq.refl: The Introduction Rule
+### Eq.refl: The Introduction Rule
 
-The constructor, as usual, provides a rule for deductive reasoning
-about equality, namely `Eq.refl.` This is the `introduction rule`
-for equality, i.e., the (only) rule for constructing proofs of any
-*a = b* proposition.
-
-The notation `a = b` is sugar for `@Eq α a b`. The only way to
-*construct* a proof of `a = b` is `Eq.refl a`, which requires
-`a` and `b` to be definitionally equal. The tactic `rfl` applies
-`Eq.refl` automatically.
+The constructor provides a rule for constructing proofs of
+equality — the *introduction rule*. The notation `a = b` is
+sugar for `@Eq α a b`. The only way to *construct* a proof of
+`a = b` is `Eq.refl a`, which requires `a` and `b` to be
+definitionally equal. The tactic `rfl` applies `Eq.refl`
+automatically.
 
 The key insight: `Eq` has only one constructor, so any proof of
 `a = b` must ultimately be built from `refl`. This means `a` and
@@ -114,25 +114,7 @@ example : 42 = 42 := rfl
 #check (rfl : 1 + 1 = 2)       -- 1 + 1 = 2
 
 /- @@@
-### Equality is an Equivalence Relation
-
-A binary relation `R` on a type `α` is an **equivalence relation**
-if it satisfies three properties:
-
-- **Reflexive**: `R a a` for all `a` — everything is related to itself.
-- **Symmetric**: `R a b → R b a` — the relation works in both directions.
-- **Transitive**: `R a b → R b c → R a c` — the relation chains.
-
-Equality is the prototypical equivalence relation. The `Eq` type
-gives us reflexivity directly (`Eq.refl`), and from the single
-constructor `refl` we can derive symmetry and transitivity. Our
-goal for the next few sections is to build up these three
-properties, along with the key proof tool — **substitution** — that
-makes symmetry and transitivity provable.
-@@@ -/
-
-/- @@@
-### Eq.subst: The Elimination Rule for Equality
+### Eq.subst: The Elimination Rule
 
 The `Eq` type has one constructor (`refl`) — that's the
 *introduction* rule. Now we need the *elimination* rule:
@@ -178,12 +160,21 @@ example (n m : Nat) (h : n = m) : n + 1 = m + 1 :=
   h ▸ rfl
 
 /- @@@
-## Deriving Symmetry and Transitivity
+## Equality is an Equivalence Relation
 
-With just `refl` (introduction) and `subst`/`▸` (elimination),
-we can derive that equality is symmetric and transitive. These
-are not additional axioms — they follow from the two we already
-have.
+A binary relation `R` on a type `α` is an **equivalence relation**
+if it satisfies three properties:
+
+- **Reflexive**: `R a a` for all `a` — everything is related to itself.
+- **Symmetric**: `R a b → R b a` — the relation works in both directions.
+- **Transitive**: `R a b → R b c → R a c` — the relation chains.
+
+Equality is the prototypical equivalence relation. The `Eq` type
+gives us reflexivity directly (`Eq.refl`), and from the single
+constructor `refl` we can derive symmetry and transitivity. Our
+goal for the next few sections is to build up these three
+properties, along with the key proof tool — **substitution** — that
+makes symmetry and transitivity provable.
 
 ### Symmetry
 
@@ -195,8 +186,8 @@ Given `h : a = b`, we want to prove `b = a`.
 @@@ -/
 
 -- Symmetry derived from refl + subst
-theorem eq_symm {a b : α} (h : a = b) : b = a :=
-  h ▸ rfl
+theorem eq_symm {a b : α} (h : a = b) : b = a := by
+  rw [h]
 
 /- @@@
 ### Transitivity
@@ -209,11 +200,11 @@ Given `h1 : a = b` and `h2 : b = c`, we want to prove `a = c`.
 @@@ -/
 
 -- Transitivity derived from subst
-theorem eq_trans {a b c : α} (h1 : a = b) (h2 : b = c) : a = c :=
-  h2 ▸ h1
+theorem eq_trans {a b c : α} (h1 : a = b) (h2 : b = c) : a = c := by
+  rw [h1, h2]
 
 /- @@@
-### Proving Equality is an Equivalence Relation
+### The Complete Equivalence Relation
 
 We have now derived all three equivalence relation properties
 from just the introduction rule (`refl`) and the elimination
@@ -236,130 +227,23 @@ use them freely.
 #check @Eq.symm         -- {a b : α} → a = b → b = a
 #check @Eq.trans        -- {a b c : α} → a = b → b = c → a = c
 
--- Using Eq.symm: flip an equation (explicit)
-example (h : 3 = 4) : 4 = 3 := Eq.symm h
-
--- Same example using dot notation
+-- Using Eq.symm: flip an equation
 example (h : 3 = 4) : 4 = 3 := h.symm
 
--- Using Eq.trans: chain two equalities (explicit)
-example (a b c : Nat) (h1 : a = b) (h2 : b = c) : a = c :=
-  Eq.trans h1 h2
-
--- Same example using dot notation
+-- Using Eq.trans: chain two equalities
 example (a b c : Nat) (h1 : a = b) (h2 : b = c) : a = c :=
   h1.trans h2
 
 /- @@@
-### Tactic Proofs
+## Congruence and Equational Reasoning
 
-The same facts are often easier to prove with tactics. The
-`rw` tactic is the tactic-mode version of `▸` — it rewrites
-the goal using an equality hypothesis.
-@@@ -/
-
-theorem eq_symm' {a b : α} (h : a = b) : b = a := by
-  rw [h]
-
-theorem eq_trans' {a b c : α} (h1 : a = b) (h2 : b = c) : a = c := by
-  rw [h1, h2]
-
-
-/- @@@
-## Propositional Equality
-
-Definitional equality is *silent* — the kernel handles it without
-you writing anything. But not all true equalities are definitional.
-
-### Example: Prove (0 : Nat) is a *Left* Zero for +
-
-If we look again at the definition of Nat.add we'll see that the
-rules for computing it explicitly define n + 0 to evaluate to n in
-all cases. That rule allows us to prove (0 : Nat) is a right zero
-for all n. Here's the theorem statement and proof in two typical
-forms.
-@@@ -/
-
-#check Nat.add  -- right click and go to definition to sett it live
-
-/- @@@
-Here's the deifnition. Note that it defines *Nat.add a 0* to be a,
-for any a; but it does *not* define *Nat.add 0 a* to be a. The second
-defining rule for addition states that a + (b + 1) = 1 + (a + b). So
-there's literally nothing that explcitly defines *0 + a = a* for all
-a. The two sides are thus not equal *by definition*. Rather, they can
-only be proved to be equal by deductive reasoning.
-```
-def Nat.add : (@& Nat) → (@& Nat) → Nat
-  | a, Nat.zero   => a
-  | a, Nat.succ b => Nat.succ (Nat.add a b)
-```
-@@@ -/
-
-example (n : Nat) : n + 0 = n := rfl
-example : ∀ (n : Nat), n + 0 = n := fun _ => rfl
-
-/- @@@
-### Left Zero by Reasoning
-
-It might thus come as a surprise that we can't prove 0 to be a left
-zero in the same way -- definitionally. This works because the very
-*definition* of `Nat.add` (which implements `+`) pattern-matches on
-its *second* argument. One of its defining equations is `n + 0 = n`,
-so the kernel can reduce `n + 0` to `n` directly. No such defining
-equation reduces `0 + n`. Rather, that proposition must be proved
-deductive reasoning, specifically by applying the induction axiom
-(recursion!) for addition.
-@@@ -/
-
--- Uncomment: the left zero proposition isn't true definitionally.
--- example (n : Nat) : 0 + n = n := rfl   -- ERROR
-
-/- @@@
-To prove `0 + n = n` we need to *reason* about why it's true. That
-reasoning has to be by *induction* in this case. Here is the proof
-as an ordinary recursive function: given any `n`, it returns a proof
-of the proposition, `0 + n = n`.
-
-The inductive step uses `congrArg`, which says: if `a = b`
-then `f a = f b` for any function `f`. (We cover `congrArg`
-in detail later in this chapter.) The notation `(· + 1)` is
-Lean shorthand for `fun x => x + 1` — the centered dot `·`
-marks where the argument goes.
-@@@ -/
-
-def zero_add_proof : (n : Nat) → 0 + n = n
-  | 0     => rfl                          -- 0 + 0 = 0 by definition
-  | n' + 1 => congrArg (· + 1) (zero_add_proof n')
-
--- ih : 0 + n' = n'
--- congrArg (· + 1) ih : (0 + n') + 1 = n' + 1
--- which is 0 + (n' + 1) = n' + 1 by the defining equation of +
-
-/- @@@
-How does this work? The function takes a natural number `n` and
-must return a proof that `0 + n = n`.
-
-- **Base case** (`n = 0`): We need `0 + 0 = 0`. The kernel can
-  reduce `0 + 0` to `0` by the defining equations of `+`, so
-  `rfl` suffices.
-- **Inductive case** (`n = n' + 1`): We need `0 + (n' + 1) = n' + 1`.
-  The recursive call `zero_add_proof n'` gives us a proof that
-  `0 + n' = n'` — this is the induction hypothesis. We then
-  apply `congrArg (· + 1)`, which adds `+ 1` to both sides,
-  producing `(0 + n') + 1 = n' + 1`. The kernel accepts this
-  as a proof of `0 + (n' + 1) = n' + 1` because `+` is defined
-  so that `a + (b + 1) = (a + b) + 1`.
-
-This is a proof by induction, but written as ordinary recursion.
-In Lean, every recursive function over `Nat` *is* an induction.
-@@@ -/
-
-/- @@@
-## Congruence: `congrArg` and `congr`
+### Congruence: `congrArg` and `congr`
 
 If `a = b`, then `f a = f b` for any function `f`. This is
-*congruence* — functions respect equality.
+*congruence* — functions respect equality. Congruence is how
+equalities propagate through expressions: if you know `x = y`,
+you can conclude `f x = f y`, then `g (f x) = g (f y)`, and
+so on — mechanically, one function application at a time.
 @@@ -/
 
 #check @congrArg   -- (f : α → β) → a = b → f a = f b
@@ -377,17 +261,13 @@ example (f g : Nat → Nat) (n m : Nat)
   congr hfg hnm
 
 /- @@@
-Congruence is how equalities propagate through expressions.
-If you know `x = y`, you can conclude `f x = f y`, then
-`g (f x) = g (f y)`, and so on — mechanically, one function
-application at a time.
-
-## The `rewrite` Tactic
+### The `rw` Tactic
 
 The `rw` (rewrite) tactic is the workhorse for equational
 reasoning in tactic mode. Given a proof `h : a = b`, the
 tactic `rw [h]` replaces all occurrences of `a` with `b`
-in the goal.
+in the goal. Use `rw [← h]` to rewrite right to left, and
+`rw [h] at h'` to rewrite in a hypothesis.
 @@@ -/
 
 -- Rewriting left to right
@@ -402,29 +282,17 @@ example (x y : Nat) (h : x = y) : y + y = x + x := by
 example (a b c : Nat) (h1 : a = b) (h2 : b = c) : a + a = c + c := by
   rw [h1, h2]
 
-/- @@@
-### Rewriting in Hypotheses
-
-Use `rw [h] at h'` to rewrite in a hypothesis rather than the goal.
-@@@ -/
-
+-- Rewriting in a hypothesis
 example (x y : Nat) (h : x = y) (h2 : x + 1 = 10) : y + 1 = 10 := by
   rw [h] at h2
   exact h2
 
-/- @@@
-### Directed Rewriting
-
-Sometimes you need to control the direction. By default `rw [h]`
-rewrites left-to-right (replacing `a` with `b` when `h : a = b`).
-Use `rw [← h]` to go right-to-left (replacing `b` with `a`).
-@@@ -/
-
+-- Controlling direction
 example (x y z : Nat) (h1 : x = y) (h2 : z = y) : x = z := by
   rw [h1, ← h2]
 
 /- @@@
-## Calculational Proofs with `calc`
+### Calculational Proofs with `calc`
 
 For longer chains of equational reasoning, Lean provides `calc`
 blocks. Each step states an equality and justifies it.
@@ -435,19 +303,7 @@ example (a b c d : Nat) (h1 : a = b) (h2 : b = c) (h3 : c = d) : a = d :=
     _ = c := h2
     _ = d := h3
 
--- A more interesting example with arithmetic
-example (x y : Nat) (h : x = y) : (x + 1) * 2 = (y + 1) * 2 :=
-  calc (x + 1) * 2 = (y + 1) * 2 := by rw [h]
-
--- calc works with other relations too (≤, <, etc.)
--- but here we focus on equality
-
-/- @@@
-### A Longer Calculational Proof
-
-Let's prove that if `a = b` and `c = d`, then `a + c = b + d`.
-@@@ -/
-
+-- A longer calculational proof
 theorem add_eq_of_eq (a b c d : Nat)
     (hab : a = b) (hcd : c = d) : a + c = b + d :=
   calc a + c
@@ -455,17 +311,141 @@ theorem add_eq_of_eq (a b c d : Nat)
     _ = b + d := by rw [hcd]
 
 /- @@@
-## Heterogeneous Equality: `HEq`
+## Propositional Equality: Beyond Definitional
 
-Lean's `Eq` requires both sides to have the *same* type:
-`@Eq α a b` means `a : α` and `b : α`. But sometimes we need
-to state that two values of *different* types are "equal" — this
-arises with indexed families and dependent types.
+Definitional equality is *silent* — the kernel handles it without
+you writing anything. But not all true equalities are definitional.
+The distinction is important and sometimes surprising.
 
-Consider vectors (length-indexed lists). If `v : Vect α n` and
-`w : Vect α m`, the statement `v = w` is not even well-typed when
-`n ≠ m`, because `Vect α n` and `Vect α m` are different types.
-Heterogeneous equality, `HEq`, solves this:
+### When `rfl` Suffices: Right Zero
+
+Look at the definition of `Nat.add`:
+
+```
+def Nat.add : Nat → Nat → Nat
+  | a, Nat.zero   => a
+  | a, Nat.succ b => Nat.succ (Nat.add a b)
+```
+
+The first defining equation says `a + 0 = a` — directly, by
+definition. So `rfl` closes the goal, because the kernel can
+reduce `n + 0` to `n` for any `n`.
+@@@ -/
+
+#check Nat.add  -- right click and go to definition to see it
+
+example (n : Nat) : n + 0 = n := rfl
+example : ∀ (n : Nat), n + 0 = n := fun _ => rfl
+
+/- @@@
+### When `rfl` Fails: Left Zero
+
+Now consider `0 + n = n`. There is no defining equation that
+reduces `0 + n` to `n` — addition recurses on its *second*
+argument, not its first. For a variable `n`, the kernel cannot
+compute `0 + n` any further. The two sides are not definitionally
+equal:
+@@@ -/
+
+-- Uncomment to see the error: rfl cannot prove this
+-- example (n : Nat) : 0 + n = n := rfl   -- TYPE ERROR
+
+/- @@@
+### Proof by Induction
+
+To prove `0 + n = n`, we must *reason* — specifically, by
+induction on `n`. Here is the proof as a recursive function:
+given any `n`, it returns a proof of `0 + n = n`.
+
+The inductive step uses `congrArg`, which says: if `a = b`
+then `f a = f b` for any function `f`. The notation `(· + 1)` is
+Lean shorthand for `fun x => x + 1`.
+@@@ -/
+
+-- Recursive proof (= induction written as recursion)
+def zero_add_proof : (n : Nat) → 0 + n = n
+  | 0     => rfl                          -- 0 + 0 = 0 by definition
+  | n' + 1 => congrArg (· + 1) (zero_add_proof n')
+
+/- @@@
+How does this work?
+
+- **Base case** (`n = 0`): We need `0 + 0 = 0`. The kernel
+  reduces `0 + 0` to `0`, so `rfl` suffices.
+- **Inductive case** (`n = n' + 1`): We need `0 + (n' + 1) = n' + 1`.
+  The recursive call `zero_add_proof n'` gives us `0 + n' = n'`
+  (the induction hypothesis). Then `congrArg (· + 1)` adds
+  `+ 1` to both sides, producing `(0 + n') + 1 = n' + 1`. The
+  kernel accepts this because `a + (b + 1) = (a + b) + 1` is
+  a defining equation of `+`.
+
+The same proof in tactic style:
+@@@ -/
+
+-- Tactic proof (same reasoning, different notation)
+theorem zero_add (n : Nat) : 0 + n = n := by
+  induction n with
+  | zero => rfl
+  | succ n' ih =>
+    -- Goal: 0 + (n' + 1) = n' + 1
+    -- ih : 0 + n' = n'
+    rw [Nat.add_succ, ih]
+
+/- @@@
+This is *propositional equality* — a statement that is true but
+requires an explicit proof. The recursive/inductive structure of
+the proof mirrors the recursive structure of `Nat.add` itself.
+
+We can also use the standard library's `Nat.add_comm`:
+@@@ -/
+
+#check @Nat.add_comm    -- ∀ (n m : Nat), n + m = m + n
+
+example (a b : Nat) : a + b = b + a := Nat.add_comm a b
+
+/- @@@
+## The Dependent Equality Problem
+
+Everything above works smoothly because both sides of every
+equation have the same type. But dependent types introduce a
+fundamental new challenge: **when types depend on values, equal
+values can have different types.**
+
+This is the central intellectual problem of this section, and
+it motivates everything that follows: `HEq`, `cast`, `transport`,
+and `Eq.rec`.
+
+### When Types Depend on Values
+
+Consider length-indexed vectors — lists that carry their length
+in their type:
+@@@ -/
+
+-- Length-indexed vectors
+inductive Vect (α : Type) : Nat → Type where
+  | nil  : Vect α 0
+  | cons : α → Vect α n → Vect α (n + 1)
+
+/- @@@
+A `Vect Nat 3` and a `Vect Nat (0 + 3)` may hold the same data,
+but they are *different types*. The kernel does not know that
+`0 + 3 = 3` — remember, `0 + n` is not definitionally equal to `n`.
+
+This creates two distinct problems:
+
+1. **We cannot even state `v = w`** when `v : Vect Nat (0 + 3)`
+   and `w : Vect Nat 3`, because `Eq` requires both sides to
+   have the same type.
+2. **We cannot use `v` where a `Vect Nat 3` is expected**, even
+   though the data is the same — the types don't match.
+
+Problem 1 is solved by `HEq`. Problem 2 is solved by `cast`
+and `transport`.
+
+### HEq: Equality Across Types
+
+Heterogeneous equality lets us *state* that two values of
+different types are equal:
 
 ```
 inductive HEq : {α : Sort u} → α → {β : Sort u} → β → Prop where
@@ -474,8 +454,8 @@ inductive HEq : {α : Sort u} → α → {β : Sort u} → β → Prop where
 
 `HEq a b` (notation `a ≅ b`) says: `a` and `b` are equal, even
 though they might have different types. But the only constructor
-is `refl`, so `HEq a b` can only be proved when the types are
-actually the same and `a` is definitionally equal to `b`.
+is `refl`, so the types must actually be the same for a proof to
+exist.
 @@@ -/
 
 #check @HEq             -- HEq : α → β → Prop
@@ -490,31 +470,13 @@ example (h : 3 = 3) : HEq 3 3 := heq_of_eq h
 example (h : HEq (2 : Nat) 2) : (2 : Nat) = 2 := eq_of_heq h
 
 /- @@@
-### When Does `HEq` Arise?
-
-Heterogeneous equality appears naturally when you work with
-dependent types — particularly indexed inductive families.
-Consider length-indexed vectors:
-@@@ -/
-
--- Length-indexed vectors
-inductive Vect (α : Type) : Nat → Type where
-  | nil  : Vect α 0
-  | cons : α → Vect α n → Vect α (n + 1)
-
-/- @@@
-Suppose we have a `Vect Nat (0 + n)` and a `Vect Nat n`. These
-two vectors may hold the same data, but their types differ:
-`Vect Nat (0 + n)` is not the same type as `Vect Nat n` because
-`0 + n` is not definitionally equal to `n`. We cannot even
-*state* `v1 = v2` with `Eq`, because `Eq` requires both sides
-to have the same type. This is exactly where `HEq` is needed:
+Now we can at least *state* equality across different indices:
 @@@ -/
 
 -- Ordinary Eq cannot even state this — the types differ:
 -- example (v : Vect Nat (0 + 3)) (w : Vect Nat 3) : v = w := ...  -- TYPE ERROR
 
--- HEq lets us at least state the question
+-- HEq lets us state the question
 example (v : Vect Nat (0 + 3)) (w : Vect Nat 3) : Prop := HEq v w
 
 /- @@@
@@ -523,38 +485,15 @@ index expressions during dependent pattern matching. The usual
 strategy is to rewrite the indices until the types match, then
 convert to `Eq`.
 
----
+### Cast and Transport: Moving Values Between Types
 
-**What follows is advanced material.** The sections above —
-definitional equality, `Eq`, `rfl`, substitution, symmetry,
-transitivity, congruence, `rw`, and `calc` — form the core
-toolkit for equational reasoning in Lean. The remaining
-sections cover machinery for *dependent* equality: casts,
-transport, `Eq.rec`, and decidable equality. You will need
-these when working with indexed families, but they build on
-the core rather than replacing it.
+`HEq` lets us *state* cross-type equality, but often what we
+need is to *use* a value at a different type. If we have a
+`Vect Nat (0 + 3)` and need a `Vect Nat 3`, we need to move
+the value from one type to the other.
 
----
-
-## Type Casts and Transport
-
-In the non-dependent goals we have seen so far, `rw` and `▸`
-rewrite terms but leave their types alone. In dependent goals,
-rewriting may change the *type family* itself — a `Vect α n`
-must become a `Vect α m` when an index changes. This is why
-casts and transport appear: they are the tools for crossing the
-gap between propositionally equal but not definitionally equal
-types.
-
-When two types are provably equal, we can *cast* a value from
-one type to the other. The function `cast` does this:
-
-```
-cast : {α β : Sort u} → α = β → α → β
-```
-
-Given a proof that `α = β` (an equality of types), `cast`
-converts a value of type `α` into a value of type `β`.
+The simplest tool is `cast`: given a proof that two types are
+equal, convert a value from one to the other.
 @@@ -/
 
 #check @cast           -- cast : α = β → α → β
@@ -563,49 +502,88 @@ converts a value of type `α` into a value of type `β`.
 example : cast rfl 42 = 42 := rfl
 
 /- @@@
-### `Eq.mpr` and `Eq.mp`
-
-Closely related to `cast` are `Eq.mp` and `Eq.mpr`:
+Closely related are `Eq.mp` and `Eq.mpr`:
 
 - `Eq.mp  : α = β → α → β`  (forward: same as `cast`)
 - `Eq.mpr : α = β → β → α`  (backward: cast in reverse)
-
-These arise frequently in tactic proofs when the goal type
-needs to be transformed by a type equality.
 @@@ -/
 
 #check @Eq.mp          -- α = β → α → β
 #check @Eq.mpr         -- α = β → β → α
 
 /- @@@
-### Cast and HEq
-
-There is a fundamental connection: `cast h a` is heterogeneously
-equal to `a`. Casting does not change the "value" — it only changes
-the type annotation. This is captured by:
+For indexed families like `Vect`, we need something slightly
+more structured: **transport**. Given a type family `motive`
+indexed by some value, transport moves data from one index to
+another along an equality proof.
 @@@ -/
+
+-- Transport: move a value along an equality of indices
+def transport {α : Sort u} {a b : α}
+    (motive : α → Sort v) (h : a = b) (x : motive a) : motive b :=
+  h ▸ x
+
+-- Transport a vector from length n to length m
+def Vect.cast {α : Type} {n m : Nat}
+    (h : n = m) (v : Vect α n) : Vect α m :=
+  transport (Vect α) h v
+
+/- @@@
+Now we can solve the dependent cast problem: a `Vect α (0 + n)`
+can be converted to a `Vect α n` using the proof that `0 + n = n`.
+@@@ -/
+
+-- This does NOT type-check without a cast:
+-- example (v : Vect Nat (0 + n)) : Vect Nat n := v   -- ERROR
+
+-- Transport bridges the gap
+def Vect.zeroAddCast {α : Type} {n : Nat}
+    (v : Vect α (0 + n)) : Vect α n :=
+  transport (Vect α) (Nat.zero_add n) v
+
+-- And the reverse direction
+def Vect.zeroAddCast' {α : Type} {n : Nat}
+    (v : Vect α n) : Vect α (0 + n) :=
+  transport (Vect α) (Nat.zero_add n).symm v
+
+-- All of these are equivalent ways to cast:
+example (n : Nat) (h : 0 + n = n) (v : Vect Nat (0 + n)) : Vect Nat n :=
+  cast (congrArg (Vect Nat) h) v
+
+example (n : Nat) (h : 0 + n = n) (v : Vect Nat (0 + n)) : Vect Nat n :=
+  h ▸ v
+
+example (n : Nat) (h : 0 + n = n) (v : Vect Nat (0 + n)) : Vect Nat n :=
+  transport (Vect Nat) h v
+
+/- @@@
+### Transport Preserves Identity
+
+A key property: casting does not change the "value" — it only
+changes the type annotation. This is captured precisely by `HEq`:
+the transported value is heterogeneously equal to the original.
+@@@ -/
+
+-- Transport by rfl is the identity
+theorem transport_rfl {α : Sort u} {a : α}
+    (motive : α → Sort v) (x : motive a) :
+    transport motive rfl x = x := rfl
+
+-- Transport preserves value up to HEq
+theorem transport_heq {α : Sort u} {a b : α}
+    (motive : α → Sort v) (h : a = b) (x : motive a) :
+    HEq (transport motive h x) x := by
+  subst h
+  exact HEq.refl x
 
 #check @cast_heq       -- (h : α = β) → (a : α) → HEq (cast h a) a
 
 /- @@@
-This says: after casting, the result is `HEq`-equal to the original.
-The value did not change; only the type wrapper did.
+### Eq.rec: The Mechanism Underneath
 
-## Dependent Casts: `Eq.rec` and Transport
-
-The `cast` function handles a simple case: converting a value of
-type `α` to type `β` when `α = β`. But in dependently typed
-programming, we often face a harder problem: we have a value in
-a *family* of types indexed by some value, and we need to move
-it to a different index.
-
-For example, suppose we have a `Vect α n` and a proof that
-`n = m`. We need a `Vect α m`. The plain `cast` can do this
-if we build the right type equality, but the fundamental tool
-underlying all of this is **`Eq.rec`** — the *recursor*
-(eliminator) for the equality type.
-
-### `Eq.rec`: The Eliminator for Equality
+All of the above — `cast`, `▸`, `subst`, `transport` — are built
+on a single primitive: **`Eq.rec`**, the recursor (eliminator) for
+the equality type.
 
 Every inductive type in Lean comes with a recursor. For `Eq`,
 the recursor says: if you can produce something when the two
@@ -631,10 +609,9 @@ Read the type carefully:
   just `a` and the proof is `rfl`.
 - Given any `b` and proof `h : a = b`, you get back `motive b h`.
 
-This is the most general form. The equality proof `h` "transports"
-your value from the `a` fiber to the `b` fiber of the motive.
-
-Here are two examples with all arguments written explicitly:
+The equality proof `h` "transports" your value from the `a` fiber
+to the `b` fiber of the motive. Here are two examples with all
+arguments written explicitly:
 @@@ -/
 
 -- Symmetry via Eq.rec
@@ -652,8 +629,6 @@ example (a b : Nat) (h : a = b) (hodd : a % 2 = 1) : b % 2 = 1 :=
   @Eq.rec Nat a (fun x _ => x % 2 = 1) hodd b h
 
 /- @@@
-### `Eq.ndrec`: The Non-Dependent Version
-
 In practice, the motive often does not depend on the proof `h`
 itself — only on `b`. Lean provides `Eq.ndrec` (non-dependent
 rec) for this simpler case:
@@ -668,124 +643,33 @@ rec) for this simpler case:
 --   a = b →
 --   motive b
 
-/- @@@
-This says: given a type family `motive : α → Sort v`, a value
-in `motive a`, and a proof `a = b`, produce a value in `motive b`.
-This is exactly *transport* — carrying data along an equality proof.
-
-The same two examples, now with `Eq.ndrec` — note the motive
-takes only `x`, not `x` and a proof:
-@@@ -/
-
 -- Symmetry via Eq.ndrec
--- motive: fun (x : Nat) => x = a  (no proof argument)
 example (a b : Nat) (h : a = b) : b = a :=
   @Eq.ndrec Nat a (fun x => x = a) rfl b h
 
 -- Congruence via Eq.ndrec
--- motive: fun (x : Nat) => a + 1 = x + 1
--- base case: a + 1 = a + 1, which is rfl
 example (a b : Nat) (h : a = b) : a + 1 = b + 1 :=
   @Eq.ndrec Nat a (fun x => a + 1 = x + 1) rfl b h
 
 /- @@@
-### Transport in Action
-
-Let's define a transport function and use it with our `Vect` type.
-@@@ -/
-
--- Transport: move a value along an equality of indices
-def transport {α : Sort u} {a b : α}
-    (motive : α → Sort v) (h : a = b) (x : motive a) : motive b :=
-  h ▸ x
-
--- Transport a vector from length n to length m
-def Vect.cast {α : Type} {n m : Nat}
-    (h : n = m) (v : Vect α n) : Vect α m :=
-  transport (Vect α) h v
-
--- Example: transport across a trivial equality
-example : Vect.cast rfl (Vect.cons 1 (Vect.cons 2 Vect.nil))
-    = Vect.cons 1 (Vect.cons 2 Vect.nil) := by rfl
-
-/- @@@
-### The Dependent Cast Problem
-
-Here is the motivating problem. We know that `0 + n = n` (we
-prove it below as `zero_add`). So a `Vect α (0 + n)` should
-be usable as a `Vect α n`. But Lean's type checker does not
-see `0 + n` and `n` as definitionally equal — it needs a proof.
-(In contrast, `n + 0` *does* reduce to `n` by definition, because
-`+` recurses on its second argument.)
-
-This is where dependent casts are essential: they let us cross
-the gap between propositionally equal but not definitionally
-equal indices.
-@@@ -/
-
--- This does NOT type-check without a cast:
--- example (v : Vect Nat (0 + n)) : Vect Nat n := v   -- ERROR
-
--- We need transport with Nat.zero_add
-def Vect.zeroAddCast {α : Type} {n : Nat}
-    (v : Vect α (0 + n)) : Vect α n :=
-  transport (Vect α) (Nat.zero_add n) v
-
--- We can also go the other direction
-def Vect.zeroAddCast' {α : Type} {n : Nat}
-    (v : Vect α n) : Vect α (0 + n) :=
-  transport (Vect α) (Nat.zero_add n).symm v
-
-/- @@@
-### Transport Preserves Identity (up to HEq)
-
-A key property: transporting by `rfl` does nothing. And more
-generally, the transported value is heterogeneously equal to the
-original — the "content" is the same, only the type index changed.
-@@@ -/
-
--- Transport by rfl is the identity
-theorem transport_rfl {α : Sort u} {a : α}
-    (motive : α → Sort v) (x : motive a) :
-    transport motive rfl x = x := rfl
-
--- Transport preserves value up to HEq
-theorem transport_heq {α : Sort u} {a b : α}
-    (motive : α → Sort v) (h : a = b) (x : motive a) :
-    HEq (transport motive h x) x := by
-  subst h
-  exact HEq.refl x
-
-/- @@@
-### `Eq.rec` vs `cast` vs `▸`
-
-These are all the same mechanism at different levels of
-abstraction:
+### Summary of the Dependent Equality Toolkit
 
 | Tool | What it does |
 |---|---|
+| `HEq` | State equality between values of different types |
+| `cast` | Convert a value when the types are provably equal |
+| `Eq.mp` / `Eq.mpr` | Forward/backward cast between equal types |
+| `transport` (ours) | Move data along an index equality in a type family |
+| `▸` / `subst` | Term-mode rewriting — Lean infers the motive |
 | `Eq.rec` | The primitive eliminator — fully dependent motive |
 | `Eq.ndrec` | Non-dependent version — motive ignores the proof |
-| `cast` | Special case: motive is `id`, transporting between equal types |
-| `▸` / `subst` | Tactic/term notation — Lean infers the motive |
-| `transport` (ours) | A named wrapper around `▸` for indexed families |
 
 In practice, you'll most often use `▸` or `subst` in term mode,
 and `rw`/`simp` in tactic mode. Reaching for `Eq.rec` directly
 is rare but sometimes necessary when Lean cannot infer the motive.
-@@@ -/
 
--- All of these are the same:
-example (n : Nat) (h : 0 + n = n) (v : Vect Nat (0 + n)) : Vect Nat n :=
-  cast (congrArg (Vect Nat) h) v
+---
 
-example (n : Nat) (h : 0 + n = n) (v : Vect Nat (0 + n)) : Vect Nat n :=
-  h ▸ v
-
-example (n : Nat) (h : 0 + n = n) (v : Vect Nat (0 + n)) : Vect Nat n :=
-  transport (Vect Nat) h v
-
-/- @@@
 ## Decidable Equality
 
 So far, equality has been a *proposition* — something we prove in
@@ -830,8 +714,7 @@ Lean has two distinct equality interfaces:
 They are connected, but the connection requires a *lawful* `BEq`
 instance — one that agrees with propositional equality. For
 Lean's built-in types (Nat, String, etc.) this holds: `(a == b)
-= true ↔ a = b`. For custom types, the `BEq` instance must be
-implemented correctly for this equivalence to hold.
+= true ↔ a = b`.
 @@@ -/
 
 -- BEq returns a Bool
@@ -852,50 +735,13 @@ example : (3 : Nat) ≠ 4 := by decide
 The `decide` tactic works for any `Decidable` proposition. It
 runs the decision procedure and, if the result is `isTrue h`,
 extracts the proof `h`. This is powerful for concrete computations.
+For symbolic (variable-containing) goals, `decide` cannot help —
+you need `rfl`, `rw`, or induction.
 @@@ -/
 
 example : 10 * 10 = 100 := by decide
 example : "abc".length = 3 := by decide
 example : ¬ (7 = 8) := by decide
-
-/- @@@
-For symbolic (variable-containing) goals, `decide` cannot help —
-you need `rfl`, `rw`, or induction.
-
-## A Proof by Induction: `0 + n = n`
-
-We observed earlier that `0 + n = n` is not definitional. Let's
-prove it by induction on `n`. This uses everything we've learned:
-`rfl` for the base case, `rw` for the inductive step.
-@@@ -/
-
-theorem zero_add (n : Nat) : 0 + n = n := by
-  induction n with
-  | zero => rfl
-  | succ n' ih =>
-    -- Goal: 0 + (n' + 1) = n' + 1
-    -- ih : 0 + n' = n'
-    -- Nat.add_succ rewrites 0 + (n' + 1) to (0 + n') + 1
-    rw [Nat.add_succ, ih]
-
-/- @@@
-The base case is definitional: `0 + 0 = 0` reduces by definition.
-The inductive step rewrites using the induction hypothesis. This is
-the pattern for most arithmetic proofs about natural numbers.
-
-### Another Example: Commutativity of Addition
-
-We chain together two lemmas to prove `a + b = b + a`.
-@@@ -/
-
--- We use Nat.add_comm from the standard library
-#check @Nat.add_comm    -- ∀ (n m : Nat), n + m = m + n
-
-example (a b : Nat) : a + b = b + a := Nat.add_comm a b
-
--- Let's also see it as a calc proof
-example (a b : Nat) : a + b = b + a :=
-  calc a + b = b + a := Nat.add_comm a b
 
 /- @@@
 ## Summary
@@ -904,20 +750,17 @@ example (a b : Nat) : a + b = b + a :=
 |---|---|---|
 | Definitional equality | (kernel judgment) | Interconvertible by computation/unfolding |
 | `Eq` / `rfl` | `a = b`, `Eq.refl` | Propositional equality |
+| `Eq.subst` / `▸` | `a = b → P a → P b` | Substitute equals for equals |
 | `Eq.symm` | `a = b → b = a` | Flip an equation |
 | `Eq.trans` | `a = b → b = c → a = c` | Chain equations |
-| `Eq.subst` / `▸` | `a = b → P a → P b` | Substitute equals for equals |
 | `congrArg` | `a = b → f a = f b` | Functions respect equality |
 | `rw` | tactic | Rewrite in goal or hypothesis |
 | `calc` | proof block | Chain of equational steps |
 | `HEq` | `HEq a b` | Equality across types |
-| `cast` | `α = β → α → β` | Convert between equal types |
-| `Eq.rec` | eliminator | Dependent elimination on equality proofs |
-| `Eq.ndrec` | eliminator | Non-dependent transport along equality |
-| `transport` | `motive a → motive b` | Move data between indexed types |
+| `cast` / `transport` | type conversion | Move values between equal types |
+| `Eq.rec` | eliminator | The primitive underneath all equality reasoning |
 | `DecidableEq` | typeclass | Runtime equality checking |
 | `BEq` / `==` | typeclass | Boolean equality for programs |
-| `decide` | tactic | Prove decidable propositions |
 
 ## Additional Resources
 
