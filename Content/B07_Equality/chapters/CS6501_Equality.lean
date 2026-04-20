@@ -438,7 +438,7 @@ variable indices.)
 Here's a length-unconstrained array. Note the type, `Array Nat`.
 @@@ -/
 
-def arr1 : Array Nat := #[1,2,3,4]  -- any old array of Nat
+def arr1 : Array Nat := #[1,2,3,4,5]  -- any old array of Nat
 #eval arr1[1]                       -- indexing, expect 2
 
 /- @@@
@@ -447,7 +447,9 @@ the `#v` notation for `Vector`, but just `#` for `Array`.
 @@@ -/
 def v3a : Vector Nat 3 := #v[0,0,0]
 def v3b : Vector Nat 3 := #v[0,0,1]
-def v4  : Vector Nat 4 := #v[0,0,0,0]
+def v4  : Vector Nat 4 := #v[0,1,2,3]
+
+#eval v4[2]
 
 
 -- Recall the definition of Eq (=). Both args must be same type.
@@ -597,6 +599,7 @@ Closely related are `Eq.mp` and `Eq.mpr`:
 
 -- Eq.mp: given a proof that Vector Nat (0+m) = Vector Nat m,
 -- move a value forward from Vector Nat (0+m) to Vector Nat m
+-- @congrArg : ∀ {α : Sort u_1} {β : Sort u_2} {a₁ a₂ : α} (f : α → β), a₁ = a₂ → f a₁ = f a₂
 example (m : Nat) (v : Vector Nat (0 + m)) : Vector Nat m :=
   Eq.mp (congrArg (Vector Nat) (Nat.zero_add m)) v
 
@@ -645,7 +648,18 @@ can be converted to a `Vector α n` using the proof that `0 + n = n`.
 @@@ -/
 
 -- This does NOT type-check without a cast:
--- example (n : Nat) (v : Vector Nat (0 + n)) : Vector Nat n := v   -- ERROR
+example (n : Nat) (v : Vector Nat (0 + n)) : Vector Nat n := v   -- ERROR
+
+/-
+def transport
+  {α : Sort u}
+  {a b : α}
+  (motive : α → Sort v)
+  (h : a = b)
+  (x : motive a) :
+  motive b :=
+  h ▸ x
+  -/
 
 -- Transport bridges the gap
 def Vector.zeroAddCast
