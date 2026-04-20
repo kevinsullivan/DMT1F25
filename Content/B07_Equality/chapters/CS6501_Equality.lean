@@ -1,6 +1,3 @@
-#check Prod
-#check Sum
-
 /- @@@
 # Equality in Lean
 
@@ -41,8 +38,6 @@ congruence, rewriting, and calculational chains. We finish with
 the dependent equality problem, type casts, and decidable equality.
 @@@ -/
 
-
-#check Nat.add
 namespace Content.B07_Equality.chapters.CS6501_Equality
 
 /- @@@
@@ -417,35 +412,85 @@ and `Eq.rec`.
 
 ### When Types Depend on Values
 
-Consider length-indexed vectors — lists that carry their length
-in their type:
+Consider length-indexed vectors — arrays that carry their
+length in their type. Lean's standard library provides
+`Vector α n`, defined as a thin wrapper around `Array`:
+
+```
+structure Vector (α : Type u) (n : Nat) where
+  toArray : Array α
+  size_toArray : toArray.size = n
+```
+
+The key feature is the index `n : Nat` in the type. A
+`Vector Nat 3` is a *different type* from `Vector Nat 4` —
+the length is part of the type, not just a runtime property.
+
+For abstract `m`, a `Vector Nat m` and a `Vector Nat (0 + m)`
+hold the same data, but they are *different types*. The kernel
+cannot reduce `0 + m` when `m` is unknown — `Nat.add` pattern-
+matches on the second argument, and an abstract `m` doesn't
+match `.zero` or `.succ _`. So `0 + m` is not definitionally
+equal to `m`. (Note: with *concrete* numerals like `0 + 3`,
+Lean computes the result fully, so the issue only arises with
+variable indices.)
+
+Here's a length-unconstrained array. Note the type, `Array Nat`.
 @@@ -/
 
--- Length-indexed vectors
-inductive Vect (α : Type) : Nat → Type where
-  | nil  : Vect α 0
-  | cons : α → Vect α n → Vect α (n + 1)
+def arr1 : Array Nat := #[1,2,3,4]  -- any old array of Nat
+#eval arr1[1]                       -- indexing, expect 2
 
 /- @@@
-A `Vect Nat 3` and a `Vect Nat (0 + 3)` may hold the same data,
-but they are *different types*. The kernel does not know that
-`0 + 3 = 3` — remember, `0 + n` is not definitionally equal to `n`.
+Here's a length-constrained array, of type `Vector Nat 3`. Note
+the `#v` notation for `Vector`, but just `#` for `Array`.
+@@@ -/
+def v3a : Vector Nat 3 := #v[0,0,0]
+def v3b : Vector Nat 3 := #v[0,0,1]
+def v4  : Vector Nat 4 := #v[0,0,0,0]
 
-This creates two distinct problems:
 
-1. **We cannot even state `v = w`** when `v : Vect Nat (0 + 3)`
-   and `w : Vect Nat 3`, because `Eq` requires both sides to
-   have the same type.
-2. **We cannot use `v` where a `Vect Nat 3` is expected**, even
-   though the data is the same — the types don't match.
+-- Recall the definition of Eq (=). Both args must be same type.
 
-Problem 1 is solved by `HEq`. Problem 2 is solved by `cast`
+-- So we can compare two vectors of exactly the same type
+#check v3a = v3b
+
+-- We cannot compare two vectors of different types
+-- #check v3a = v4
+
+-- What about equality between Vectors of length n and (n + 0)?
+#check fun (m : Nat) (v : Vector Nat (m + 0)) (w : Vector Nat m ) => v = w  -- ✓
+
+-- What about a Vector of length m and one of length 0 + m?
+-- #check fun (m : Nat) (v : Vector Nat m) (w : Vector Nat (0 + m)) => v = w  -- ✗ type mismatch
+
+/- @@@
+When index expressions are *definitionally equal*, they reduce
+to the same normal form and Lean treats the types as identical.
+But when they are not — as with `0 + m` vs `m` for abstract
+`m` — the types are distinct even though they describe the same
+data. This creates two problems.
+
+1. **We cannot state `v = w`** when `v : Vector Nat (0 + m)`
+   and `w : Vector Nat m` for abstract `m`, because `Eq`
+   requires both sides to have the same type and `0 + m`
+   does not reduce to `m`.
+2. **We cannot use `v` where a `Vector Nat m` is expected**
+   when `v : Vector Nat (0 + m)`, even though the data is
+   the same — the types don't match.
+
+Problem 1 (comparison) is solved by `HEq`. Problem 2 (use) is solved by `cast`
 and `transport`.
 
 ### HEq: Equality Across Types
 
-Heterogeneous equality lets us *state* that two values of
-different types are equal:
+Recall Problem 1 above: we cannot even *state* `v = w` when
+`v : Vector Nat (0 + m)` and `w : Vector Nat m`, because `Eq`
+requires both sides to have the same type.
+
+Heterogeneous equality solves this. Its definition differs from
+`Eq` in one critical way — the two values may have *different*
+types:
 
 ```
 inductive HEq : {α : Sort u} → α → {β : Sort u} → β → Prop where
@@ -453,55 +498,94 @@ inductive HEq : {α : Sort u} → α → {β : Sort u} → β → Prop where
 ```
 
 `HEq a b` (notation `a ≅ b`) says: `a` and `b` are equal, even
-though they might have different types. But the only constructor
-is `refl`, so the types must actually be the same for a proof to
-exist.
+though they might live in different types `α` and `β`. The only
+constructor is `refl`, which requires `α = β` and `a = b` — so
+a proof can only *exist* when the types actually coincide. The
+power of `HEq` is not that it proves more, but that it lets us
+*state* the question when `Eq` cannot even be typed.
 @@@ -/
 
 #check @HEq             -- HEq : α → β → Prop
 #check @HEq.refl        -- HEq.refl : (a : α) → HEq a a
 #print HEq
 
--- Converting between Eq and HEq
+/- @@@
+**When types match, `HEq` and `Eq` are interconvertible.** Any
+`Eq` proof lifts to `HEq`, and any `HEq` proof whose sides have
+the same type collapses back to `Eq`:
+@@@ -/
+
 #check @heq_of_eq       -- a = b → HEq a b
 #check @eq_of_heq       -- HEq a b → a = b  (when types match)
 
+-- Lifting: Eq → HEq (types are both Nat, so this is trivial)
 example (h : 3 = 3) : HEq 3 3 := heq_of_eq h
+
+-- Collapsing: HEq → Eq (only works when types are definitionally equal)
 example (h : HEq (2 : Nat) 2) : (2 : Nat) = 2 := eq_of_heq h
 
 /- @@@
-Now we can at least *state* equality across different indices:
+**Solving Problem 1: stating cross-type equality.** Ordinary
+`Eq` cannot even type-check the comparison between a
+`Vector Nat (0 + m)` and a `Vector Nat m` — the types differ.
+`HEq` lets us state the question:
 @@@ -/
 
--- Ordinary Eq cannot even state this — the types differ:
--- example (v : Vect Nat (0 + 3)) (w : Vect Nat 3) : v = w := ...  -- TYPE ERROR
+-- Ordinary Eq rejects this — the types differ for abstract m:
+-- example (m : Nat) (v : Vector Nat (0 + m)) (w : Vector Nat m) : v = w := ...  -- TYPE ERROR
 
--- HEq lets us state the question
-example (v : Vect Nat (0 + 3)) (w : Vect Nat 3) : Prop := HEq v w
+-- HEq accepts it — the question is well-formed even across types
+example (m : Nat) (v : Vector Nat (0 + m)) (w : Vector Nat m) : Prop := HEq v w
 
 /- @@@
-In practice, `HEq` goals often appear when Lean cannot unify
-index expressions during dependent pattern matching. The usual
-strategy is to rewrite the indices until the types match, then
-convert to `Eq`.
+Note: for *concrete* indices like `m = 3`, `0 + 3` reduces to
+`3` and `Eq` works fine — the problem only manifests with
+abstract indices:
+@@@ -/
+
+-- Concrete indices: Eq works (0 + 3 reduces to 3)
+example (v w : Vector Nat 3) : Prop := v = w
+
+-- Abstract indices: only HEq can state the comparison
+example (m : Nat) (v : Vector Nat (0 + m)) (w : Vector Nat m) : Prop := HEq v w
+
+/- @@@
+**`HEq` states the question but does not answer it.** To
+actually *prove* such an equality or *use* a value at a
+different type, we need `cast` and `transport`.
 
 ### Cast and Transport: Moving Values Between Types
 
-`HEq` lets us *state* cross-type equality, but often what we
-need is to *use* a value at a different type. If we have a
-`Vect Nat (0 + 3)` and need a `Vect Nat 3`, we need to move
-the value from one type to the other.
+Recall Problem 2: we cannot use a `Vector Nat (0 + m)` where
+a `Vector Nat m` is expected. `HEq` lets us *state* that two
+values across types are equal, but what we often need is to
+*move* a value from one type to the other — a type-level
+coercion justified by a proof.
 
 The simplest tool is `cast`: given a proof that two types are
 equal, convert a value from one to the other.
 @@@ -/
 
+-- Uncomment to see the error: Vector Nat (0 + m) ≠ Vector Nat m
+-- example (m : Nat) (v : Vector Nat (0 + m)) : Vector Nat m := v
+
 #check @cast           -- cast : α = β → α → β
 
--- If we know Nat = Nat (trivially), we can cast
+-- If we know (rfl : Nat = Nat), we can cast
 example : cast rfl 42 = 42 := rfl
 
 /- @@@
+Here `cast rfl 42` says: given the proof `rfl : Nat = Nat`,
+convert `42 : Nat` to type `Nat`. The proof is trivial (the
+types are already the same), so the cast is a no-op — the
+result equals `42` by `rfl`.
+
+The interesting case is when the types differ only in their
+index expressions, like `Vector Nat (0 + m)` vs `Vector Nat m`.
+There, `cast` requires a proof that the two types are equal
+— which in turn requires a proof that the indices are equal (e.g.,
+`Nat.zero_add m : 0 + m = m`).
+
 Closely related are `Eq.mp` and `Eq.mpr`:
 
 - `Eq.mp  : α = β → α → β`  (forward: same as `cast`)
@@ -511,50 +595,83 @@ Closely related are `Eq.mp` and `Eq.mpr`:
 #check @Eq.mp          -- α = β → α → β
 #check @Eq.mpr         -- α = β → β → α
 
+-- Eq.mp: given a proof that Vector Nat (0+m) = Vector Nat m,
+-- move a value forward from Vector Nat (0+m) to Vector Nat m
+example (m : Nat) (v : Vector Nat (0 + m)) : Vector Nat m :=
+  Eq.mp (congrArg (Vector Nat) (Nat.zero_add m)) v
+
+-- !!! Stop here an work to understand all aspects of this example
+
+-- Eq.mpr: same proof, but move a value backward from Vector Nat m
+-- to Vector Nat (0+m)
+example (m : Nat) (w : Vector Nat m) : Vector Nat (0 + m) :=
+  Eq.mpr (congrArg (Vector Nat) (Nat.zero_add m)) w
+
+-- !!! Stop here an work to understand all aspects of this example
+
 /- @@@
-For indexed families like `Vect`, we need something slightly
-more structured: **transport**. Given a type family `motive`
+For indexed families like `Vector` we need something slightly
+more structured: **transport**. Given a type family, `motive,`
 indexed by some value, transport moves data from one index to
 another along an equality proof.
 @@@ -/
 
 -- Transport: move a value along an equality of indices
-def transport {α : Sort u} {a b : α}
-    (motive : α → Sort v) (h : a = b) (x : motive a) : motive b :=
+def transport
+  {α : Sort u}
+  {a b : α}
+  (motive : α → Sort v)
+  (h : a = b)
+  (x : motive a) :
+  motive b :=
   h ▸ x
 
 -- Transport a vector from length n to length m
-def Vect.cast {α : Type} {n m : Nat}
-    (h : n = m) (v : Vect α n) : Vect α m :=
-  transport (Vect α) h v
+def Vector.cast
+  {α : Type}
+  {n m : Nat}
+  (h : n = m)
+  (v : Vector α n) :
+  Vector α m :=
+  transport (Vector α) h v
+
+-- !!! Stop here an work to understand all aspects of this example
+
+
 
 /- @@@
-Now we can solve the dependent cast problem: a `Vect α (0 + n)`
-can be converted to a `Vect α n` using the proof that `0 + n = n`.
+Now we can solve the dependent cast problem: a `Vector α (0 + n)`
+can be converted to a `Vector α n` using the proof that `0 + n = n`.
 @@@ -/
 
 -- This does NOT type-check without a cast:
--- example (v : Vect Nat (0 + n)) : Vect Nat n := v   -- ERROR
+-- example (n : Nat) (v : Vector Nat (0 + n)) : Vector Nat n := v   -- ERROR
 
 -- Transport bridges the gap
-def Vect.zeroAddCast {α : Type} {n : Nat}
-    (v : Vect α (0 + n)) : Vect α n :=
-  transport (Vect α) (Nat.zero_add n) v
+def Vector.zeroAddCast
+  {α : Type}
+  {n : Nat}
+  (v : Vector α (0 + n)) :
+  Vector α n :=
+  transport (Vector α) (Nat.zero_add n) v
 
 -- And the reverse direction
-def Vect.zeroAddCast' {α : Type} {n : Nat}
-    (v : Vect α n) : Vect α (0 + n) :=
-  transport (Vect α) (Nat.zero_add n).symm v
+def Vector.zeroAddCast'
+  {α : Type}
+  {n : Nat}
+  (v : Vector α n) :
+  Vector α (0 + n) :=
+  transport (Vector α) (Nat.zero_add n).symm v
 
 -- All of these are equivalent ways to cast:
-example (n : Nat) (h : 0 + n = n) (v : Vect Nat (0 + n)) : Vect Nat n :=
-  cast (congrArg (Vect Nat) h) v
+example (n : Nat) (h : 0 + n = n) (v : Vector Nat (0 + n)) : Vector Nat n :=
+  cast (congrArg (Vector Nat) h) v
 
-example (n : Nat) (h : 0 + n = n) (v : Vect Nat (0 + n)) : Vect Nat n :=
+example (n : Nat) (h : 0 + n = n) (v : Vector Nat (0 + n)) : Vector Nat n :=
   h ▸ v
 
-example (n : Nat) (h : 0 + n = n) (v : Vect Nat (0 + n)) : Vect Nat n :=
-  transport (Vect Nat) h v
+example (n : Nat) (h : 0 + n = n) (v : Vector Nat (0 + n)) : Vector Nat n :=
+  transport (Vector Nat) h v
 
 /- @@@
 ### Transport Preserves Identity
@@ -565,9 +682,26 @@ the transported value is heterogeneously equal to the original.
 @@@ -/
 
 -- Transport by rfl is the identity
-theorem transport_rfl {α : Sort u} {a : α}
-    (motive : α → Sort v) (x : motive a) :
-    transport motive rfl x = x := rfl
+theorem transport_rfl
+  {α : Sort u}
+  {a : α}
+  (motive : α → Sort v)
+  (x : motive a) :
+  transport motive rfl x = x := rfl
+
+/- @@@
+When the index equality proof is `rfl` (the source and target
+indices are definitionally equal), transport does nothing at
+all — `transport motive rfl x` is definitionally equal to `x`.
+This is the base case: casting along a trivial proof is the
+identity.
+
+But what about non-trivial proofs, where the source and target
+types genuinely differ (like `Vector Nat (0 + m)` vs
+`Vector Nat m`)? The transported value has a *different type*,
+so ordinary `Eq` cannot even state that it equals the original.
+This is exactly where `HEq` earns its keep:
+@@@ -/
 
 -- Transport preserves value up to HEq
 theorem transport_heq {α : Sort u} {a b : α}
@@ -575,6 +709,17 @@ theorem transport_heq {α : Sort u} {a b : α}
     HEq (transport motive h x) x := by
   subst h
   exact HEq.refl x
+
+/- @@@
+The proof works by `subst h`: since `h : a = b`, substituting
+turns the goal into `HEq (transport motive rfl x) x`, which
+reduces to `HEq x x` by `transport_rfl`, and `HEq.refl`
+closes it. The result: transport changes the type label but
+the underlying data is unchanged — the original and the
+transported value are heterogeneously equal.
+
+Lean's standard library provides the same fact for `cast`:
+@@@ -/
 
 #check @cast_heq       -- (h : α = β) → (a : α) → HEq (cast h a) a
 
@@ -811,20 +956,20 @@ second half of the chapter.
 @@@ -/
 
 -- Exercise 9: Transport a vector
--- Given a Vect Nat (0 + n), produce a Vect Nat n
+-- Given a Vector Nat (0 + n), produce a Vector Nat n
 -- Hint: use transport with Nat.zero_add
-def ex_transport (n : Nat) (v : Vect Nat (0 + n)) : Vect Nat n := sorry
+def ex_transport (n : Nat) (v : Vector Nat (0 + n)) : Vector Nat n := sorry
 
 -- Exercise 10: Transport preserves HEq
 -- Show that transporting v gives something HEq to v
 -- Hint: what happens when you subst the equality proof?
-theorem ex_transport_heq (n m : Nat) (h : n = m) (v : Vect Nat n) :
-    HEq (transport (Vect Nat) h v) v := sorry
+theorem ex_transport_heq (n m : Nat) (h : n = m) (v : Vector Nat n) :
+    HEq (transport (Vector Nat) h v) v := sorry
 
 -- Exercise 11: Round-trip cast
 -- Transport forward then back yields the original value
 -- Hint: what is transport ... rfl?
-theorem ex_round_trip (n m : Nat) (h : n = m) (v : Vect Nat n) :
-    transport (Vect Nat) h.symm (transport (Vect Nat) h v) = v := sorry
+theorem ex_round_trip (n m : Nat) (h : n = m) (v : Vector Nat n) :
+    transport (Vector Nat) h.symm (transport (Vector Nat) h v) = v := sorry
 
 end Content.B07_Equality.chapters.CS6501_Equality
