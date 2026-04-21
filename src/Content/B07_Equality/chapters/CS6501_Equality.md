@@ -640,14 +640,40 @@ def Vector.cast
 -- !!! Stop here an work to understand all aspects of this example
 ```
 
+### Exercises: Cast and Transport Basics
 
+Replace each `sorry` with a proof.
+
+```lean
+-- Exercise: use cast with a trivial type equality proof
+-- Hint: if the types are the same, what proof do you need?
+example : cast rfl "hello" = "hello" := sorry
+
+-- Exercise: use Eq.mp to move a value from Nat to Nat
+-- Hint: what proof shows Nat = Nat?
+example (n : Nat) : Eq.mp rfl n = n := sorry
+
+-- Exercise: use transport to move a value along rfl
+-- Hint: transport motive rfl x = ?
+example (v : Vector Nat 3) : transport (Vector Nat) rfl v = v := sorry
+
+-- Exercise: build a type equality proof from an index equality proof
+-- Hint: if h : a = b, then congrArg f h : f a = f b
+example (m : Nat) (h : 0 + m = m) : Vector Nat (0 + m) = Vector Nat m :=
+  sorry
+
+-- Exercise: cast a vector using a proof you construct
+-- Hint: combine cast, congrArg, and Nat.add_zero
+example (n : Nat) (v : Vector Nat (n + 0)) : Vector Nat n :=
+  sorry
+```
 
 Now we can solve the dependent cast problem: a `Vector α (0 + n)`
 can be converted to a `Vector α n` using the proof that `0 + n = n`.
 
 ```lean
 -- This does NOT type-check without a cast:
-example (n : Nat) (v : Vector Nat (0 + n)) : Vector Nat n := v   -- ERROR
+-- example (n : Nat) (v : Vector Nat (0 + n)) : Vector Nat n := v   -- ERROR
 
 /-
 def transport
@@ -931,57 +957,55 @@ example : ¬ (7 = 8) := by decide
 
 ## Exercises
 
-Try to replace each `sorry` with an actual proof. Use `rfl`, `rw`,
-`Eq.symm`, `Eq.trans`, `congrArg`, `calc`, and induction as needed.
+Replace each `sorry` with a proof (or state that you
+can't and if you can, explain that that's because it's
+impossible). The exercises are grouped by topic and
+increase in difficulty within each group.
+
+### Equational Reasoning
 
 ```lean
--- Exercise 1: Simple reflexivity
-theorem ex_refl : 7 = 7 := sorry
+-- Exercise 1: Chain two equalities and apply a function.
+-- Hint: combine Eq.trans and congrArg (or use rw/calc).
+theorem ex_chain (a b c : Nat) (h1 : a = b) (h2 : b = c) :
+    a + 1 = c + 1 := sorry
 
--- Exercise 2: Symmetry
-theorem ex_symm (a b : Nat) (h : a = b) : b = a := sorry
+-- Exercise 2: Prove using a calc block with at least 3 steps.
+theorem ex_calc (a b c d : Nat)
+    (h1 : a = b + 1) (h2 : b = c) (h3 : c = d + 2) :
+    a = d + 3 := sorry
 
--- Exercise 3: Transitivity
-theorem ex_trans (a b c : Nat) (h1 : a = b) (h2 : b = c) : a = c := sorry
-
--- Exercise 4: Congruence
-theorem ex_congr (n m : Nat) (h : n = m) : n * 2 = m * 2 := sorry
-
--- Exercise 5: Rewriting
-theorem ex_rw (x y z : Nat) (h1 : x = y + 1) (h2 : y = z) : x = z + 1 := sorry
-
--- Exercise 6: Calc block
-theorem ex_calc (a b c : Nat) (h1 : a = b + 1) (h2 : b = c + 1) : a = c + 2 := sorry
-
--- Exercise 7: Induction (harder)
-theorem ex_zero_add (n : Nat) : 0 + n = n := sorry
-
--- Exercise 8: Using decide
-theorem ex_decide : 15 % 5 = 0 := sorry
+-- Exercise 3: Prove by induction on m.
+-- Hint: the inductive step needs congrArg or rw with the IH.
+theorem ex_succ_add (n m : Nat) : (n + 1) + m = (n + m) + 1 := sorry
 ```
 
-### Advanced Exercises
-
-These exercises use dependent casts and transport from the
-second half of the chapter.
+### Dependent Equality
 
 ```lean
--- Exercise 9: Transport a vector
--- Given a Vector Nat (0 + n), produce a Vector Nat n
--- Hint: use transport with Nat.zero_add
-def ex_transport (n : Nat) (v : Vector Nat (0 + n)) : Vector Nat n := sorry
+-- Exercise 4: Why does this fail? Fix it by providing a cast.
+-- (Uncomment and replace sorry with a working term.)
+-- def ex_stuck (n : Nat) (v : Vector Nat (0 + n)) : Vector Nat n := v
+def ex_cast (n : Nat) (v : Vector Nat (0 + n)) : Vector Nat n := sorry
 
--- Exercise 10: Transport preserves HEq
--- Show that transporting v gives something HEq to v
--- Hint: what happens when you subst the equality proof?
+-- Exercise 5: State and prove that transport along rfl is identity.
+theorem ex_transport_rfl (n : Nat) (v : Vector Nat n) :
+    transport (Vector Nat) rfl v = v := sorry
+
+-- Exercise 6: Show that transporting preserves value (HEq).
+-- Hint: what tactic eliminates an equality hypothesis from context?
 theorem ex_transport_heq (n m : Nat) (h : n = m) (v : Vector Nat n) :
     HEq (transport (Vector Nat) h v) v := sorry
 
--- Exercise 11: Round-trip cast
--- Transport forward then back yields the original value
--- Hint: what is transport ... rfl?
+-- Exercise 7: Round-trip — transport forward then back = identity.
+-- Hint: after subst, both transports become transport _ rfl.
 theorem ex_round_trip (n m : Nat) (h : n = m) (v : Vector Nat n) :
     transport (Vector Nat) h.symm (transport (Vector Nat) h v) = v := sorry
+
+-- Exercise 8: Build Eq.mp from transport.
+-- Show that Eq.mp is just transport with motive = id.
+theorem ex_mp_is_transport (α β : Type) (h : α = β) (x : α) :
+    Eq.mp h x = transport id h x := sorry
 
 end Content.B07_Equality.chapters.CS6501_Equality
 ```
