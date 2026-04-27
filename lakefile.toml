@@ -21,6 +21,10 @@ root = "Content.B06_CoinductiveGameEngine.Main"
 name = "snakeviz"
 root = "Content.B06_CoinductiveGameEngine.viz.SnakeMain"
 
+[[lean_exe]]
+name = "snake"
+root = "Content.B06_CoinductiveGameEngine.SnakeTerminal"
+
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"

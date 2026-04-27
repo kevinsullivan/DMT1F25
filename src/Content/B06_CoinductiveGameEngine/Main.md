@@ -1,7 +1,7 @@
 ```lean
 import Content.B06_CoinductiveGameEngine.chapters.CS6501_BigBang
 
-open HtDPBigBang
+open Content.B06_CoinductiveGameEngine.chapters.CS6501_BigBang
 
 def main : IO Unit := do
   IO.println "HtDP-style big-bang demo in Lean 4"

@@ -128,11 +128,15 @@ def renderWorld (w : SnakeWorld) : String :=
     s!"GAME OVER! Score: {w.score} in {w.ticks} ticks"
   board ++ "\n" ++ status
 
+-- Direction + tick: change direction then advance one step
+def handleKeyAndTick (w : SnakeWorld) (k : String) : SnakeWorld :=
+  stepWorld (handleKey w k)
+
 -- BigBang instance: wires pure handlers into the coinductive framework
 def snakeBigBang : BigBang SnakeWorld String :=
   { toDraw := renderWorld
     onTick := stepWorld
-    onKey := handleKey
+    onKey := handleKeyAndTick
     stopWhen := fun w => !w.alive
   }
 
