@@ -59,6 +59,10 @@
 
 - [Equality in Lean](./Content/B07_Equality/chapters/CS6501_Equality.md)
 
+# IX. Bundling/Unbundling
+
+- [Controlling Unwrapping and Reduction](./Content/B08_Wrap/chapters/CS6501_UnwrappingAndReduction.md)
+
 # Appendix
 
 - [Learning Resources](resources.md)
